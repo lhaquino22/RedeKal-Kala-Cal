@@ -1,18 +1,11 @@
-import React from 'react';
-import { StyleSheet, Text, View, Header } from 'react-native';
-import { Navigator } from './src/Navigator';
+import React, {Component} from 'react';
+import {Text} from 'react-native';
+import HomeNavigator from './src/HomeNavigator';
 
-export default function App() {
-  return (   
-    <Navigator/>
-  );
+export default class App extends Component {
+  render() {
+    return (
+      <HomeNavigator />
+    )
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

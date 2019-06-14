@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const itens = [
-  {titulo: "Leishmaniose Visceral"}, 
-  {titulo: "Linha de Cuidado ao paciente com Calazar"},
-  {titulo: "Georreferenciamento dos casos"},
-  {titulo: "Plano de Enfrentamento e Controle das Doenças Negligenciada no Estado do Piauí"},
-  {titulo: "Pontos de Cuidado no Estado do Piauí"}, 
-  {titulo:"Sobre", icone:"md-information-circle"}
+const itens = [ 
+  {titulo: "Reservatório", screen: "Descricao"},
+  {titulo: "Vetor", screen: "Descricao"},
+  {titulo: "Modo de Transmissão", screen: "Descricao"},
+  {titulo: "Sintomas", screen: "Descricao"}, 
+  {titulo:"Perfil Epidemiológico", screen: "Descricao"}
 ]
 
-export default class LeishmanioseVisceralScreen extends Component {
+export default class DescricaoScreen extends Component {
   static navigationOptions = {
-    title: 'Leishmaniose Visceral',
+    title: 'Descrição',
     headerTintColor: 'lightsalmon',
     headerTitleStyle: {
         fontSize: 20
@@ -45,24 +44,24 @@ export default class LeishmanioseVisceralScreen extends Component {
 }
 
 const estilo = StyleSheet.create({
-  card: {
-    marginHorizontal: 10,
-    backgroundColor: "white",
-    borderBottomWidth: 2,
-    borderBottomColor: "lightsalmon",
-    paddingVertical: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  card:{
+      marginHorizontal:10,
+      backgroundColor:"white",
+      borderBottomWidth:2,
+      borderBottomColor:"#FD833B",
+      paddingVertical:16,
+      flexDirection:"row",
+      justifyContent:"space-between",
+      alignItems:"center",
   },
-  cardItem: {
-    fontSize: 14,
-    fontWeight: "bold",
-    textAlign: "left",
-    color: "black"
+  cardItem:{
+      fontSize:14,
+      fontWeight:"bold",
+      textAlign:"left",
+      color:"black"
   },
-  identacao: {
-    flex: 1,
-    flexWrap: 'wrap'
+  identacao:{
+      flex:1,
+      flexWrap:'wrap'
   }
 })

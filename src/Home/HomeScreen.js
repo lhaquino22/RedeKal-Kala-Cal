@@ -16,8 +16,11 @@ const itens = [
 
 export default class HomeScreen extends Component {
   static navigationOptions = {
-    title: 'Leish | Line Care',
     headerTintColor: 'black',
+    headerStyle:{
+      backgroundColor: 'tomato',
+      textAlign:'left'
+    },
     headerTitleStyle: {
       fontSize: 20
     },

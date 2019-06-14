@@ -7,12 +7,12 @@ export default class HomeScreen extends Component {
       <View style={estilo.perfil}>
         <View style={estilo.imagemContainer}>
           <Image
-            source={require('./miriane.jpeg')}
+            source={require('./logo.png')}
             style={estilo.imagem} />
         </View>
         <View style={estilo.usuario}>
-          <Text style={estilo.nome}>Miriane Araújo</Text>
-          <Text style={estilo.cargo}>Gestora de Saúde</Text>
+          <Text style={estilo.nome}>Leish</Text>
+          <Text style={estilo.cargo}>Line Care</Text>
         </View>
       </View>
     );

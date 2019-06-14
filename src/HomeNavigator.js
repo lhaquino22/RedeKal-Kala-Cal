@@ -1,5 +1,5 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation';
-import HomeScreen from './HomeScreen';
+import HomeScreen from './Home/HomeScreen';
 import LishmanioseVisceralScreen from './LeishmanioseVisceral/LeishmanioseVisceralScreen';
 import DescricaoScreen from './LeishmanioseVisceral/DescricaoScreen';
 import LinhaDeCuidadoScreen from './LinhaDeCuidado/LinhaDeCuidadoScreen';

@@ -27,12 +27,12 @@ export default class VigilanciaEmSaudeScreen extends Component {
           data={itens}
           renderItem={
             ({ item }) =>
-              <TouchableOpacity onPress={()=>this.props.navigation.navigate(item.screen)}>
+              <TouchableOpacity onPress={()=> navigate(item.screen)}>
                 <View style={estilo.card}>
                   <View style={estilo.identacao}>
                     <Text style={estilo.cardItem}>{item.titulo}</Text>
                   </View>
-                  <Ionicons name='ios-arrow-forward' size={30} color="lightsalmon" />
+                  <Ionicons name='ios-arrow-forward' size={30} color="lightcoral" />
                 </View>
               </TouchableOpacity>
 
@@ -49,7 +49,7 @@ const estilo = StyleSheet.create({
       marginHorizontal:10,
       backgroundColor:"white",
       borderBottomWidth:2,
-      borderBottomColor:"#FD833B",
+      borderBottomColor:"lightcoral",
       paddingVertical:16,
       flexDirection:"row",
       justifyContent:"space-between",

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import HomeNavigator from './src/HomeNavigator';
+import MainNavigator from './src/pages/MainNavigator';
 
 export default class App extends Component {
   render() {
     return (
-      <HomeNavigator />
+      <MainNavigator />
     )
   }
 }

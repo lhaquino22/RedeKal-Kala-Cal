@@ -20,11 +20,11 @@ export default class HomeScreen extends Component {
           {object.map((item, index) => {
             return (
               <View style={estilo.itemsRow} key={index}>
-                <TouchableOpacity style={estilo.fill} onPress={() => navigate('Georreferenciamento')}>
+                <TouchableOpacity style={estilo.fill} onPress={() => navigate(item[0].screen)}>
                   <MenuCardItem icone={item[0].icone} titulo={item[0].titulo} cor={item[0].cor} />
                 </TouchableOpacity>
                 <TouchableOpacity style={estilo.fill}>
-                  <MenuCardItem icone={item[1].icone} titulo={item[1].titulo} cor={item[1].cor} />
+                  <MenuCardItem icone={item[1].icone} titulo={item[1].titulo} cor={item[1].cor} onPress={() => navigate(item[1].screen)}/>
                 </TouchableOpacity>
               </View>
             )

@@ -3,36 +3,42 @@ export default menu = [
     {
       icone: 'book-open-page-variant',
       titulo: 'Leishmaniose Visceral',
-      cor: 'peru'
+      cor: 'peru',
+      screen: ''
     },
     {
       icone: 'file-tree',
       titulo: 'Linha de Cuidado ao Paciente',
-      cor: 'cornflowerblue'
+      cor: 'cornflowerblue',
+      screen: ''
     }
   ],
   [
     {
       icone: 'map-marker-multiple',
       titulo: 'Georreferenciamento dos Casos',
-      cor: 'lightcoral'
+      cor: 'lightcoral',
+      screen: 'Georreferenciamento'
     },
     {
       icone: 'hospital',
       titulo: 'Pontos de Cuidado no Piauí',
-      cor: 'khaki'
+      cor: 'khaki',
+      screen: ''
     }
   ],
   [
     {
       icone: 'chart-donut',
       titulo: 'Plano de Enfrentamento e Controle de Doenças Negligenciadas',
-      cor: 'lightsalmon'
+      cor: 'lightsalmon',
+      screen: ''
     },
     {
       icone: 'information-outline',
       titulo: 'Sobre',
-      cor: 'seagreen'
+      cor: 'seagreen',
+      screen: ''
     }
   ]
 ]

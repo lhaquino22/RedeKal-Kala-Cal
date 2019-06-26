@@ -1,9 +1,9 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import MenuScreen from './MenuScreen';
+import NotificacoesScreen from './NotificacoesScreen';
 
 const Navigator = createStackNavigator(
   {
-    Main: MenuScreen
+    Main: NotificacoesScreen
   }
 )
 

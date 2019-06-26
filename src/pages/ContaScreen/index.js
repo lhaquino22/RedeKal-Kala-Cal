@@ -1,10 +1,11 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import TesteScreen from '../TesteScreen/index';
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 
-const Navigator = createStackNavigator(
-  {
-    Main: TesteScreen
+export default class ContaScreen extends Component {
+  render() {
+    return (
+      <View>
+      </View>
+    )
   }
-)
-
-export default createAppContainer(Navigator);
+}

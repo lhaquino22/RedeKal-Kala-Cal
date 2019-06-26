@@ -21,7 +21,7 @@ const MainNavigator = createBottomTabNavigator(
 
         if (routeName === 'Menu') {
           iconName = focused ? 'home' : 'home-outline';
-          IconComponent = IconWithBadge; 
+          IconComponent = IconWithBadge;
         } else if (routeName === 'Notificacoes') {
           iconName = focused ? 'bell' : 'bell-outline';
         } else {

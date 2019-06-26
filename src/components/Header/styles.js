@@ -1,36 +1,37 @@
 import { StyleSheet } from 'react-native';
 
 HEADER_MAX_HEIGHT = 120;
-HEADER_MIN_HEIGHT = 70;
 
 export default StyleSheet.create({
-  headerContainer: {
-    position: 'relative',
+  container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     height: HEADER_MAX_HEIGHT,
     justifyContent: 'flex-end',
     padding: 10,
     borderBottomWidth: 0.5,
     borderBottomColor: 'gray'
   },
-  headerItemsContainer: {
+  itemsContainer: {
     flexDirection: 'row', 
     alignItems: 'center'
   },
-  headerTextContainer: {
+  textContainer: {
     marginLeft: 5
   },
-  headerTitle: {
+  title: {
     fontSize: 30, 
     fontWeight: 'bold', 
     color: 'forestgreen'
   },
-  headerSubTitle: {
+  subTitle: {
     fontSize: 15, 
     fontWeight: 'normal'
   },
-  headerImage: {
+  image: {
     width: 45,
     height: 50
   }
-
 });

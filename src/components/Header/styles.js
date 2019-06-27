@@ -24,11 +24,12 @@ export default StyleSheet.create({
   title: {
     fontSize: 30, 
     fontWeight: 'bold', 
-    color: 'forestgreen'
+    color: 'black'
   },
   subTitle: {
     fontSize: 15, 
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    color: 'gray'
   },
   image: {
     width: 45,

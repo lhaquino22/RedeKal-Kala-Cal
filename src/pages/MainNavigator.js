@@ -28,11 +28,11 @@ const MainNavigator = createBottomTabNavigator(
           iconName = focused ? 'account' : 'account-outline';
         }
 
-        return <IconComponent name={iconName} size={35} color={tintColor} />;
+        return <IconComponent name={iconName} size={32} color={tintColor} />;
       },
     }),
     tabBarOptions: {
-      activeTintColor: 'forestgreen',
+      activeTintColor: 'black',
       inactiveTintColor: 'black',
       showLabel: false
     },

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Animated } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import estilo from './styles';
 
 export default class HomeScreen extends Component {
   render() {
     return (
-      <Animated.View style={estilo.container}>
+      <View style={estilo.container}>
         <View style={estilo.itemsContainer}>
           <Image source={require('../../images/logo_piaui.png')} style={estilo.image} />
           <View style={estilo.textContainer}>
@@ -13,7 +13,7 @@ export default class HomeScreen extends Component {
             <Text style={estilo.subTitle}>Secretaria de Saúde do Piauí</Text>
           </View>
         </View>
-      </Animated.View>
+      </View>
     )
   }
 }

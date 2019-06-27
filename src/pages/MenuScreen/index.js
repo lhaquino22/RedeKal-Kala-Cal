@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import Header from '../../components/Header';
 import MenuCardItem from '../../components/MenuCardItem';
 import estilo from './styles';
@@ -11,7 +11,7 @@ export default class HomeScreen extends Component {
   }
 
   render() {
-    const {navigate} = this.props.navigation;
+    const { navigate } = this.props.navigation;
 
     return (
       <View style={estilo.fill}>
@@ -24,7 +24,7 @@ export default class HomeScreen extends Component {
                   <MenuCardItem icone={item[0].icone} titulo={item[0].titulo} cor={item[0].cor} />
                 </TouchableOpacity>
                 <TouchableOpacity style={estilo.fill}>
-                  <MenuCardItem icone={item[1].icone} titulo={item[1].titulo} cor={item[1].cor} onPress={() => navigate(item[1].screen)}/>
+                  <MenuCardItem icone={item[1].icone} titulo={item[1].titulo} cor={item[1].cor} onPress={() => navigate(item[1].screen)} />
                 </TouchableOpacity>
               </View>
             )

@@ -25,7 +25,6 @@ const GeorrefNavigator = createMaterialTopTabNavigator(
       },
     }),
     tabBarOptions: {
-      title: 'Felipe',
       style: {
         backgroundColor: 'white'
       },

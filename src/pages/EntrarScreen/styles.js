@@ -30,4 +30,11 @@ export default StyleSheet.create({
     backgroundColor: '#A2CBC3',
     marginTop: 30,
   },
+  buttomCadastrar: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#A2CBFF',
+    marginTop: 30,
+  },
 })

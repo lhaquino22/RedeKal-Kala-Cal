@@ -17,5 +17,5 @@ export default StyleSheet.create({
     color: 'black',
     fontSize: 13,
     fontWeight: 'bold'
-  }
+  },
 })

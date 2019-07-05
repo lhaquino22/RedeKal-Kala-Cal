@@ -56,13 +56,12 @@ class AuthLoadingScreen extends React.Component {
   }
 }
 
-const AppStack = createStackNavigator({ Home: MainNavigator});
 const AuthStack = createStackNavigator({ Entrar: EntrarScreen, Cadastrar: CadastrarScreen });
 
 export default createAppContainer(createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    App: AppStack,
+    App: MainNavigator,
     Auth: AuthStack,
   },
   {

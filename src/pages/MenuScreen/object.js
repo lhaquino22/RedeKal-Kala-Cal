@@ -16,7 +16,7 @@ export default menu = [
   [
     {
       icone: 'map-marker-multiple',
-      titulo: 'Georreferenciamento dos Casos',
+      titulo: 'Ocorrência dos Casos',
       cor: 'lightcoral',
       screen: 'Georreferenciamento'
     },

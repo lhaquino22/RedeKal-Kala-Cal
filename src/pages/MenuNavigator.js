@@ -8,7 +8,7 @@ const Navigator = createStackNavigator(
     Georreferenciamento: {
       screen: GeorrefNavigator,
       navigationOptions: {
-        title: 'Georreferenciamento dos Casos'
+        title: 'Casos de Ocorrência'
       }
     }
   }

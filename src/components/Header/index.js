@@ -9,8 +9,7 @@ export default class HomeScreen extends Component {
         <View style={estilo.itemsContainer}>
           <Image source={require('../../images/logo_piaui.png')} style={estilo.image} />
           <View style={estilo.textContainer}>
-            <Text style={estilo.title}>Cuida Calasar</Text>
-            <Text style={estilo.subTitle}>Secretaria de Saúde do Piauí</Text>
+            <Text style={estilo.title}>Cuida Calazar</Text>
           </View>
         </View>
       </View>

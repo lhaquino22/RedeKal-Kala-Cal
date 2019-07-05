@@ -10,7 +10,6 @@ export default class HomeScreen extends Component {
           <Image source={require('../../images/logo_piaui.png')} style={estilo.image} />
           <View style={estilo.textContainer}>
             <Text style={estilo.title}>Cuida Calazar</Text>
-            <Text style={estilo.subTitle}>Secretaria de Saúde do Piauí</Text>
           </View>
         </View>
       </View>

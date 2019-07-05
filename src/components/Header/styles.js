@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-HEADER_MAX_HEIGHT = 120;
+HEADER_MAX_HEIGHT = 160;
 
 export default StyleSheet.create({
   container: {

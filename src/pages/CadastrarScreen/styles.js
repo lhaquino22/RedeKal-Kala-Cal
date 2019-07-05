@@ -30,4 +30,12 @@ export default StyleSheet.create({
     backgroundColor: '#A2CBC3',
     margin: 30,
   },
+  picker:{
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomColor: '#A2CBC3',
+    borderBottomWidth: 1,
+    marginBottom: 30,
+  },
 })

@@ -8,6 +8,8 @@ import {
   View,
 } from 'react-native';
 import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
+import firebase from 'firebase'
+import 'firebase/firestore';
 
 import EntrarScreen from './EntrarScreen'
 import CadastrarScreen from './CadastrarScreen'
@@ -17,6 +19,7 @@ class AuthLoadingScreen extends React.Component {
   constructor() {
     super();
     this._bootstrapAsync();
+    //this.tryToAdd();
   }
 
   // Fetch the token from storage then navigate to our appropriate place
@@ -28,10 +31,24 @@ class AuthLoadingScreen extends React.Component {
     this.props.navigation.navigate(userToken ? 'App' : 'Auth');
   };
 
+  tryToAdd = async () =>{
+    var userToken = await AsyncStorage.getItem('userToken');
+    var db = firebase.firestore();
+    var user = {
+      nome: "gabriel Araujo" 
+    }
+    if(userToken== null){
+      userToken = "ss"
+    }
+    await db.collection("users").doc(userToken).set(user).then().catch((error)=>{
+
+    });
+  }
+
   // Render any loading content that you like here
   render() {
     return (
-      <View >
+      <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}} >
         <ActivityIndicator />
         <StatusBar barStyle="default" />
       </View>

@@ -8,10 +8,28 @@ export default class ContaScreen extends Component {
   };
 
   render() {
+    var user = firebase.auth().currentUser;
+    var name, email;
+
+    if (user != null) {
+      name = user.displayName;
+      email = user.email;
+      emailVerified = user.emailVerified;
+    }
     return (
-      <View style={estilo.button}>
-        <TouchableOpacity  onPress={this._signOutFirebase} >
-          <Text>Actually, sign me out :)</Text>
+      <View style={estilo.container}>
+        <View style={estilo.info}>
+          <View style={estilo.item}>
+            <Text>Nome: </Text>
+            <Text>{name}</Text>
+          </View>
+          <View style={estilo.item}>
+            <Text>Email: </Text>
+            <Text>{email}</Text>
+          </View>
+        </View>
+        <TouchableOpacity style={estilo.button} onPress={this._signOutFirebase} >
+          <Text>Sair :)</Text>
         </TouchableOpacity>
       </View>
     );
@@ -19,12 +37,12 @@ export default class ContaScreen extends Component {
   _signOutFirebase = () => {
     firebase.auth().signOut().then(
       this._signOutAsync
-    ).catch(function(error) {
+    ).catch(function (error) {
       alert(error)
     });
   }
   _signOutAsync = async () => {
-    await AsyncStorage.clear();  
+    await AsyncStorage.clear();
     this.props.navigation.navigate('Auth');
   };
 }

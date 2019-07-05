@@ -20,17 +20,23 @@ export default class EntrarScreen extends Component {
     };
   }
   
-  _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'abc');
+  _signInAsync = async (user) => {
+    const userToken = await user.user.getIdToken();
+    await AsyncStorage.setItem('userToken',userToken);
     this.props.navigation.navigate('App');
   };
+
   SignIn = (email, password) => {
-      firebase.auth().signInWithEmailAndPassword(email, password).then( 
-        this._signInAsync
+      firebase.auth().languageCode = 'pt';
+      firebase.auth().signInWithEmailAndPassword(email, password).then( (user) =>{
+        this._signInAsync(user)
+      }
       ).catch(function(error) {
         alert(error)
       });
+      
   };
+
   render() {
     const { navigate } = this.props.navigation;
     return (

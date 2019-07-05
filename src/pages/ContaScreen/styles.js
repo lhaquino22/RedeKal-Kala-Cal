@@ -18,4 +18,11 @@ export default StyleSheet.create({
     fontSize: 13,
     fontWeight: 'bold'
   },
+  info: {
+    flex: 1,
+  },
+  item: {
+    flexDirection: 'row',
+    padding: 10,
+  },
 })

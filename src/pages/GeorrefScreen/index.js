@@ -11,7 +11,8 @@ const marcadores = [
     coordinate: {
       latitude: -5.0335998,
       longitude: -42.4581812
-    }
+    },
+    supeito: true
   },
   {
     title: 'Gabriel Araújo',
@@ -19,7 +20,8 @@ const marcadores = [
     coordinate: {
       latitude: -5.0335998,
       longitude: -42.4481715
-    }
+    },
+    suspeito: false
   },
   {
     title: 'Felipe Caminha',
@@ -27,7 +29,8 @@ const marcadores = [
     coordinate: {
       latitude: -5.0391329,
       longitude: -42.4605576
-    }
+    },
+    suspeito: true
   },
   {
     title: 'Felipe Jordan',
@@ -35,7 +38,8 @@ const marcadores = [
     coordinate: {
       latitude: -5.0391259,
       longitude: -42.4602576
-    }
+    },
+    suspeito: false
   }
 
 ]
@@ -113,7 +117,7 @@ export default class GeorrefScreen extends Component {
           >
             {marcadores.map((marker, i) => (
               <Marker key={i} identifier={`id${i}`} coordinate={marker.coordinate} title={marker.title}
-                description={marker.description} />
+                description={marker.description} pinColor={marker.suspeito ? 'orange' : 'red'}/>
             ))}
           </MapView>
           <View style={estilo.inputContainer}>

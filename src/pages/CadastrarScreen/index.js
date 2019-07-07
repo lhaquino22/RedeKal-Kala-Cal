@@ -130,7 +130,7 @@ export default class CadastrarScreen extends Component {
           <View style={estilo.picker}>
             <Text>Nível de Escolaridade: </Text>
             <Picker
-              selectedValue={this.state.categoria_profissional}
+              selectedValue={this.state.nivel_escolaridade}
               style={{ flex:1 }}
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ nivel_escolaridade: itemValue })

@@ -24,7 +24,7 @@ class AuthLoadingScreen extends React.Component {
   constructor() {
     super();
     this._bootstrapAsync();
-    this.tryToAdd();
+    //this.tryToAdd();
   }
 
   // Fetch the token from storage then navigate to our appropriate place

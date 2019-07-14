@@ -8,18 +8,23 @@ import {
   View,
 } from 'react-native';
 import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
-import firebase from 'firebase'
+import firebase  from 'firebase'
 import 'firebase/firestore';
 
 import EntrarScreen from './EntrarScreen'
 import CadastrarScreen from './CadastrarScreen'
 import MainNavigator from './MainNavigator'
 
+
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Setting a timer']);
+
+
 class AuthLoadingScreen extends React.Component {
   constructor() {
     super();
     this._bootstrapAsync();
-    //this.tryToAdd();
+    this.tryToAdd();
   }
 
   // Fetch the token from storage then navigate to our appropriate place
@@ -35,12 +40,13 @@ class AuthLoadingScreen extends React.Component {
     var userToken = await AsyncStorage.getItem('userToken');
     var db = firebase.firestore();
     var user = {
-      nome: "gabriel Araujo" 
+      nome: "gabriel Araujo G" 
     }
     if(userToken== null){
-      userToken = "ss"
+      userToken = "sss"
     }
-    await db.collection("users").doc(userToken).set(user).then().catch((error)=>{
+    const algo =  db.collection("users").doc(userToken)
+    algo.set(user).then().catch((error)=>{
 
     });
   }
@@ -56,7 +62,15 @@ class AuthLoadingScreen extends React.Component {
   }
 }
 
-const AuthStack = createStackNavigator({ Entrar: EntrarScreen, Cadastrar: CadastrarScreen });
+const AuthStack = createStackNavigator({ 
+  Entrar: EntrarScreen, 
+  Cadastrar: {
+    screen: CadastrarScreen,
+    navigationOptions: {
+      title: 'Cadastrar'
+    }  
+  }
+});
 
 export default createAppContainer(createSwitchNavigator(
   {

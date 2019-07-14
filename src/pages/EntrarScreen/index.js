@@ -27,7 +27,7 @@ export default class EntrarScreen extends Component {
   };
 
   SignIn = (email, password) => {
-      firebase.auth().languageCode = 'pt';
+      firebase.auth().languageCode = "pt_br";
       firebase.auth().signInWithEmailAndPassword(email, password).then( (user) =>{
         this._signInAsync(user)
       }
@@ -45,12 +45,21 @@ export default class EntrarScreen extends Component {
           style={estilo.textInput}
           placeholder={'Email'}
           onChangeText={(email) => this.setState({ email })}
+          autoCapitalize="none"
+          autoCorrect={false}
+          returnKeyType="next"
+          onSubmitEditing={() => this.passwordRef.focus()}
+          keyboardType="email-address"
+          blurOnSubmit={false}
         />
         <TextInput
           style={estilo.textInput}
           placeholder={'Senha'}
           secureTextEntry={true}
           onChangeText={(senha) => this.setState({ senha })}
+          ref={ref => this.passwordRef = ref} 
+          returnKeyType="go"
+          onSubmitEditing={() => this.SignIn(this.state.email, this.state.senha)}
         />
         <TouchableOpacity
           style={estilo.buttom}

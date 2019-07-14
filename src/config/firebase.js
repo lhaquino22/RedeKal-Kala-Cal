@@ -14,4 +14,23 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+
+export const SignUp = async (values) => {
+  await firebase.auth().createUserWithEmailAndPassword(values.email, values.password).then((auth) => {
+    var user = firebase.auth().currentUser;
+    user.updateProfile({
+      displayName: values.nome,
+    }).then().catch();
+    var db = firebase.firestore();
+    delete values.email;
+    delete values.password;
+    db.collection("users").doc(user.uid).set(values).then(function () {
+      alert("Cadastrado com sucesso!");
+    }).catch(function (error) {
+      alert("Erro ao criar perfil!");
+    });
+  }).catch((error) => {
+    alert(error);
+  });
+}
 export default firebase

@@ -5,7 +5,7 @@ export default StyleSheet.create({
     alignSelf: 'stretch',
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 20    
+    paddingTop: 20,
   },
   header: {
     fontSize: 24,
@@ -16,26 +16,26 @@ export default StyleSheet.create({
     borderBottomColor: '#A2CBC3'
   },
   textInput: {
-    alignSelf: 'stretch',
-    height:40,
-    marginBottom: 30,
     color: 'black',
-    borderBottomColor: '#A2CBC3',
-    borderBottomWidth: 1,
+    height: 30
   },
   buttom: {
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#A2CBC3',
-    margin: 30,
+    marginBottom: 30,
   },
   picker:{
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+  },
+  field: {
+    flex:1,
+    marginBottom: 30,
     borderBottomColor: '#A2CBC3',
     borderBottomWidth: 1,
-    marginBottom: 30,
   },
+  errorText: {
+    color: 'red',
+  }
 })

@@ -6,7 +6,7 @@ export default StyleSheet.create({
   },
   container: {  
     flex: 1,
-    marginTop: 160
+    marginTop: 230
   },
   itemsRow: {
     flex: 1, 

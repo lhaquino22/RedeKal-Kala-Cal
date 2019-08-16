@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import IconWithBadge from '../components/IconWithBadge';
+import TabIcone from '../components/TabIcone';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import MenuNavigator from './MenuNavigator';
 import NotificacoesNavigator from './NotificacoesNavigator';
@@ -21,7 +21,7 @@ const MainNavigator = createBottomTabNavigator(
 
         if (routeName === 'Menu') {
           iconName = focused ? 'home' : 'home-outline';
-          IconComponent = IconWithBadge;
+          IconComponent = TabIcone;
         } else if (routeName === 'Notificacoes') {
           iconName = focused ? 'bell' : 'bell-outline';
         } else {
@@ -34,8 +34,8 @@ const MainNavigator = createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: 'black',
       inactiveTintColor: 'black',
-      showLabel: false
-    },
+      showLabel: false,
+    }
   }
 );
 

@@ -7,33 +7,24 @@ export default class ContaScreen extends Component {
     title: 'Conta',
   };
 
-  render() {
-    var user = firebase.auth().currentUser;
-    var name, email;
-
-    if (user != null) {
-      name = user.displayName;
-      email = user.email;
-      emailVerified = user.emailVerified;
-    }
-    return (
-      <View style={estilo.container}>
-        <View style={estilo.info}>
-          <View style={estilo.item}>
-            <Text>Nome: </Text>
-            <Text>{name}</Text>
-          </View>
-          <View style={estilo.item}>
-            <Text>Email: </Text>
-            <Text>{email}</Text>
-          </View>
-        </View>
-        <TouchableOpacity style={estilo.button} onPress={this._signOutFirebase} >
-          <Text>Sair :)</Text>
-        </TouchableOpacity>
-      </View>
-    );
+  constructor(props) {
+    super(props);
+    this.state = {
+      itens = [
+        {
+          title: "Nome",
+          info: "Gabriel Araújo Gonçalves",
+          icon: "",
+        },
+        {
+          title: "E-mail",
+          info: "gabriel-araujo52@hotmail.com",
+          icon: "",
+        },
+      ]
+    };
   }
+
   _signOutFirebase = () => {
     firebase.auth().signOut().then(
       this._signOutAsync
@@ -45,4 +36,35 @@ export default class ContaScreen extends Component {
     await AsyncStorage.clear();
     this.props.navigation.navigate('Auth');
   };
+
+
+  render() {
+    var user = firebase.auth().currentUser;
+    var name, email;
+
+    if (user != null) {
+      name = user.displayName;
+      email = user.email;
+      emailVerified = user.emailVerified;
+    }
+    return (
+      <View style={estilo.container}>
+        <View style={estilo.content}>
+          <View style={estilo.item}>
+            <View style={estilo.itemIcon}></View>
+            <View style={estilo.itemInfo}>
+              <Text style={estilo.itemText1}></Text>
+              <Text style={estilo.itemText2}></Text>
+            </View>
+          </View>
+        </View>
+        <TouchableOpacity
+          style={estilo.button}
+          onPress={this._signOutFirebase}
+        >
+          <Text>Sair :)</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }

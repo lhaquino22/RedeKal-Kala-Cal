@@ -4,38 +4,41 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 10
+    backgroundColor: "#ebebeb"
   },
   content: {
-    flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 10
+    margin: 10,
+    marginBottom: 20,
+    backgroundColor: "#fff",
+    borderRadius: 4
   },
   item: {
-    flex: 1,
+    flexDirection: "row",
     justifyContent: 'center',
-    paddingHorizontal: 10
   },
   itemInfo: {
     flex: 1,
-    flexDirection: "row",
+    borderBottomColor: "#ebebeb",
+    borderBottomWidth: 1,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   itemIcon: {
-    flex: 1,
     justifyContent: 'center',
     padding: 10
   },
   itemText1: {
-   color: "#DDDDDDDD",
-   fontSize: 10,
+    color: "#90a4ae",
+    fontSize: 12,
   },
   itemText2: {
-    color: "#fafa",
+    color: "black",
     fontSize: 13,
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: '#00A198',
     padding: 10,
     margin: 10
   },
@@ -48,8 +51,8 @@ export default StyleSheet.create({
   info: {
     flex: 1,
   },
-  item: {
-    flexDirection: 'row',
-    padding: 10,
-  },
+  icon: {
+    width: '100%',
+    height: '100%',
+  }
 })

@@ -23,52 +23,57 @@ export default class ContaScreen extends Component {
         nome: {
           title: "Nome",
           info: "",
-          icon: "",
+          icon: "account",
         },
         email: {
           title: "E-mail",
           info: "",
-          icon: "",
+          icon: "email",
         },
         cpf: {
           title: "CPF",
           info: "",
-          icon: "",
+          icon: "account-card-details",
         },
         cidade: {
           title: "Cidade",
           info: "",
-          icon: "",
+          icon: "city",
         },
         estado: {
           title: "Estado",
           info: "",
-          icon: "",
+          icon: "map-legend",
         },
         categoria_profissional: {
           title: "Categoria Profissional",
           info: "",
-          icon: "",
+          icon: "clipboard-plus",
         },
         cns: {
           title: "CNS",
           info: "",
-          icon: "",
+          icon: "credit-card",
         },
         cnes: {
           title: "CNES",
           info: "",
-          icon: "",
+          icon: "checkbook",
         },
         nivel_escolaridade: {
           title: "Nível de Escolaridade",
           info: "",
-          icon: "",
+          icon: "school",
         },
         tipo_usuario: {
           title: "Tipo de Usuário",
           info: "",
-          icon: "",
+          icon: "doctor",
+        },
+        categoria_profissional_outro: {
+          title: "Categoria Profissional",
+          info: "",
+          icon: "clipboard-plus",
         }
       }
     };
@@ -107,8 +112,14 @@ export default class ContaScreen extends Component {
           var itens = { ...this.state.itens }
 
           for (const [key, info] of entries) {
-            itens[key].info = info
-            console.log(key);
+            if (info !== "") {
+              itens[key].info = info
+            }
+          }
+          if (itens["categoria_profissional_outro"] !== "") {
+            delete itens["categoria_profissional_outro"]
+          } else {
+            delete itens["categoria_profissional"]
           }
           itens["email"].info = email
           this.setState({ itens: itens })
@@ -129,7 +140,7 @@ export default class ContaScreen extends Component {
       <View
         key={index}
         style={estilo.item}>
-        <View style={estilo.itemIcon}><MaterialCommunityIcons name='account' size={32} color="#00A198" /></View>
+        <View style={estilo.itemIcon}><MaterialCommunityIcons name={itens[item].icon} size={32} color="#00A198" /></View>
         <View style={estilo.itemInfo}>
           <Text style={estilo.itemText1}>{itens[item].title}</Text>
           <Text style={estilo.itemText2}>{itens[item].info}</Text>
@@ -141,14 +152,17 @@ export default class ContaScreen extends Component {
   render() {
     return (
       <View style={estilo.container}>
-        <ScrollView contentContainerStyle={estilo.content}>
-          {this.renderItens(this.state.itens)}
-        </ScrollView>
+        <View style={estilo.content}>
+          <ScrollView>
+            {this.renderItens(this.state.itens)}
+          </ScrollView>
+
+        </View>
         <TouchableOpacity
           style={estilo.button}
           onPress={this._signOutFirebase}
         >
-          <Text>Sair :)</Text>
+          <Text style={estilo.text}>Sair</Text>
         </TouchableOpacity>
       </View>
     );

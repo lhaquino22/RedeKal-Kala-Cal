@@ -4,14 +4,15 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: "#ebebeb"
+    backgroundColor: "#ebebeb",
   },
   content: {
     justifyContent: 'center',
+    flex: 1,
     margin: 10,
-    marginBottom: 20,
+    marginBottom: 0,
     backgroundColor: "#fff",
-    borderRadius: 4
+    borderRadius: 4,
   },
   item: {
     flexDirection: "row",
@@ -40,11 +41,11 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#00A198',
     padding: 10,
-    margin: 10
+    margin: 10,
   },
   text: {
     textAlign: 'center',
-    color: 'black',
+    color: '#fff',
     fontSize: 13,
     fontWeight: 'bold'
   },

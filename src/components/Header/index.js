@@ -6,7 +6,7 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={estilo.container}>
-        <StatusBar backgroundColor="blue" barStyle="light-content" />
+        <StatusBar barStyle="light-content" />
         <View style={estilo.headerBack}>
           <ImageBackground source={require('../../../assets/images/header_back.png')}
             style={estilo.image} />

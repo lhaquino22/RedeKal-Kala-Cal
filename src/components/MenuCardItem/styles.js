@@ -4,7 +4,7 @@ export default StyleSheet.create({
     container: {
         borderWidth: 0.5,
         borderColor: 'ghostwhite',
-        padding: 25
+        padding: 22
     },
     image: {
         width: '100%',

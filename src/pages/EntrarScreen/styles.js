@@ -7,6 +7,7 @@ export default StyleSheet.create({
     resizeMode: 'contain'
   },
   buttons: {
+    marginTop: 10,
     width: 200, 
     height: 30, 
     resizeMode: 'contain'

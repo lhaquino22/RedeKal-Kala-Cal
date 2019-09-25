@@ -18,6 +18,7 @@
     "react-native-maps": "^0.24.2",
     "react-native-web": "^0.11.4",
     "react-navigation": "^3.11.0",
+    "tcomb-form-native": "^0.6.20",
     "yup": "^0.27.0"
   },
   "devDependencies": {

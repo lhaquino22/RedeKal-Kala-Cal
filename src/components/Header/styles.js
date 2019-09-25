@@ -31,7 +31,7 @@ export default StyleSheet.create({
   headerFrontImage: {
     width: '100%',
     height: '100%',
-    borderRadius: 5,
+    borderRadius: 10,
   },
   logoImage: {
     width: '100%',

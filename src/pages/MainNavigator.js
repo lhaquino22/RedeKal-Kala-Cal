@@ -5,12 +5,20 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import MenuNavigator from './MenuNavigator';
 import NotificacoesNavigator from './NotificacoesNavigator';
 import ContaNavigator from './ContaNavigator';
+import HomeButton from './HomeButton';
+import TabButtons from './TabButtons';
 
 const MainNavigator = createBottomTabNavigator(
   {
-    Menu: MenuNavigator,
+    Menu: {
+      screen: MenuNavigator,
+      navigationOptions: () => ({
+        tabBarIcon: <HomeButton />
+      })
+    },
     Notificacoes: NotificacoesNavigator,
-    Conta: ContaNavigator
+    Conta: ContaNavigator,
+    Sobre: ContaNavigator
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -18,23 +26,27 @@ const MainNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state;
         let IconComponent = MaterialCommunityIcons;
         let iconName;
-
-        if (routeName === 'Menu') {
-          iconName = focused ? 'home' : 'home-outline';
-          IconComponent = TabIcone;
-        } else if (routeName === 'Notificacoes') {
+        
+        if (routeName === 'Notificacoes') {
           iconName = focused ? 'bell' : 'bell-outline';
-        } else {
+        } else if (routeName === "Conta") {
           iconName = focused ? 'account' : 'account-outline';
+        }
+        else {
+          iconName = focused ? 'help-circle' : 'help-circle-outline';
         }
 
         return <IconComponent name={iconName} size={32} color={tintColor} />;
       },
     }),
     tabBarOptions: {
-      activeTintColor: 'black',
-      inactiveTintColor: 'black',
+      activeTintColor: '#00a196',
+      inactiveTintColor: 'gray',
       showLabel: false,
+      style: {
+        height: 70,
+        backgroundColor: 'ghostwhite'
+      }
     }
   }
 );

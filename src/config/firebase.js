@@ -4,7 +4,7 @@ import * as firebase from "firebase";
 var firebaseConfig = {
   apiKey: "AIzaSyDPxFtI369o27iMDAzCqpcwONuUJWe-byY",
   authDomain: "leish-app.firebaseapp.com",
-  databaseURL: "https://leish-app.firebaseio.com",
+  databaseURL: " ",
   projectId: "leish-app",
   storageBucket: "",
   messagingSenderId: "495573899795",
@@ -27,10 +27,11 @@ export const SignUp = async (values) => {
     db.collection("users").doc(user.uid).set(values).then(function () {
       alert("Cadastrado com sucesso!");
     }).catch(function (error) {
-      alert("Erro ao criar perfil!");
+      alert("Erro ao criar perfil. Tente novamente.");
     });
   }).catch((error) => {
-    alert(error);
+    console.log(error);
+    alert("Erro ao criar perfil. Tente novamente.");
   });
 }
 export default firebase

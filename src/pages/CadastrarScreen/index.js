@@ -1,90 +1,148 @@
 import React, { Component } from 'react';
-import { View, Image, ImageBackground, StatusBar, AsyncStorage, Alert } from 'react-native'
-import { KeyboardAvoidingView, Text, TouchableOpacity, TextInput } from 'react-native';
-import firebase from './../../config/firebase'
+import { View, KeyboardAvoidingView, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
 import estilo from './styles';
+import 'firebase/firestore';
+import { ScrollView } from 'react-native-gesture-handler';
+import t from 'tcomb-form-native';
+import { SignUp } from '../../config/firebase';
 
-export default class EntrarScreen extends Component {
-  static navigationOptions = {
-    header: null
-  };
+const Form = t.form.Form;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      senha: '',
-    };
-  }
+var Escolaridade = t.enums({
+  'Ens. Fundamental Incompleto': 'Ens. Fundamental Incompleto',
+  'Ens. Fundamental Completo': 'Ens. Fundamental Completo',
+  'Ens. Médio Incompleto': 'Ens. Médio Incompleto',
+  'Ens. Médio Completo': 'Ens. Médio Completo',
+  'Ens. Superior Incompleto': 'Ens. Superior Incompleto',
+  'Ens. Superior Completo': 'Ens. Superior Completo',
+  'Especialização Incompleta': 'Especialização Incompleta',
+  'Especialização Completa': 'Especialização Completa',
+  'Mestrado Incompleto': 'Mestrado Incompleto',
+  'Mestrado Completo': 'Mestrado Completo',
+  'Doutorado Incompleto': 'Doutorado Incompleto',
+  'Doutorado Completo': 'Doutorado Completo'
+})
 
-  _signInAsync = async (user) => {
-    const userToken = await user.user.getIdToken();
-    await AsyncStorage.setItem('userToken', userToken);
-    this.props.navigation.navigate('App');
-  };
+var Profissional = t.enums({
+  'Profissional de Saúde': 'Profissional de Saúde',
+  'Gestor do Município': 'Gestor do Município',
+  'Coordenador da Atenção Básica': 'Coordenador da Atenção Básica'
+})
 
-  SignIn = (email, password) => {
-    firebase.auth().languageCode = "pt_br";
-    firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
-      this._signInAsync(user)
+const Email = t.refinement(t.String, email => {
+  const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+  return reg.test(email);
+});
+
+const Senha = t.refinement(t.String, senha => {
+  return senha.length >= 6;
+});
+
+const User = t.struct({
+  nome: t.String,
+  cpf: t.Number,
+  cnes: t.Number,
+  cns: t.Number,
+  cidade: t.String,
+  estado: t.String,
+  categoria_profissional: Profissional,
+  escolaridade: Escolaridade,
+  email: Email,
+  password: Senha
+})
+
+var _ = require('lodash');
+
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+stylesheet.textbox.normal.borderWidth = 0;
+stylesheet.textbox.normal.fontSize = 16;
+stylesheet.textbox.error.borderWidth = 0;
+stylesheet.textbox.normal.marginBottom = 0;
+stylesheet.textbox.error.marginBottom = 0;
+
+stylesheet.controlLabel.normal.fontSize = 14;
+stylesheet.controlLabel.normal.color = 'gray';
+
+stylesheet.textboxView.normal.borderWidth = 0;
+stylesheet.textboxView.normal.fontSize = 4;
+stylesheet.textboxView.error.borderWidth = 0;
+stylesheet.textboxView.normal.borderRadius = 0;
+stylesheet.textboxView.error.borderRadius = 0;
+stylesheet.textboxView.normal.borderBottomWidth = 1;
+stylesheet.textboxView.normal.borderBottomColor = '#00A198';
+stylesheet.textboxView.error.borderBottomWidth = 1;
+stylesheet.textboxView.normal.marginBottom = 5;
+stylesheet.textboxView.error.marginBottom = 5;
+
+const options = {
+  fields: {
+    password: {
+      label: 'Senha',
+      error: 'A senha deve conter pelo menos 6 caracterers.',
+      password: true,
+      secureTextEntry: true
+    },
+    categoria_profissional: {
+      label: 'Categoria Profissional'
+    },
+    escolaridade: {
+      label: 'Nível de Escolaridade'
+    },
+    cns: {
+      label: 'CNS'
+    },
+    cnes: {
+      label: 'CNES'
+    },
+    cpf: {
+      label: 'CPF'
+    },
+    email: {
+      error: 'Insira um email válido.'
     }
-    ).catch(function (error) {
-      Alert.alert("Autenticação", "Usuário ou senha incorretos.")
-    });
+  },
+  stylesheet: stylesheet
+}
 
+export default class CadastrarScreen extends Component {
+  static navigationOptions = {
+    title: 'Cadastre-se',
+    headerStyle: {
+      backgroundColor: '#00A198',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
+
+  handleSubmit = () => {
+    const dados = this._form.getValue();
+    if (dados != null) {
+      const values = Object.assign({}, dados);
+      SignUp(values);
+      this.props.navigation.navigate('Entrar');
+    }
+  }
 
   render() {
-    const { navigate } = this.props.navigation;
     return (
-      <KeyboardAvoidingView behavior="padding">
-        <StatusBar barStyle="light-content" />
-        <ImageBackground
-          source={require('../../../assets/images/background.png')}
-          style={estilo.image}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
-            <Image source={require('../../../assets/images/logo_vertical.png')}
-              style={estilo.logo} />
-            <View style={estilo.inputContainer}>
-              <TextInput
-                style={estilo.textInput}
-                placeholder={'E-mail'}
-                onChangeText={(email) => this.setState({ email })}
-                placeholderTextColor="rgba(255,255,255,0.5)"
-                autoCapitalize="none"
-                autoCorrect={false}
-                returnKeyType="next"
-                onSubmitEditing={() => this.passwordRef.focus()}
-                keyboardType="email-address"
-                blurOnSubmit={false}
-              />
-              <TextInput
-                style={estilo.textInput}
-                placeholder={'Senha'}
-                placeholderTextColor="rgba(255,255,255,0.5)"
-                secureTextEntry={true}
-                onChangeText={(senha) => this.setState({ senha })}
-                ref={ref => this.passwordRef = ref}
-                returnKeyType="go"
-                onSubmitEditing={() => this.SignIn(this.state.email, this.state.senha)}
-              />
-            </View>
-            <View style={estilo.buttonsContainer}>
-              <TouchableOpacity
-                onPress={() => this.SignIn(this.state.email, this.state.senha)}>
-                <Image source={require('../../../assets/images/login.png')}
-                  style={estilo.buttons} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigate("Cadastrar")}
-              >
-                <Image source={require('../../../assets/images/cadastro.png')}
-                  style={estilo.buttons} />
-              </TouchableOpacity>
-            </View>
+      <View style={estilo.container}>
+        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }} behavior="padding" enabled keyboardVerticalOffset={65}>
+          <View style={estilo.content}>
+            <ScrollView>
+              <Form ref={c => this._form = c} type={User} options={options} />
+            </ScrollView>
           </View>
-        </ImageBackground>
-      </KeyboardAvoidingView>
-    )
+        </KeyboardAvoidingView>
+        <TouchableOpacity
+          style={estilo.button}
+          onPress={this.handleSubmit}
+        >
+          <Text style={estilo.text}>Cadastrar</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
-};
+}

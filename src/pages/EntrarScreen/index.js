@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, ImageBackground, StatusBar, AsyncStorage, Alert } from 'react-native'
 import { KeyboardAvoidingView, Text, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import firebase from './../../config/firebase'
+import firebase from './../../config/firebase';
 import estilo from './styles';
 
 export default class EntrarScreen extends Component {

@@ -1,34 +1,29 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  logo: {
-    width: 200, 
-    height: 200, 
-    resizeMode: 'contain'
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: "#ebebeb",
   },
-  buttons: {
-    width: 200, 
-    height: 30, 
-    resizeMode: 'contain'
+  content: {
+    justifyContent: 'center',
+    flex: 1,
+    margin: 10,
+    backgroundColor: "#fff",
+    borderRadius: 4,
+    padding: 10
   },
-  buttonsContainer: {
-    marginTop: 20
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#00A198',
+    padding: 10,
+    margin: 10,
   },
-  inputContainer: {
-    width: 300
-  },
-  textInput: {
-    marginTop: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'white',
-    width: 300,
-    height: 30,
-    alignSelf: 'stretch',
-    color: 'white',
-    fontSize: 16
-  },
-  image: {
-    width: '100%',
-    height: '100%'
+  text: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 'bold'
   }
 })

@@ -4,6 +4,85 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import estilo from './styles';
 import firebase from '../../config/firebase'
 import { ScrollView } from 'react-native-gesture-handler';
+import t from 'tcomb-form-native';
+
+const Form = t.form.Form;
+
+const User = t.struct({
+  nome: t.String,
+  cpf: t.Number,
+  cnes: t.Number,
+  cns: t.Number,
+  cidade: t.String,
+  estado: t.String,
+  categoria_profissional: t.String,
+  escolaridade: t.String,
+  email: t.String,
+})
+
+var _ = require('lodash');
+
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+stylesheet.textbox.normal.borderWidth = 0;
+stylesheet.textbox.normal.fontSize = 16;
+stylesheet.textbox.error.borderWidth = 0;
+stylesheet.textbox.normal.marginBottom = 0;
+stylesheet.textbox.error.marginBottom = 0;
+
+stylesheet.controlLabel.normal.fontSize = 14;
+stylesheet.controlLabel.normal.color = 'gray';
+
+stylesheet.textboxView.normal.borderWidth = 0;
+stylesheet.textboxView.normal.fontSize = 4;
+stylesheet.textboxView.error.borderWidth = 0;
+stylesheet.textboxView.normal.borderRadius = 0;
+stylesheet.textboxView.error.borderRadius = 0;
+stylesheet.textboxView.normal.borderBottomWidth = 1;
+stylesheet.textboxView.normal.borderBottomColor = '#00A198';
+stylesheet.textboxView.error.borderBottomWidth = 1;
+stylesheet.textboxView.normal.marginBottom = 5;
+stylesheet.textboxView.error.marginBottom = 5;
+
+const options = {
+  fields: {
+    categoria_profissional: {
+      label: 'Categoria Profissional',
+      editable: false
+    },
+    escolaridade: {
+      label: 'Nível de Escolaridade',
+      editable: false
+    },
+    cns: {
+      label: 'CNS',
+      editable: false
+    },
+    cnes: {
+      label: 'CNES',
+      editable: false
+    },
+    cpf: {
+      label: 'CPF',
+      editable: false
+    },
+    email: {
+      error: 'Insira um email válido.',
+      editable: false
+    },
+    nome: {
+      editable: false
+    },
+    cidade: {
+      editable: false
+    },
+    estado: {
+      editable: false
+    }
+  },
+  stylesheet: stylesheet
+}
+
 export default class ContaScreen extends Component {
   static navigationOptions = {
     title: 'Meus Dados',
@@ -16,67 +95,18 @@ export default class ContaScreen extends Component {
     },
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      itens: {
-        nome: {
-          title: "Nome",
-          info: "",
-          icon: "account",
-        },
-        email: {
-          title: "E-mail",
-          info: "",
-          icon: "email",
-        },
-        cpf: {
-          title: "CPF",
-          info: "",
-          icon: "account-card-details",
-        },
-        cidade: {
-          title: "Cidade",
-          info: "",
-          icon: "city",
-        },
-        estado: {
-          title: "Estado",
-          info: "",
-          icon: "map-legend",
-        },
-        categoria_profissional: {
-          title: "Categoria Profissional",
-          info: "",
-          icon: "clipboard-plus",
-        },
-        cns: {
-          title: "CNS",
-          info: "",
-          icon: "credit-card",
-        },
-        cnes: {
-          title: "CNES",
-          info: "",
-          icon: "checkbook",
-        },
-        nivel_escolaridade: {
-          title: "Nível de Escolaridade",
-          info: "",
-          icon: "school",
-        },
-        tipo_usuario: {
-          title: "Tipo de Usuário",
-          info: "",
-          icon: "doctor",
-        },
-        categoria_profissional_outro: {
-          title: "Categoria Profissional",
-          info: "",
-          icon: "clipboard-plus",
-        }
-      }
-    };
+  state = {
+    value: {
+      nome: "",
+      cpf: "",
+      cnes: "",
+      cns: "",
+      cidade: "",
+      estado: "",
+      categorial_profissional: "",
+      escolaridade: "",
+      email: ""
+    }
   }
 
   componentDidMount() {
@@ -98,33 +128,19 @@ export default class ContaScreen extends Component {
   getData = async () => {
     var user = firebase.auth().currentUser;
     var db = firebase.firestore();
-    var name, email;
 
     if (user != null) {
       name = user.displayName;
       email = user.email;
       emailVerified = user.emailVerified;
       var docRef = db.collection("users").doc(user.uid);
+
       docRef.get().then((doc) => {
         if (doc.exists) {
-          var data = doc.data()
-          const entries = Object.entries(data)
-          var itens = { ...this.state.itens }
-
-          for (const [key, info] of entries) {
-            if (info !== "") {
-              itens[key].info = info
-            }
-          }
-          if (itens["categoria_profissional_outro"] !== "") {
-            delete itens["categoria_profissional_outro"]
-          } else {
-            delete itens["categoria_profissional"]
-          }
-          itens["email"].info = email
-          this.setState({ itens: itens })
+          var data = doc.data();
+          data = Object.assign(data, {'email': email});
+          this.setState({ value: data });
         } else {
-          // doc.data() will be undefined in this case
           console.log("No such document!");
         }
       }).catch(function (error) {
@@ -134,27 +150,15 @@ export default class ContaScreen extends Component {
 
   }
 
-  renderItens = (itens) => {
-    const keys = Object.keys(itens)
-    return keys.map((item, index) =>
-      <View
-        key={index}
-        style={estilo.item}>
-        <View style={estilo.itemIcon}><MaterialCommunityIcons name={itens[item].icon} size={32} color="#00A198" /></View>
-        <View style={estilo.itemInfo}>
-          <Text style={estilo.itemText1}>{itens[item].title}</Text>
-          <Text style={estilo.itemText2}>{itens[item].info}</Text>
-        </View>
-      </View>
-    )
-  }
-
   render() {
     return (
       <View style={estilo.container}>
         <View style={estilo.content}>
           <ScrollView>
-            {this.renderItens(this.state.itens)}
+            <Form
+              ref={c => this._form = c}
+              type={User} value={this.state.value}
+              options={options} />
           </ScrollView>
 
         </View>

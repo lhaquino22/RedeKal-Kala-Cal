@@ -11,20 +11,8 @@ export default StyleSheet.create({
     flex: 1,
     margin: 10,
     padding: 10,
-    marginBottom: 0,
     backgroundColor: "#fff",
     borderRadius: 4,
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#00A198',
-    padding: 10,
-    margin: 10,
-  },
-  text: {
-    textAlign: 'center',
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: 'bold'
   }
+
 })

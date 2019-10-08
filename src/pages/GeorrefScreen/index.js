@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Text, FlatList, Keyboard } from 're
 import MapView, { Marker } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
+import { casos } from '../object';
 
 const marcadores = [
   {
@@ -51,7 +52,7 @@ export default class GeorrefScreen extends Component {
   }
 
   fitAllMarkers() {
-    this.map.fitToCoordinates(marcadores.map((m) => m.coordinate), {
+    this.map.fitToCoordinates(casos.map((c) => c.localizacao), {
       edgePadding: { top: 40, right: 40, bottom: 40, left: 40 },
       animated: true,
     });
@@ -78,9 +79,9 @@ export default class GeorrefScreen extends Component {
     }
 
     elementos = []
-    marcadores.map((elemento) => {
-      if (elemento.title.includes(chave)) {
-        elementos.push(elemento)
+    casos.map((caso) => {
+      if (caso.nome.includes(chave)) {
+        elementos.push(caso)
       }
     })
 
@@ -92,46 +93,46 @@ export default class GeorrefScreen extends Component {
       <View style={estilo.itemContainer}>
         <FlatList
           data={this.pegarNomes(this.state.chave)}
-          renderItem={({ item }) => <TouchableOpacity onPress={() => {this.fitOneMarker(item.coordinate)}}><Text style={estilo.item}>{item.title}</Text></TouchableOpacity>}
-          keyExtractor={(item) => item.title}
+          renderItem={({ item }) => <TouchableOpacity onPress={() => { this.fitOneMarker(item.localizacao) }}><Text style={estilo.item}>{item.nome}</Text></TouchableOpacity>}
+          keyExtractor={(item) => item.nome}
           keyboardShouldPersistTaps='handled'
         />
       </View>
     )
 
     return (
-        <View style={{ flex: 1 }}>
-          <MapView
-            ref={ref => {
-              this.map = ref;
-            }}
-            style={{ flex: 1 }}
-            initialRegion={{
-              latitude: -5.0373378,
-              longitude: -42.4814447,
-              latitudeDelta: 0.003,
-              longitudeDelta: 0.003,
-            }}
-            showsUserLocation={true}
-            loadingEnabled={true}
-          >
-            {marcadores.map((marker, i) => (
-              <Marker key={i} identifier={`id${i}`} coordinate={marker.coordinate} title={marker.title}
-                description={marker.description} pinColor={marker.suspeito ? 'orange' : 'red'}/>
-            ))}
-          </MapView>
-          <View style={estilo.inputContainer}>
-            <TextInput placeholder="Procurar por nome" style={estilo.input} name='chave' keyboardShouldPersistTaps={'handled'} value={this.state.chave} onChangeText={(e) => this.handleInputChange(e)} />
-          </View>
-          <View style={estilo.buttonContainer}>
-            <TouchableOpacity onPress={() => this.fitAllMarkers()}>
-              <View style={estilo.button}>
-                <MaterialCommunityIcons name='image-filter-center-focus' size={30} color='black' />
-              </View>
-            </TouchableOpacity>
-          </View>
-          {teste}
-        </View >
+      <View style={{ flex: 1 }}>
+        <MapView
+          ref={ref => {
+            this.map = ref;
+          }}
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: -5.0373378,
+            longitude: -42.4814447,
+            latitudeDelta: 0.003,
+            longitudeDelta: 0.003,
+          }}
+          showsUserLocation={true}
+          loadingEnabled={true}
+        >
+          {casos.map((marker, i) => (
+            <Marker key={i} identifier={`id${i}`} coordinate={marker.localizacao} title={marker.nome}
+              description={marker.endereco} pinColor={marker.caso_confirmado ? 'red' : 'orange'} />
+          ))}
+        </MapView>
+        <View style={estilo.inputContainer}>
+          <TextInput placeholder="Procurar por nome" style={estilo.input} name='chave' keyboardShouldPersistTaps={'handled'} value={this.state.chave} onChangeText={(e) => this.handleInputChange(e)} />
+        </View>
+        <View style={estilo.buttonContainer}>
+          <TouchableOpacity onPress={() => this.fitAllMarkers()}>
+            <View style={estilo.button}>
+              <MaterialCommunityIcons name='image-filter-center-focus' size={30} color='black' />
+            </View>
+          </TouchableOpacity>
+        </View>
+        {teste}
+      </View >
     )
   }
 }

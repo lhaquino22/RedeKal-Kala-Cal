@@ -8,7 +8,14 @@ const Navigator = createStackNavigator(
     Georreferenciamento: {
       screen: GeorrefNavigator,
       navigationOptions: {
-        title: 'Casos de Ocorrência'
+        title: 'Ocorrência dos Casos',
+        headerStyle: {
+          backgroundColor: '#00A198',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        }
       }
     }
   }

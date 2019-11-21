@@ -4,20 +4,23 @@ import MapView, { Marker } from 'react-native-maps';
 import estilo from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { casos } from '../object';
+import { bindActionCreators } from 'redux';
+import { getCasos } from '../../../CasoAction';
+import { connect } from 'react-redux';
+import * as firebase from "firebase";
 
-export default class CasosScreen extends Component {
+class CasosScreen extends Component {
   state = {
-    chave: '',
-    lista: casos
+    busca: false,
+    lista: []
   }
 
   procurar = (chave) => {
     var achados = []
-    const { lista } = this.state;
+    var casos = this.props.casos.casos;
 
     if (chave == '') {
-      this.setState({ lista: casos });
+      this.setState({ lista: casos, busca: false });
       return;
     }
     for (let i = 0; i < casos.length; i++) {
@@ -27,28 +30,45 @@ export default class CasosScreen extends Component {
 
     }
 
-    this.setState({ lista: achados })
+    this.setState({ lista: achados, busca: true })
   }
 
   render() {
-    const { lista } = this.state;
+    const { lista, busca } = this.state;
+    var dados;
+
+    if (busca == true) {
+      dados = lista;
+    }
+    else {
+      dados = this.props.casos.casos;
+    }
+
     return (
       <View style={estilo.container}>
         <View style={estilo.content}>
           <TextInput placeholder="Procurar Caso" style={estilo.input} onChangeText={this.procurar} />
           <ScrollView>
-            {lista.map((marcador) => {
+            {dados.map((marcador, i) => {
               return (
-                <TouchableOpacity>
-                  <View style={estilo.item} key={marcador.title}>
+                <View style={estilo.item} key={i}>
+                  <View style={estilo.item_info} key={marcador.title}>
                     <MaterialCommunityIcons name={marcador.caso_confirmado ? 'account-alert' : 'account'}
                       color={marcador.caso_confirmado ? 'red' : 'orange'} size={30} />
                     <View style={estilo.titulo}>
                       <Text style={estilo.tituloTexto}>{marcador.nome}</Text>
-                      <Text style={estilo.subtitulo}>{marcador.caso_confirmado ? 'Suspeito' : 'Confirmado'}</Text>
+                      <Text style={estilo.subtitulo}>{marcador.caso_confirmado ? 'Confirmado' : 'Suspeito'}</Text>
                     </View>
                   </View>
-                </TouchableOpacity>
+                  <View style={estilo.item_info}>
+                    <TouchableOpacity>
+                      <MaterialCommunityIcons name='account-edit' size={30} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <MaterialCommunityIcons name='delete' size={30} color="black" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               )
             })}
           </ScrollView>
@@ -58,35 +78,15 @@ export default class CasosScreen extends Component {
   }
 }
 
-// const estilo = StyleSheet.create({
-//   fill: {
-//     margin: 10
-//   },
-//   input: {
-//     borderRadius: 6,
-//     padding: 10,
-//     backgroundColor: 'rgba(211,211,211, 0.5)'
-//   },
-//   lista: {
-//     marginTop: 10
-//   },
-//   item: {
-//     padding: 5,
-//     borderBottomWidth: 0.5,
-//     borderBottomColor: 'gray'
-//   },
-//   titulo: {
-//     flexDirection: 'row',
-//     justifyContent: 'flex-start',
-//     alignItems: 'center',
-//     marginBottom: 5
-//   },
-//   tituloTexto: {
-//     fontSize: 20,
-//     marginLeft: 5
-//   },
-//   subtitulo: {
-//     fontSize: 16,
-//     color: 'gray'
-//   }
-// })
+const mapStateToProps = (state) => {
+  const { casos } = state
+  return { casos }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    getCasos,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CasosScreen);

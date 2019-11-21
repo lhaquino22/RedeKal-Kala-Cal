@@ -3,56 +3,19 @@ import { View, TouchableOpacity, StyleSheet, Text, FlatList, Keyboard } from 're
 import MapView, { Marker } from 'react-native-maps';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
-import { casos } from '../object';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getCasos } from '../../../CasoAction';
+import * as firebase from "firebase";
 
-const marcadores = [
-  {
-    title: 'Felipe Barros',
-    description: "Realmente um príncipe",
-    coordinate: {
-      latitude: -5.0335998,
-      longitude: -42.4581812
-    },
-    supeito: true
-  },
-  {
-    title: 'Gabriel Araújo',
-    description: "Fofo demais, mano",
-    coordinate: {
-      latitude: -5.0335998,
-      longitude: -42.4481715
-    },
-    suspeito: false
-  },
-  {
-    title: 'Felipe Caminha',
-    description: "Uau",
-    coordinate: {
-      latitude: -5.0391329,
-      longitude: -42.4605576
-    },
-    suspeito: true
-  },
-  {
-    title: 'Felipe Jordan',
-    description: "Tá funfando!",
-    coordinate: {
-      latitude: -5.0391259,
-      longitude: -42.4602576
-    },
-    suspeito: false
-  }
-
-]
-
-export default class GeorrefScreen extends Component {
+class GeorrefScreen extends Component {
   state = {
     chave: "",
     visible: true
   }
 
   fitAllMarkers() {
-    this.map.fitToCoordinates(casos.map((c) => c.localizacao), {
+    this.map.fitToCoordinates(this.props.casos.casos.map((c) => c.localizacao), {
       edgePadding: { top: 40, right: 40, bottom: 40, left: 40 },
       animated: true,
     });
@@ -65,8 +28,23 @@ export default class GeorrefScreen extends Component {
     });
   }
 
+  getFichas() {
+    var db = firebase.firestore();
+    var user = firebase.auth().currentUser;
+    var casos = []
+
+    db.collection('fichas').where("user", "==", user.uid).get()
+      .then(snapshot => {
+        snapshot.docs.map(doc => {
+          casos.push(doc.data());
+        })
+        this.props.getCasos(casos);
+        this.fitAllMarkers();
+      });
+  }
+
   componentDidMount() {
-    this.fitAllMarkers();
+    this.getFichas();
   }
 
   handleInputChange(e) {
@@ -79,7 +57,7 @@ export default class GeorrefScreen extends Component {
     }
 
     elementos = []
-    casos.map((caso) => {
+    this.props.casos.casos.map((caso) => {
       if (caso.nome.includes(chave)) {
         elementos.push(caso)
       }
@@ -116,7 +94,7 @@ export default class GeorrefScreen extends Component {
           showsUserLocation={true}
           loadingEnabled={true}
         >
-          {casos.map((marker, i) => (
+          {this.props.casos.casos.map((marker, i) => (
             <Marker key={i} identifier={`id${i}`} coordinate={marker.localizacao} title={marker.nome}
               description={marker.endereco} pinColor={marker.caso_confirmado ? 'red' : 'orange'} />
           ))}
@@ -136,6 +114,19 @@ export default class GeorrefScreen extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  const { casos } = state
+  return { casos }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    getCasos,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(GeorrefScreen);
 
 const estilo = StyleSheet.create({
   inputContainer: {

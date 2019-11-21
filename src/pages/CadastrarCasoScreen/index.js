@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import estilo from './styles';
-import firebase from '../../config/firebase'
+import * as firebase from "firebase";
 import { ScrollView } from 'react-native-gesture-handler';
 import t from 'tcomb-form-native';
 import Geocoder from 'react-native-geocoding';
-import { casos } from '../object';
+import { bindActionCreators } from 'redux';
+import { addCaso } from '../../../CasoAction';
+import { connect } from 'react-redux';
 
 const Form = t.form.Form;
 Geocoder.init("AIzaSyBC47xhzukLmW2WTgnsIhtTyJYYzqDbQKs", { language: "pt-br" });
@@ -13,7 +15,7 @@ Geocoder.init("AIzaSyBC47xhzukLmW2WTgnsIhtTyJYYzqDbQKs", { language: "pt-br" });
 const User = t.struct({
   nome: t.String,
   endereco: t.String,
-  caso_confirmado: t.Boolean 
+  caso_confirmado: t.Boolean
 })
 
 var _ = require('lodash');
@@ -52,7 +54,7 @@ const options = {
   stylesheet: stylesheet
 }
 
-export default class CadastrarCasoScreen extends Component {
+class CadastrarCasoScreen extends Component {
   state = {
     value: {
       nome: "",
@@ -63,6 +65,8 @@ export default class CadastrarCasoScreen extends Component {
   cadastrar = () => {
     var form = this._form.getValue()
     var form = Object.assign({}, form);
+    var user = firebase.auth().currentUser;
+
     Geocoder.from(form.endereco)
       .then(json => {
         var location = json.results[0].geometry.location;
@@ -70,15 +74,16 @@ export default class CadastrarCasoScreen extends Component {
           localizacao: {
             latitude: location.lat,
             longitude: location.lng
-          } 
+          }
         }
 
-        form = Object.assign({}, form, location_temp);
-        console.log(form);
-        casos.push(form);
+        var db = firebase.firestore();
+        form = Object.assign({}, form, location_temp, {user: user.uid});
+        db.collection("fichas").add(form);
+        this.props.addCaso(form);
         Alert.alert("Notificação", "Caso cadastrado com sucesso!");
       })
-      .catch(error => alert("Não foi possível encontrar esse endereço."));
+      .catch(error => alert(error));
   }
 
   render() {
@@ -103,3 +108,17 @@ export default class CadastrarCasoScreen extends Component {
     );
   }
 }
+
+
+const mapStateToProps = (state) => {
+  const { casos } = state
+  return { casos }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    addCaso,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CadastrarCasoScreen);

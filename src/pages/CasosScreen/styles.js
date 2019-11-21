@@ -17,10 +17,15 @@ export default StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 0.5,
-    borderColor: 'lightgray',
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'lightgray',
     borderRadius: 2,
-    padding: 10
+    padding: 10,
+    justifyContent: 'space-between'
+  },
+  item_info: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   titulo: {
     flexDirection: 'column',

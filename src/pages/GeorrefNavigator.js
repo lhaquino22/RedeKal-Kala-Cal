@@ -7,9 +7,8 @@ import CadastrarCasoScreen from './CadastrarCasoScreen';
 
 const GeorrefNavigator = createMaterialTopTabNavigator(
   {
-    Casos: GeorrefScreen,
     Lista: CasosScreen,
-    Cadastro: CadastrarCasoScreen
+    Casos: GeorrefScreen
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

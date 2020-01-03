@@ -22,7 +22,17 @@ const CasoReducer = (state = INITIAL_STATE, action) => {
       } = state;
 
       casos.push(action.payload);
-      console.log(casos);
+
+      var newState = { casos };
+
+      return newState;
+    case 'DEL_CASO':
+      var {
+        casos
+      } = state;
+
+      casos.splice(action.payload, 1);
+
       var newState = { casos };
 
       return newState;

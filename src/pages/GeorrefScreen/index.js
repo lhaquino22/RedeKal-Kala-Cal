@@ -36,7 +36,7 @@ class GeorrefScreen extends Component {
     db.collection('fichas').where("user", "==", user.uid).get()
       .then(snapshot => {
         snapshot.docs.map(doc => {
-          casos.push(doc.data());
+          casos.push(Object.assign({}, doc.data(), {id: doc.id}));
         })
         this.props.getCasos(casos);
         this.fitAllMarkers();

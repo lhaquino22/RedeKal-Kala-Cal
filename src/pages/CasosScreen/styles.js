@@ -20,7 +20,7 @@ export default StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: 'lightgray',
     borderRadius: 2,
-    padding: 10,
+    paddingVertical: 10,
     justifyContent: 'space-between'
   },
   item_info: {
@@ -32,16 +32,18 @@ export default StyleSheet.create({
     marginLeft: 10
   },
   tituloTexto: {
-    fontSize: 20
+    fontSize: 16
   },
   subtitulo: {
     color: 'lightgray'
   },
   input: {
-    fontSize: 20,
-    padding: 5,
-    marginBottom: 10,
+    flex: 1,
+    fontSize: 16,
+    marginRight: 5, 
+    padding: 6,
+    borderRadius: 5, 
     justifyContent: 'center',
-    textAlign: 'center'
+    backgroundColor: '#e3e3e3'
   }
 })

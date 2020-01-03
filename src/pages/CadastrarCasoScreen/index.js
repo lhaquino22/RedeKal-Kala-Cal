@@ -78,10 +78,18 @@ class CadastrarCasoScreen extends Component {
         }
 
         var db = firebase.firestore();
-        form = Object.assign({}, form, location_temp, {user: user.uid});
-        db.collection("fichas").add(form);
-        this.props.addCaso(form);
-        Alert.alert("Notificação", "Caso cadastrado com sucesso!");
+        const props = this.props;
+        form = Object.assign({}, form, location_temp, { user: user.uid });
+        db.collection("fichas").add(form).then(function (docRef) {
+          form = Object.assign({}, form, { id: docRef.id });
+          props.addCaso(form);
+          Alert.alert("Notificação", "Caso cadastrado com sucesso!");
+        })
+          .catch(function (error) {
+            console.error("Error adding document: ", error);
+          });
+
+
       })
       .catch(error => alert(error));
   }

@@ -11,3 +11,10 @@ export const addCaso = novo_caso => (
     payload: novo_caso,
   }
 );
+
+export const delCaso = index => (
+  {
+    type: 'DEL_CASO',
+    payload: index,
+  }
+);

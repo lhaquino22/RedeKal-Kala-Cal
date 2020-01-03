@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Text, FlatList, Keyboard } from 'react-native';
+import { Alert, View, TextInput, TouchableOpacity, StyleSheet, Text, FlatList, Keyboard } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import estilo from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { bindActionCreators } from 'redux';
-import { getCasos } from '../../../CasoAction';
+import { getCasos, delCaso } from '../../../CasoAction';
 import { connect } from 'react-redux';
 import * as firebase from "firebase";
 
@@ -33,6 +33,26 @@ class CasosScreen extends Component {
     this.setState({ lista: achados, busca: true })
   }
 
+  deletarAlert = (index) => {
+    Alert.alert("Remoção", "Tem certeza que deseja remover este caso?",
+      [
+        {
+          text: "Cancelar", onPress: () => null
+        },
+        {
+          text: "Sim", onPress: () => this.deletar(index)
+        },
+      ])
+  }
+
+  deletar = (index) => {
+    var db = firebase.firestore();
+    var caso = this.props.casos.casos[index];
+    const id = caso.id;
+    this.props.delCaso(index);
+    db.collection('fichas').doc(id).delete();
+  }
+
   render() {
     const { lista, busca } = this.state;
     var dados;
@@ -47,7 +67,21 @@ class CasosScreen extends Component {
     return (
       <View style={estilo.container}>
         <View style={estilo.content}>
-          <TextInput placeholder="Procurar Caso" style={estilo.input} onChangeText={this.procurar} />
+          <View style={{ marginBottom: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TextInput placeholder="Procurar Caso" style={estilo.input} onChangeText={this.procurar} />
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Caso')}>
+                <View style={{ backgroundColor: '#00A198', padding: 3, borderRadius: 5 }}>
+                  <MaterialCommunityIcons name='account-plus' color='white' size={25} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <View style={{ marginLeft: 5, backgroundColor: '#00A198', padding: 3, borderRadius: 5 }}>
+                  <MaterialCommunityIcons name='dog-side' color='white' size={25} />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
           <ScrollView>
             {dados.map((marcador, i) => {
               return (
@@ -61,11 +95,11 @@ class CasosScreen extends Component {
                     </View>
                   </View>
                   <View style={estilo.item_info}>
-                    <TouchableOpacity>
-                      <MaterialCommunityIcons name='account-edit' size={30} color="black" />
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Caso', { index: i })}>
+                      <MaterialCommunityIcons name='account-edit' size={30} color="lightslategrey" />
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                      <MaterialCommunityIcons name='delete' size={30} color="black" />
+                    <TouchableOpacity onPress={() => this.deletarAlert(i)} style={{marginLeft: 5}}>
+                      <MaterialCommunityIcons name='delete' size={30} color="indianred" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -85,7 +119,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    getCasos,
+    getCasos, delCaso
   }, dispatch)
 );
 

@@ -1,5 +1,6 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import MenuScreen from './MenuScreen';
+import CasoScreen from './CasoScreen';
 import GeorrefNavigator from './GeorrefNavigator';
 
 const Navigator = createStackNavigator(
@@ -17,7 +18,8 @@ const Navigator = createStackNavigator(
           fontWeight: 'bold',
         }
       }
-    }
+    },
+    Caso: CasoScreen,
   }
 )
 

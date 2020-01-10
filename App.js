@@ -1,11 +1,17 @@
-import React, {Component} from 'react';
-import MainNavigator from './src/pages/MainNavigator';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import CasoReducer from './CasoReducer';
 import EntrarNavigator from './src/pages/EntrarNavigator'
+
+const store = createStore(CasoReducer);
 
 export default class App extends Component {
   render() {
     return (
-      <EntrarNavigator />
+      <Provider store={store}>
+        <EntrarNavigator />
+      </Provider>
     )
   }
 }

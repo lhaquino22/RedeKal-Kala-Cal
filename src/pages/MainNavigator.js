@@ -6,7 +6,7 @@ import MenuNavigator from './MenuNavigator';
 import NotificacoesNavigator from './NotificacoesNavigator';
 import ContaNavigator from './ContaNavigator';
 import HomeButton from './HomeButton';
-import TabButtons from './TabButtons';
+import SobreNavigator from './SobreNavigator';
 
 const MainNavigator = createBottomTabNavigator(
   {
@@ -18,7 +18,7 @@ const MainNavigator = createBottomTabNavigator(
     },
     Notificacoes: NotificacoesNavigator,
     Conta: ContaNavigator,
-    Sobre: ContaNavigator
+    Sobre: SobreNavigator
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

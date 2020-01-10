@@ -3,9 +3,9 @@ import { View, Text } from 'react-native';
 import estilo from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default class NotificacoesScreen extends Component {
+export default class SobreScreen extends Component {
   static navigationOptions = {
-    title: 'Notificações',
+    title: 'Sobre o Aplicativo',
     headerStyle: {
       backgroundColor: '#00A198',
     },

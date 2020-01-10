@@ -1,5 +1,6 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import MenuScreen from './MenuScreen';
+import CasoScreen from './CasoScreen';
 import GeorrefNavigator from './GeorrefNavigator';
 
 const Navigator = createStackNavigator(
@@ -8,9 +9,17 @@ const Navigator = createStackNavigator(
     Georreferenciamento: {
       screen: GeorrefNavigator,
       navigationOptions: {
-        title: 'Casos de Ocorrência'
+        title: 'Ocorrência dos Casos',
+        headerStyle: {
+          backgroundColor: '#00A198',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        }
       }
-    }
+    },
+    Caso: CasoScreen,
   }
 )
 

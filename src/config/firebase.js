@@ -4,7 +4,7 @@ import * as firebase from "firebase";
 var firebaseConfig = {
   apiKey: "AIzaSyDPxFtI369o27iMDAzCqpcwONuUJWe-byY",
   authDomain: "leish-app.firebaseapp.com",
-  databaseURL: " ",
+  databaseURL: "https://leish-app.firebaseio.com",
   projectId: "leish-app",
   storageBucket: "",
   messagingSenderId: "495573899795",

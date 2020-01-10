@@ -26,5 +26,15 @@ export default StyleSheet.create({
     color: '#fff',
     fontSize: 13,
     fontWeight: 'bold'
+  },
+  tituloSecaoContainer: {
+    textAlign: 'center',
+    marginBottom: 5
+  },
+  tituloSecao: {
+    textAlign: 'center',
+    color: 'gray',
+    fontSize: 15,
+    fontWeight: 'bold'
   }
 })

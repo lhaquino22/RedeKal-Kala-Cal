@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Alert, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import estilo from './styles';
 import * as firebase from "firebase";
 import { ScrollView } from 'react-native-gesture-handler';
@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { addCaso, delCaso } from '../../../CasoAction';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const ufs = {
   'AC': 'AC',
@@ -47,7 +48,7 @@ Geocoder.init("AIzaSyBC47xhzukLmW2WTgnsIhtTyJYYzqDbQKs", { language: "pt-br" });
 const dados_pessoais = t.struct({
   nome: t.String,
   data_nascimento: t.Date,
-  idade: t.String,
+  idade: t.maybe(t.Number),
   sexo: t.enums({
     'M': 'Masculino',
     'F': 'Feminino',
@@ -117,6 +118,8 @@ const dados_gerais = t.struct({
   uf_notificacao: t.enums(ufs),
   municipio_notificacao: t.String,
   codigo_ibge: t.String,
+  unidade_saude: t.String,
+  codigo_unidade: t.String,
   data_primeiros_sintomas: t.Date,
 })
 
@@ -126,7 +129,7 @@ const dados_antecedentes = t.struct({
 })
 
 const dados_clinicos = t.struct({
-  manifestacao_bool: t.enums({
+  manifestacao: t.enums({
     '1': 'Sim',
     '2': 'Não',
     '9': 'Ignorado'
@@ -139,7 +142,7 @@ const dados_clinicos = t.struct({
   })
 })
 
-const dados_laboratorio = t.struct({
+const dados_laboratoriais = t.struct({
   diagnostico_parasit: t.enums({
     '1': 'Positivo',
     '2': 'Negativo',
@@ -250,7 +253,9 @@ stylesheet.textboxView.error.marginBottom = 5;
 const options_dados_pessoais = {
   fields: {
     data_nascimento: {
+      label: 'Data de Nascimento',
       mode: 'date',
+      maximumDate: new Date(),
       config: {
         format: date => moment(date).format('DD/MM/YYYY')
       }
@@ -325,6 +330,7 @@ const options_dados_gerais = {
     },
     codigo_cid10: {
       label: 'Código (CID10)',
+      keyboardType: 'numeric',
       editable: false
     },
     data_notificacao: {
@@ -332,7 +338,8 @@ const options_dados_gerais = {
       mode: 'date',
       config: {
         format: date => moment(date).format('DD/MM/YYYY')
-      }
+      },
+      maximumDate: new Date()
     },
     uf_notificacao: {
       label: 'UF de Notificação'
@@ -344,12 +351,20 @@ const options_dados_gerais = {
       label: 'Código IBGE',
       keyboardType: 'numeric'
     },
+    unidade_saude: {
+      label: 'Unidade de Saúde (ou fonte Notificadora)'
+    },
+    codigo_unidade: {
+      label: 'Código da Unidade de Saúde',
+      keyboardType: 'numeric'
+    },
     data_primeiros_sintomas: {
       label: 'Data dos primeiros sintomas',
       mode: 'date',
       config: {
         format: date => moment(date).format('DD/MM/YYYY')
-      }
+      },
+      maximumDate: new Date(),
     }
   },
   i18n: {
@@ -366,7 +381,8 @@ const options_dados_antecedentes = {
       mode: 'date',
       config: {
         format: date => moment(date).format('DD/MM/YYYY')
-      }
+      },
+      maximumDate: new Date()
     },
     ocupacao: {
       label: 'Ocupação'
@@ -381,7 +397,7 @@ const options_dados_antecedentes = {
 
 const options_dados_clinicos = {
   fields: {
-    manifestacao_bool: {
+    manifestacao: {
       label: 'Manifestações Clínicas (sinais e sintomas)'
     },
     co_hiv: {
@@ -395,7 +411,7 @@ const options_dados_clinicos = {
   stylesheet: stylesheet
 }
 
-const options_dados_laboratorio = {
+const options_dados_laboratoriais = {
   fields: {
     diagnostico_parasit: {
       label: 'Diagnóstico Parasitológico'
@@ -417,8 +433,9 @@ const options_dados_laboratorio = {
 const options_dados_tratamento = {
   fields: {
     data_tratamento: {
-      label: 'Início do Tratamento',
+      label: 'Data de Início do Tratamento',
       mode: 'date',
+      maximumDate: new Date(),
       config: {
         format: date => moment(date).format('DD/MM/YYYY')
       }
@@ -449,7 +466,7 @@ const options_dados_tratamento = {
 const options_dados_conclusao = {
   fields: {
     classificacao_final: {
-      label: 'Classificação Final'
+      label: 'Caso Confirmado'
     },
     criterio_confirmacao: {
       label: 'Critério de Confirmação'
@@ -467,7 +484,8 @@ const options_dados_conclusao = {
       label: 'Município'
     },
     codigo_ibge_conclusao: {
-      label: 'Código IBGE'
+      label: 'Código IBGE',
+      keyboardType: 'numeric'
     },
     doenca_relacionada: {
       label: 'Doença relacionada ao Trabalho'
@@ -480,14 +498,16 @@ const options_dados_conclusao = {
       mode: 'date',
       config: {
         format: date => moment(date).format('DD/MM/YYYY')
-      }
+      },
+      maximumDate: new Date()
     },
     data_encerramento: {
       label: 'Data de Encerramento',
       mode: 'date',
       config: {
         format: date => moment(date).format('DD/MM/YYYY')
-      }
+      },
+      maximumDate: new Date()
     }
   },
   i18n: {
@@ -499,14 +519,82 @@ const options_dados_conclusao = {
 
 class CasoScreen extends Component {
   state = {
-    value_dados_residenciais: {
-      uf: 'PI'
+    dados_pessoais: {
+      nome: "AAA",
+      data_nascimento: new Date(),
+      idade: 21,
+      sexo: "M",
+      gestante: 5,
+      raca_cor: 1,
+      escolaridade: 0,
+      cartao_sus: "123",
+      nome_mae: "AAA"
     },
-    value_dados_gerais: {
-      tipo_notificacao: '2',
-      uf_notificacao: 'PI',
-      agravo_doenca: 'Leishmaniose Visceral',
-      codigo_cid10: 'B55.0'
+    dados_residenciais: {
+      uf: "PI",
+      municipio: "AAA",
+      codigo_ibge: "123",
+      distrito: "AAA",
+      endereco: "Rua Dom Pedro II, 691, Altos",
+      complemento: "AAA",
+      codigo: "123",
+      geo_campo1: "AAA",
+      geo_campo2: "AAA",
+      ponto_referencia: "AAA",
+      cep: "AAA",
+      telefone: "AAA",
+      zona: 1,
+      pais: "AAA"
+    },
+    dados_gerais: {
+      tipo_notificacao: "Individual",
+      agravo_doenca: "Leishmaniose Visceral",
+      codigo_cid10: "B55.0",
+      data_notificacao: new Date(),
+      uf_notificacao: "PI",
+      municipio_notificacao: "AAA",
+      codigo_ibge: "123",
+      unidade_saude: "AAA",
+      codigo_unidade: "123",
+      data_primeiros_sintomas: new Date(),
+    },
+    dados_antecedentes: {
+      data_investigacao: new Date(),
+      ocupacao: "AAA"
+    },
+    dados_clinicos: {
+      manifestacao: 1,
+      sintomas: "AAA",
+      co_hiv: 1
+    },
+    dados_laboratoriais: {
+      diagnostico_parasit: 1,
+      diagnostico_imunol: 1,
+      procedimento: "IFI",
+      tipo_entrada: 1
+    },
+    dados_tratamento: {
+      data_tratamento: new Date(),
+      droga_inicial: 1,
+      peso: 70,
+      dose_prescrita: 1,
+      num_ampolas: 5,
+      drogra_falencia: 1
+    },
+    dados_conclusao: {
+      classificacao_final: 1,
+      criterio_confirmacao: 1,
+      caso_autoctone: 1,
+      uf_conclusao: "PI",
+      pais_conclusao: "AAA",
+      municipio_conclusao: "AAA",
+      codigo_ibge_conclusao: "123",
+      distrito: "AAA",
+      bairro: "AAA",
+      doenca_relacionada: 1,
+      evolucao_caso: 1,
+      data_obito: new Date(),
+      data_encerramento: new Date()
     }
   }
 
@@ -526,138 +614,186 @@ class CasoScreen extends Component {
     const casos = this.props.casos.casos;
 
     if (index != 'None') {
-      this.setState({ valor: casos[index] });
+      var caso = casos[index];
+      try {
+        caso.dados_pessoais.data_nascimento = caso.dados_pessoais.data_nascimento.toDate();
+        caso.dados_tratamento.data_tratamento = caso.dados_tratamento.data_tratamento.toDate();
+        caso.dados_gerais.data_primeiros_sintomas = caso.dados_gerais.data_primeiros_sintomas.toDate();
+        caso.dados_gerais.data_notificacao = caso.dados_gerais.data_notificacao.toDate();
+        caso.dados_conclusao.data_encerramento = caso.dados_conclusao.data_encerramento.toDate();
+        caso.dados_conclusao.data_obito = caso.dados_conclusao.data_obito.toDate();
+        caso.dados_antecedentes.data_investigacao = caso.dados_antecedentes.data_investigacao.toDate();
+      } catch (error) {
+
+      }
+      this.setState(casos[index]);
     }
   }
 
   cadastrar = () => {
-    var form_pessoais = this._form_gerais.getValue();
+    const pessoais = Object.assign({}, this._form_pessoais.getValue());
+    const residenciais = Object.assign({}, this._form_residenciais.getValue());
+    const gerais = Object.assign({}, this._form_gerais.getValue());
+    const antecedentes = Object.assign({}, this._form_antecedentes.getValue());
+    const clinicos = Object.assign({}, this._form_clinicos.getValue());
+    const laboratoriais = Object.assign({}, this._form_laboratoriais.getValue());
+    const tratamento = Object.assign({}, this._form_tratamento.getValue());
+    const conclusao = Object.assign({}, this._form_conclusao.getValue());
+
     moment(this._form_gerais.data_notificacao).format('DD/MM/YYYY');
-    // if (!form) {
-    //   Alert.alert("Notificação", "Todos os campos devem ser preenchidos.");
-    //   return;
-    // }
-    // var form = Object.assign({}, form);
-    // var user = firebase.auth().currentUser;
-    // var index = this.props.navigation.getParam('index', 'None');
-    // var caso = this.props.casos.casos[index]
-    // Geocoder.from(form.endereco)
-    //   .then(json => {
-    //     var location = json.results[0].geometry.location;
-    //     var location_temp = {
-    //       localizacao: {
-    //         latitude: location.lat,
-    //         longitude: location.lng
-    //       }
-    //     }
+    if (!pessoais || !residenciais || !gerais || !antecedentes || !clinicos ||
+      !laboratoriais || !tratamento || !conclusao) {
+      Alert.alert("Notificação", "Todos os campos obrigatórios devem ser preenchidos.");
+      return;
+    }
 
-    //     form = Object.assign({}, form, location_temp, { user: user.uid });
-    //     var db = firebase.firestore();
+    var form = Object.assign({},
+      { "dados_pessoais": pessoais }, { "dados_residenciais": residenciais },
+      { "dados_gerais": gerais }, { "dados_antecedentes": antecedentes },
+      { "dados_clinicos": clinicos }, { "dados_laboratoriais": laboratoriais },
+      { "dados_tratamento": tratamento }, { "dados_conclusao": conclusao });
+    var user = firebase.auth().currentUser;
 
-    //     if (index != 'None') {
-    //       form = Object.assign({}, form, { id: caso.id });
-    //       db.collection("fichas").doc(caso.id).update(form);
-    //       this.props.delCaso(index);
-    //       this.props.addCaso(form);
-    //       this.setState({ valor: form });
-    //       Alert.alert("Notificação", "Caso atualizado com sucesso!");
-    //     }
-    //     else {
-    //       const props = this.props;
-    //       db.collection("fichas").add(form).then(function (docRef) {
-    //         form = Object.assign({}, form, { id: docRef.id });
-    //         props.addCaso(form);
-    //         props.navigation.goBack();
-    //         Alert.alert("Notificação", "Caso cadastrado com sucesso!");
-    //       })
-    //     }
-    //   })
+    Geocoder.from(form.dados_residenciais.endereco)
+      .then(json => {
+        var location = json.results[0].geometry.location;
+        var location_temp = {
+          geolocalizacao: {
+            latitude: location.lat,
+            longitude: location.lng
+          }
+        }
+
+        form = Object.assign({}, form, location_temp, { user: user.uid });
+        var db = firebase.firestore();
+
+        const props = this.props;
+        var index = this.props.navigation.getParam('index', 'None');
+
+        if (index != 'None') {
+          var caso = this.props.casos.casos[index]
+          form = Object.assign({}, form, { id: caso.id });
+
+          db.collection("casos").doc(caso.id).update(form);
+          this.props.delCaso(index);
+          this.props.addCaso(form);
+          this.setState(form);
+          Alert.alert("Notificação", "Caso atualizado com sucesso!");
+        }
+        else {
+          const props = this.props;
+          db.collection("casos").add(form).then(function (docRef) {
+            form = Object.assign({}, form, { id: docRef.id });
+            props.addCaso(form);
+            props.navigation.goBack();
+            Alert.alert("Notificação", "Caso cadastrado com sucesso!");
+          })
+        }
+      })
   }
 
   render() {
     return (
       <View style={estilo.container}>
-        <ScrollView>
-          <View style={estilo.content}>
-            <View style={estilo.tituloSecaoContainer}>
-              <Text style={estilo.tituloSecao}>Dados Pessoais</Text>
+        <KeyboardAwareScrollView>
+          <ScrollView>
+            <View style={estilo.content}>
+              <View style={estilo.tituloSecaoContainer}>
+                <Text style={estilo.tituloSecao}>Dados Pessoais</Text>
+              </View>
+              <Form
+                ref={c => this._form_pessoais = c}
+                type={dados_pessoais}
+                options={options_dados_pessoais}
+                value={this.state.dados_pessoais}
+              />
             </View>
-            <Form
-              ref={c => this._form_pessoais = c}
-              type={dados_pessoais}
-              options={options_dados_pessoais} />
-          </View>
-          <View style={estilo.content}>
-            <View style={estilo.tituloSecaoContainer}>
-              <Text style={estilo.tituloSecao}>Dados Residenciais</Text>
+            <View style={estilo.content}>
+              <View style={estilo.tituloSecaoContainer}>
+                <Text style={estilo.tituloSecao}>Dados Residenciais</Text>
+              </View>
+              <Form
+                ref={c => this._form_residenciais = c}
+                type={dados_residenciais}
+                options={options_dados_residenciais}
+                value={this.state.dados_residenciais}
+              />
             </View>
-            <Form
-              ref={c => this._form_residenciais = c}
-              type={dados_residenciais}
-              options={options_dados_residenciais} value={this.state.value_dados_residenciais} />
-          </View>
-          <View style={estilo.content}>
-            <View style={estilo.tituloSecaoContainer}>
-              <Text style={estilo.tituloSecao}>Dados Gerais</Text>
+            <View style={estilo.content}>
+              <View style={estilo.tituloSecaoContainer}>
+                <Text style={estilo.tituloSecao}>Dados Gerais</Text>
+              </View>
+              <Form
+                ref={c => this._form_gerais = c}
+                type={dados_gerais}
+                options={options_dados_gerais}
+                value={this.state.dados_gerais}
+              />
             </View>
-            <Form
-              ref={c => this._form_gerais = c}
-              type={dados_gerais}
-              options={options_dados_gerais} value={this.state.value_dados_gerais} />
-          </View>
-          <View style={estilo.content}>
-            <View style={estilo.tituloSecaoContainer}>
-              <Text style={estilo.tituloSecao}>Antecedentes Epidemológicos</Text>
+            <View style={estilo.content}>
+              <View style={estilo.tituloSecaoContainer}>
+                <Text style={estilo.tituloSecao}>Antecedentes Epidemológicos</Text>
+              </View>
+              <Form
+                ref={c => this._form_antecedentes = c}
+                type={dados_antecedentes}
+                options={options_dados_antecedentes}
+                value={this.state.dados_antecedentes}
+              />
             </View>
-            <Form
-              ref={c => this._form_antecedentes = c}
-              type={dados_antecedentes}
-              options={options_dados_antecedentes} />
-          </View>
-          <View style={estilo.content}>
-            <View style={estilo.tituloSecaoContainer}>
-              <Text style={estilo.tituloSecao}>Dados Clínicos</Text>
+            <View style={estilo.content}>
+              <View style={estilo.tituloSecaoContainer}>
+                <Text style={estilo.tituloSecao}>Dados Clínicos</Text>
+              </View>
+              <Form
+                ref={c => this._form_clinicos = c}
+                type={dados_clinicos}
+                options={options_dados_clinicos}
+                value={this.state.dados_clinicos}
+              />
             </View>
-            <Form
-              ref={c => this._form_clinicos = c}
-              type={dados_clinicos}
-              options={options_dados_clinicos} />
-          </View>
-          <View style={estilo.content}>
-            <View style={estilo.tituloSecaoContainer}>
-              <Text style={estilo.tituloSecao}>Dados Laboratoriais</Text>
+            <View style={estilo.content}>
+              <View style={estilo.tituloSecaoContainer}>
+                <Text style={estilo.tituloSecao}>Dados Laboratoriais</Text>
+              </View>
+              <Form
+                ref={c => this._form_laboratoriais = c}
+                type={dados_laboratoriais}
+                options={options_dados_laboratoriais}
+                value={this.state.dados_laboratoriais}
+              />
             </View>
-            <Form
-              ref={c => this._form_laboratorio = c}
-              type={dados_laboratorio}
-              options={options_dados_laboratorio} />
-          </View>
-          <View style={estilo.content}>
-            <View style={estilo.tituloSecaoContainer}>
-              <Text style={estilo.tituloSecao}>Tratamento</Text>
+            <View style={estilo.content}>
+              <View style={estilo.tituloSecaoContainer}>
+                <Text style={estilo.tituloSecao}>Tratamento</Text>
+              </View>
+              <Form
+                ref={c => this._form_tratamento = c}
+                type={dados_tratamento}
+                options={options_dados_tratamento}
+                value={this.state.dados_tratamento}
+              />
             </View>
-            <Form
-              ref={c => this._form_laboratorio = c}
-              type={dados_tratamento}
-              options={options_dados_tratamento} />
-          </View>
-          <View style={estilo.content}>
-            <View style={estilo.tituloSecaoContainer}>
-              <Text style={estilo.tituloSecao}>Conclusão</Text>
+            <View style={estilo.content}>
+              <View style={estilo.tituloSecaoContainer}>
+                <Text style={estilo.tituloSecao}>Conclusão</Text>
+              </View>
+              <Form
+                ref={c => this._form_conclusao = c}
+                type={dados_conclusao}
+                options={options_dados_conclusao}
+                value={this.state.dados_conclusao}
+              />
             </View>
-            <Form
-              ref={c => this._form_laboratorio = c}
-              type={dados_conclusao}
-              options={options_dados_conclusao} />
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAwareScrollView>
         <TouchableOpacity
           style={estilo.button}
           onPress={this.cadastrar}
         >
           <Text style={estilo.text}>Guardar</Text>
         </TouchableOpacity>
-      </View>
+      </View >
     );
   }
 }

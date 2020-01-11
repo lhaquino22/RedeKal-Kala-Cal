@@ -24,7 +24,7 @@ class CasosScreen extends Component {
       return;
     }
     for (let i = 0; i < casos.length; i++) {
-      if (casos[i].nome.includes(chave)) {
+      if (casos[i].dados_pessoais.nome.includes(chave)) {
         achados.push(casos[i]);
       }
 
@@ -50,7 +50,7 @@ class CasosScreen extends Component {
     var caso = this.props.casos.casos[index];
     const id = caso.id;
     this.props.delCaso(index);
-    db.collection('fichas').doc(id).delete();
+    db.collection('casos').doc(id).delete();
   }
 
   render() {
@@ -84,22 +84,23 @@ class CasosScreen extends Component {
           </View>
           <ScrollView>
             {dados.map((marcador, i) => {
+              console.log(marcador.dados_conclusao.classificacao_final)
               return (
-                <View style={estilo.item} key={i}>
-                  <View style={estilo.item_info} key={marcador.title}>
-                    <MaterialCommunityIcons name={marcador.caso_confirmado ? 'account-alert' : 'account'}
-                      color={marcador.caso_confirmado ? 'red' : 'orange'} size={30} />
-                    <View style={estilo.titulo}>
-                      <Text style={estilo.tituloTexto}>{marcador.nome}</Text>
-                      <Text style={estilo.subtitulo}>{marcador.caso_confirmado ? 'Confirmado' : 'Suspeito'}</Text>
+                <View style={estilo.casoContainer} key={marcador.id}>
+                  <View style={estilo.casoSubContainer}>
+                    <MaterialCommunityIcons name={marcador.dados_conclusao.caso_confirmado != "1" ? 'account-alert' : 'account'}
+                      size={30} color={marcador.dados_conclusao.classificacao_final != "1" ? 'indianred' : 'orange'} />
+                    <View style={estilo.textoContainer}>
+                      <Text style={estilo.texto} ellipsizeMode="tail" numberOfLines={1}>{marcador.dados_pessoais.nome}</Text>
+                      <Text style={estilo.subtitulo}>{marcador.dados_conclusao.classificacao_final != "1" ? 'Confirmado' : 'Suspeito'}</Text>
                     </View>
                   </View>
-                  <View style={estilo.item_info}>
+                  <View style={estilo.buttonsContainer}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Caso', { index: i })}>
                       <MaterialCommunityIcons name='account-edit' size={30} color="lightslategrey" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.deletarAlert(i)} style={{marginLeft: 5}}>
-                      <MaterialCommunityIcons name='delete' size={30} color="indianred" />
+                    <TouchableOpacity onPress={() => this.deletarAlert(i)}>
+                      <MaterialCommunityIcons name='delete' size={30} color="indianred" style={estilo.icone} />
                     </TouchableOpacity>
                   </View>
                 </View>

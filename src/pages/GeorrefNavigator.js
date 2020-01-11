@@ -3,7 +3,6 @@ import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigat
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GeorrefScreen from './GeorrefScreen';
 import CasosScreen from './CasosScreen';
-import CadastrarCasoScreen from './CadastrarCasoScreen';
 
 const GeorrefNavigator = createMaterialTopTabNavigator(
   {

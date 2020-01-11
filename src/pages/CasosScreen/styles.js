@@ -14,36 +14,48 @@ export default StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 4,
   },
-  item: {
+  input: {
+    flex: 1,
+    fontSize: 18,
+    marginRight: 5,
+    padding: 6,
+    borderRadius: 5,
+    justifyContent: 'center',
+    backgroundColor: '#e3e3e3'
+  },
+  casoContainer: {
+    flex: 1,
+    paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 0.5,
     borderBottomColor: 'lightgray',
-    borderRadius: 2,
-    paddingVertical: 10,
-    justifyContent: 'space-between'
   },
-  item_info: {
+  casoSubContainer: {
+    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  titulo: {
-    flexDirection: 'column',
+  textoContainer: {
+    flex: 1,
+    flexDirection: 'column'
+  },
+  texto: {
+    flex: 1,
+    fontSize: 18,
+    flexWrap: 'wrap',
     marginLeft: 10
   },
-  tituloTexto: {
-    fontSize: 16
-  },
   subtitulo: {
-    color: 'lightgray'
-  },
-  input: {
     flex: 1,
-    fontSize: 16,
-    marginRight: 5, 
-    padding: 6,
-    borderRadius: 5, 
-    justifyContent: 'center',
-    backgroundColor: '#e3e3e3'
+    fontSize: 12,
+    flexWrap: 'wrap',
+    marginLeft: 10
+  },
+  buttonsContainer: {
+    flexDirection: 'row'
+  },
+  icone: {
+    marginLeft: 5
   }
 })

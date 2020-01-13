@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import { ScrollView } from 'react-native-gesture-handler';
 import t from 'tcomb-form-native';
 import { SignUp } from '../../config/firebase';
+import Loading from '../../components/LoadingComponent';
 
 const Form = t.form.Form;
 
@@ -106,6 +107,9 @@ const options = {
 }
 
 export default class CadastrarScreen extends Component {
+  state = {
+    loading: false
+  }
   static navigationOptions = {
     title: 'Cadastre-se',
     headerStyle: {
@@ -118,17 +122,27 @@ export default class CadastrarScreen extends Component {
   };
 
   handleSubmit = () => {
+    this.setState({loading: true})
     const dados = this._form.getValue();
     if (dados != null) {
       const values = Object.assign({}, dados);
-      SignUp(values);
-      this.props.navigation.navigate('Entrar');
+      SignUp(values).then(() => {
+        this.setState({loading: false});
+        this.props.navigation.navigate('Entrar');
+      })
+      .catch(() => {
+        this.setState({loading: false});
+      })
+    }
+    else{
+      this.setState({loading: false})
     }
   }
 
   render() {
     return (
       <View style={estilo.container}>
+        <Loading loading={this.state.loading} />
         <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }} behavior="padding" enabled keyboardVerticalOffset={65}>
           <View style={estilo.content}>
             <ScrollView>

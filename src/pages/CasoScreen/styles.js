@@ -13,7 +13,7 @@ export default StyleSheet.create({
     padding: 10,
     marginBottom: 0,
     backgroundColor: "#fff",
-    borderRadius: 4,
+    borderRadius: 4
   },
   button: {
     alignItems: 'center',
@@ -24,8 +24,7 @@ export default StyleSheet.create({
   text: {
     textAlign: 'center',
     color: '#fff',
-    fontSize: 13,
-    fontWeight: 'bold'
+    fontSize: 13
   },
   tituloSecaoContainer: {
     textAlign: 'center',

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCasos } from '../../../CasoAction';
 import * as firebase from "firebase";
+import Loading from '../../components/LoadingComponent';
 
 class GeorrefScreen extends Component {
   state = {
@@ -15,7 +16,7 @@ class GeorrefScreen extends Component {
   }
 
   fitAllMarkers() {
-    this.map.fitToCoordinates(this.props.casos.casos.map((c) => c.localizacao), {
+    this.map.fitToCoordinates(this.props.casos.casos.map((c) => c.geolocalizacao), {
       edgePadding: { top: 40, right: 40, bottom: 40, left: 40 },
       animated: true,
     });
@@ -28,23 +29,8 @@ class GeorrefScreen extends Component {
     });
   }
 
-  getFichas() {
-    var db = firebase.firestore();
-    var user = firebase.auth().currentUser;
-    var casos = []
-
-    db.collection('fichas').where("user", "==", user.uid).get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
-          casos.push(Object.assign({}, doc.data(), {id: doc.id}));
-        })
-        this.props.getCasos(casos);
-        this.fitAllMarkers();
-      });
-  }
-
   componentDidMount() {
-    this.getFichas();
+    this.fitAllMarkers();
   }
 
   handleInputChange(e) {
@@ -58,7 +44,7 @@ class GeorrefScreen extends Component {
 
     elementos = []
     this.props.casos.casos.map((caso) => {
-      if (caso.nome.includes(chave)) {
+      if (caso.dados_pessoais.nome.includes(chave)) {
         elementos.push(caso)
       }
     })
@@ -67,17 +53,6 @@ class GeorrefScreen extends Component {
   }
 
   render() {
-    const teste = (
-      <View style={estilo.itemContainer}>
-        <FlatList
-          data={this.pegarNomes(this.state.chave)}
-          renderItem={({ item }) => <TouchableOpacity onPress={() => { this.fitOneMarker(item.localizacao) }}><Text style={estilo.item}>{item.nome}</Text></TouchableOpacity>}
-          keyExtractor={(item) => item.nome}
-          keyboardShouldPersistTaps='handled'
-        />
-      </View>
-    )
-
     return (
       <View style={{ flex: 1 }}>
         <MapView
@@ -95,21 +70,27 @@ class GeorrefScreen extends Component {
           loadingEnabled={true}
         >
           {this.props.casos.casos.map((marker, i) => (
-            <Marker key={i} identifier={`id${i}`} coordinate={marker.localizacao} title={marker.nome}
-              description={marker.endereco} pinColor={marker.caso_confirmado ? 'red' : 'orange'} />
+            <Marker key={i} identifier={`id${i}`} coordinate={marker.geolocalizacao} title={marker.dados_pessoais.nome}
+              description={marker.dados_residenciais.endereco} pinColor={marker.dados_conclusao.caso_confirmado ? 'red' : 'orange'} />
           ))}
         </MapView>
         <View style={estilo.inputContainer}>
           <TextInput placeholder="Procurar por nome" style={estilo.input} name='chave' keyboardShouldPersistTaps={'handled'} value={this.state.chave} onChangeText={(e) => this.handleInputChange(e)} />
+          <View style={estilo.itemContainer}>
+            <FlatList
+              data={this.pegarNomes(this.state.chave)}
+              renderItem={({ item }) => <TouchableOpacity onPress={() => { this.fitOneMarker(item.geolocalizacao) }}><Text style={estilo.item} >{item.dados_pessoais.nome}</Text></TouchableOpacity>}
+              keyExtractor={(item) => item.dados_pessoais.nome}
+            />
+          </View>
         </View>
         <View style={estilo.buttonContainer}>
-          <TouchableOpacity onPress={() => this.fitAllMarkers()}>
+          <TouchableOpacity onPress={() => this.fitAllMarkers()} style={{ flex: 1 }}>
             <View style={estilo.button}>
               <MaterialCommunityIcons name='image-filter-center-focus' size={30} color='black' />
             </View>
           </TouchableOpacity>
         </View>
-        {teste}
       </View >
     )
   }
@@ -132,34 +113,40 @@ const estilo = StyleSheet.create({
   inputContainer: {
     position: 'absolute',
     top: 0,
-    width: '100%',
-    padding: 15,
+    flexDirection: 'row',
+    flex: 1,
+    paddingTop: 15,
+    paddingHorizontal: 70,
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
-    shadowRadius: 3
+    shadowRadius: 3,
+    borderRadius: 10
   },
   input: {
     backgroundColor: 'white',
-    fontSize: 20,
-    padding: 5
+    fontSize: 18,
+    padding: 5,
+    textAlign: 'center',
+    borderRadius: 10,
+    flex: 1
   },
   itemContainer: {
     position: 'absolute',
-    top: 40,
-    padding: 15,
-    width: '100%',
+    top: 35,
+    paddingVertical: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 3
   },
   item: {
-    backgroundColor: 'white',
-    fontSize: 20,
+    fontSize: 18,
     padding: 5,
     borderBottomWidth: 1,
-    color: 'gray'
+    textAlign: 'center',
+    backgroundColor: 'white'
   },
   buttonContainer: {
     position: 'absolute',
@@ -171,13 +158,13 @@ const estilo = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   button: {
-    backgroundColor: 'rgba(255,255,255,1)',
-    width: 40,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    width: 60,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 1,
+    padding: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,

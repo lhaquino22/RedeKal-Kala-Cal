@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity, AsyncStorage, RefreshControl } from 'react-native';
 import estilo from './styles';
 import firebase from '../../config/firebase'
 import { ScrollView } from 'react-native-gesture-handler';
 import t from 'tcomb-form-native';
+import Loading from '../../components/LoadingComponent';
 
 const Form = t.form.Form;
 
@@ -106,11 +106,18 @@ export default class ContaScreen extends Component {
       categorial_profissional: "",
       escolaridade: "",
       email: ""
-    }
+    },
+    loading: false,
+    refreshing: false
   }
 
   componentDidMount() {
     this.getData()
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.getData(refresh = true)
   }
 
   _signOutFirebase = () => {
@@ -125,7 +132,11 @@ export default class ContaScreen extends Component {
     this.props.navigation.navigate('Auth');
   };
 
-  getData = async () => {
+  getData = (refresh = false) => {
+    if (!refresh) {
+      this.setState({ loading: true });
+    }
+
     var user = firebase.auth().currentUser;
     var db = firebase.firestore();
 
@@ -138,23 +149,43 @@ export default class ContaScreen extends Component {
       docRef.get().then((doc) => {
         if (doc.exists) {
           var data = doc.data();
-          data = Object.assign(data, {'email': email});
+          data = Object.assign(data, { 'email': email });
           this.setState({ value: data });
+          this.setState({ loading: false });
+          if (refresh) {
+            this.setState({ refreshing: false });
+          }
         } else {
-          console.log("No such document!");
+          if (refresh) {
+            this.setState({ loading: false });
+          }
+          else {
+            this.setState({ refreshing: false });
+          }
+          Alert.alert("Notificação", "Ocorreu um erro. Tente novamente.");
         }
       }).catch(function (error) {
-        console.log("Error getting document:", error);
+        if (refresh) {
+          this.setState({ loading: false });
+        }
+        else {
+          this.setState({ refreshing: false });
+        }
+        Alert.alert("Notificação", "Ocorreu um erro. Tente novamente.");;
       });
     }
-
   }
 
   render() {
     return (
       <View style={estilo.container}>
+        <Loading loading={this.state.loading} />
         <View style={estilo.content}>
-          <ScrollView>
+          <ScrollView refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}
+            />}>
             <Form
               ref={c => this._form = c}
               type={User} value={this.state.value}

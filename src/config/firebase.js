@@ -1,4 +1,5 @@
 import * as firebase from "firebase";
+import { Alert } from 'react-native';
 
 // Firebase configuration
 var firebaseConfig = {
@@ -25,7 +26,7 @@ export const SignUp = async (values) => {
     delete values.email;
     delete values.password;
     db.collection("users").doc(user.uid).set(values).then(function () {
-      alert("Cadastrado com sucesso!");
+      Alert.alert("Notificação", "Cadastrado com sucesso!");
     }).catch(function (error) {
       alert("Erro ao criar perfil. Tente novamente.");
     });

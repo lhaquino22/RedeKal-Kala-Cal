@@ -3,7 +3,7 @@ import { View, Image, ImageBackground, StatusBar, AsyncStorage, Alert } from 're
 import { KeyboardAvoidingView, Text, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import firebase from './../../config/firebase';
 import estilo from './styles';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Loading from '../../components/LoadingComponent';
 
 export default class EntrarScreen extends Component {
   static navigationOptions = {
@@ -15,6 +15,7 @@ export default class EntrarScreen extends Component {
     this.state = {
       email: '',
       senha: '',
+      loading: false
     };
   }
 
@@ -26,20 +27,25 @@ export default class EntrarScreen extends Component {
 
   SignIn = (email, password) => {
     firebase.auth().languageCode = "pt_br";
-    firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
-      this._signInAsync(user)
-    }
-    ).catch(function (error) {
-      Alert.alert("Autenticação", "Usuário ou senha incorretos.")
-    });
+    this.setState({ loading: true })
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        this._signInAsync(user);
+        this.setState({ loading: false });
+      }
+      ).catch(function (error) {
+        this.setState({ loading: false });
+        Alert.alert("Autenticação", "Usuário ou senha incorretos.")
+      });
 
   };
 
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={{flex:1}}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
+          <Loading loading={this.state.loading} />
           <StatusBar barStyle="light-content" />
           <ImageBackground
             source={require('../../../assets/images/background.png')}
@@ -56,7 +62,7 @@ export default class EntrarScreen extends Component {
                     placeholderTextColor="rgba(255,255,255,0.5)"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    returnKeyType="next"
+                    returnKeyType="none"
                     onSubmitEditing={() => this.passwordRef.focus()}
                     keyboardType="email-address"
                     blurOnSubmit={false}
@@ -68,7 +74,7 @@ export default class EntrarScreen extends Component {
                     secureTextEntry={true}
                     onChangeText={(senha) => this.setState({ senha })}
                     ref={ref => this.passwordRef = ref}
-                    returnKeyType="go"
+                    returnKeyType="none"
                     onSubmitEditing={() => this.SignIn(this.state.email, this.state.senha)}
                   />
                 </View>

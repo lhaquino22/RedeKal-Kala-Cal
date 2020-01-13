@@ -4,7 +4,6 @@ import {
   Modal,
   ActivityIndicator
 } from 'react-native';
-
 import estilo from './styles';
 
 export default class Loading extends Component {

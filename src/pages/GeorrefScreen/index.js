@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCasos } from '../../../CasoAction';
 import * as firebase from "firebase";
+import Loading from '../../components/LoadingComponent';
 
 class GeorrefScreen extends Component {
   state = {
@@ -28,23 +29,8 @@ class GeorrefScreen extends Component {
     });
   }
 
-  getFichas() {
-    var db = firebase.firestore();
-    var user = firebase.auth().currentUser;
-    var casos = []
-
-    db.collection('casos').where("user", "==", user.uid).get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
-          casos.push(Object.assign({}, doc.data(), { id: doc.id }));
-        })
-        this.props.getCasos(casos);
-        this.fitAllMarkers();
-      });
-  }
-
   componentDidMount() {
-    this.getFichas();
+    this.fitAllMarkers();
   }
 
   handleInputChange(e) {

@@ -520,85 +520,89 @@ const options_dados_conclusao = {
 }
 
 class CasoScreen extends Component {
-  state = {
-    dados_pessoais: {
-      nome: "AAA",
-      data_nascimento: new Date(),
-      idade: 21,
-      sexo: "M",
-      gestante: 5,
-      raca_cor: 1,
-      escolaridade: 0,
-      cartao_sus: "123",
-      nome_mae: "AAA"
-    },
-    dados_residenciais: {
-      uf: "PI",
-      municipio: "AAA",
-      codigo_ibge: "123",
-      distrito: "AAA",
-      endereco: "Rua Dom Pedro II, 691, Altos",
-      complemento: "AAA",
-      codigo: "123",
-      geo_campo1: "AAA",
-      geo_campo2: "AAA",
-      ponto_referencia: "AAA",
-      cep: "AAA",
-      telefone: "AAA",
-      zona: 1,
-      pais: "AAA"
-    },
-    dados_gerais: {
-      tipo_notificacao: "Individual",
-      agravo_doenca: "Leishmaniose Visceral",
-      codigo_cid10: "B55.0",
-      data_notificacao: new Date(),
-      uf_notificacao: "PI",
-      municipio_notificacao: "AAA",
-      codigo_ibge: "123",
-      unidade_saude: "AAA",
-      codigo_unidade: "123",
-      data_primeiros_sintomas: new Date(),
-    },
-    dados_antecedentes: {
-      data_investigacao: new Date(),
-      ocupacao: "AAA"
-    },
-    dados_clinicos: {
-      manifestacao: 1,
-      sintomas: "AAA",
-      co_hiv: 1
-    },
-    dados_laboratoriais: {
-      diagnostico_parasit: 1,
-      diagnostico_imunol: 1,
-      procedimento: "IFI",
-      tipo_entrada: 1
-    },
-    dados_tratamento: {
-      data_tratamento: new Date(),
-      droga_inicial: 1,
-      peso: 70,
-      dose_prescrita: 1,
-      num_ampolas: 5,
-      drogra_falencia: 1
-    },
-    dados_conclusao: {
-      classificacao_final: 1,
-      criterio_confirmacao: 1,
-      caso_autoctone: 1,
-      uf_conclusao: "PI",
-      pais_conclusao: "AAA",
-      municipio_conclusao: "AAA",
-      codigo_ibge_conclusao: "123",
-      distrito: "AAA",
-      bairro: "AAA",
-      doenca_relacionada: 1,
-      evolucao_caso: 1,
-      data_obito: new Date(),
-      data_encerramento: new Date()
-    },
-    loading: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      dados_pessoais: {
+        nome: "AAA",
+        data_nascimento: new Date(),
+        idade: 21,
+        sexo: "M",
+        gestante: 5,
+        raca_cor: 1,
+        escolaridade: 0,
+        cartao_sus: "123",
+        nome_mae: "AAA"
+      },
+      dados_residenciais: {
+        uf: "PI",
+        municipio: "AAA",
+        codigo_ibge: "123",
+        distrito: "AAA",
+        endereco: "Rua Dom Pedro II, 691, Altos",
+        complemento: "AAA",
+        codigo: "123",
+        geo_campo1: "AAA",
+        geo_campo2: "AAA",
+        ponto_referencia: "AAA",
+        cep: "AAA",
+        telefone: "AAA",
+        zona: 1,
+        pais: "AAA"
+      },
+      dados_gerais: {
+        tipo_notificacao: "Individual",
+        agravo_doenca: "Leishmaniose Visceral",
+        codigo_cid10: "B55.0",
+        data_notificacao: new Date(),
+        uf_notificacao: "PI",
+        municipio_notificacao: "AAA",
+        codigo_ibge: "123",
+        unidade_saude: "AAA",
+        codigo_unidade: "123",
+        data_primeiros_sintomas: new Date(),
+      },
+      dados_antecedentes: {
+        data_investigacao: new Date(),
+        ocupacao: "AAA"
+      },
+      dados_clinicos: {
+        manifestacao: 1,
+        sintomas: "AAA",
+        co_hiv: 1
+      },
+      dados_laboratoriais: {
+        diagnostico_parasit: 1,
+        diagnostico_imunol: 1,
+        procedimento: "IFI",
+        tipo_entrada: 1
+      },
+      dados_tratamento: {
+        data_tratamento: new Date(),
+        droga_inicial: 1,
+        peso: 70,
+        dose_prescrita: 1,
+        num_ampolas: 5,
+        drogra_falencia: 1
+      },
+      dados_conclusao: {
+        classificacao_final: 1,
+        criterio_confirmacao: 1,
+        caso_autoctone: 1,
+        uf_conclusao: "PI",
+        pais_conclusao: "AAA",
+        municipio_conclusao: "AAA",
+        codigo_ibge_conclusao: "123",
+        distrito: "AAA",
+        bairro: "AAA",
+        doenca_relacionada: 1,
+        evolucao_caso: 1,
+        data_obito: new Date(),
+        data_encerramento: new Date()
+      },
+      loading: false
+    }
+    this.cadastrar = this.cadastrar.bind(this);
   }
 
   static navigationOptions = {
@@ -633,7 +637,7 @@ class CasoScreen extends Component {
     }
   }
 
-  cadastrar = async () => {
+  async cadastrar() {
     const pessoais = Object.assign({}, this._form_pessoais.getValue());
     const residenciais = Object.assign({}, this._form_residenciais.getValue());
     const gerais = Object.assign({}, this._form_gerais.getValue());
@@ -657,6 +661,7 @@ class CasoScreen extends Component {
       { "dados_tratamento": tratamento }, { "dados_conclusao": conclusao });
     var user = firebase.auth().currentUser;
 
+    var error_flag = false;
     await Geocoder.from(form.dados_residenciais.endereco)
       .then(json => {
         var location = json.results[0].geometry.location;
@@ -665,52 +670,58 @@ class CasoScreen extends Component {
             latitude: location.lat,
             longitude: location.lng
           }
-        } 
+        }
         form = Object.assign({}, form, location_temp, { user: user.uid });
-      }).catch(() => {Alert("Notificação", "Endereço não encontrado. Tente novamente."); return;});
+      })
+      .catch(() => {
+        Alert.alert("Notificação", "Endereço não encontrado. Tente novamente.");
+        error_flag = true;
+      });
+
+    if (error_flag) {
+      return;
+    }
+
     var db = firebase.firestore();
 
     const props = this.props;
-    var index = this.props.navigation.getParam('index', 'None');
+    var index = props.navigation.getParam('index', 'None');
 
     if (index != 'None') {
       var caso = this.props.casos.casos[index]
       form = Object.assign({}, form, { id: caso.id });
-
       this.setState({ loading: true })
+      this.setState(form);
       await db.collection("casos").doc(caso.id).update(form)
+        .then(() => {
+          this.props.delCaso(index);
+          this.props.addCaso(form);
+          this.setState({ loading: false })
+        })
         .catch(function () {
-          this.setState({ loading: false });
           Alert.alert("Notificação", "Ocorreu um erro ao realizar a atualização do caso. Tente novamente.");
         })
-      this.props.delCaso(index);
-      this.props.addCaso(form);
-      this.setState(form);
-      this.setState({ loading: false })
-      Alert.alert("Notificação", "Caso atualizado com sucesso!");
     }
     else {
-      const props = this.props;
+      this.setState(form);
       this.setState({ loading: true })
       await db.collection("casos").add(form)
-        .then(function (docRef) {
+        .then(docRef => {
           form = Object.assign({}, form, { id: docRef.id });
+          this.props.addCaso(form);
+          this.props.navigation.goBack();
+          this.setState({ loading: false });
         })
-        .catch(function () {
+        .catch(function (e) {
           Alert.alert("Notificação", "Ocorreu um erro ao realizar o cadastro do caso. Tente novamente.");
         });
-      props.addCaso(form);
-      this.setState({ loading: false })
-      //props.navigation.goBack();
-      Alert.alert("Notificação", "Caso cadastrado com sucesso!");
     }
   }
 
   render() {
-    const { loading } = this.state;
     return (
       <View style={estilo.container}>
-        <Loading loading={loading} />
+        <Loading loading={this.state.loading} />
         <KeyboardAwareScrollView>
           <ScrollView>
             <View style={estilo.content} isOpen={true}>

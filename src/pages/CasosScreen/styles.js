@@ -57,5 +57,10 @@ export default StyleSheet.create({
   },
   icone: {
     marginLeft: 5
+  },
+  warning: {
+    textAlign: 'center',
+    color: 'gray',
+    padding: 5
   }
 })

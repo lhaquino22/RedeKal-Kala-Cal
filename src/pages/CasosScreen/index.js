@@ -84,7 +84,6 @@ class CasosScreen extends Component {
           </View>
           <ScrollView>
             {dados.map((marcador, i) => {
-              console.log(marcador.dados_conclusao.classificacao_final)
               return (
                 <View style={estilo.casoContainer} key={marcador.id}>
                   <View style={estilo.casoSubContainer}>

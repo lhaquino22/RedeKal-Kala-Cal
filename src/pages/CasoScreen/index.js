@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Alert, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { View, Alert, Text, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import estilo from './styles';
 import * as firebase from "firebase";
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,6 +10,8 @@ import { addCaso, delCaso } from '../../../CasoAction';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import FormComponent from '../../components/FormComponent';
+import Loading from '../../components/LoadingComponent';
 
 const ufs = {
   'AC': 'AC',
@@ -595,7 +597,8 @@ class CasoScreen extends Component {
       evolucao_caso: 1,
       data_obito: new Date(),
       data_encerramento: new Date()
-    }
+    },
+    loading: false
   }
 
   static navigationOptions = {
@@ -630,7 +633,7 @@ class CasoScreen extends Component {
     }
   }
 
-  cadastrar = () => {
+  cadastrar = async () => {
     const pessoais = Object.assign({}, this._form_pessoais.getValue());
     const residenciais = Object.assign({}, this._form_residenciais.getValue());
     const gerais = Object.assign({}, this._form_gerais.getValue());
@@ -654,7 +657,7 @@ class CasoScreen extends Component {
       { "dados_tratamento": tratamento }, { "dados_conclusao": conclusao });
     var user = firebase.auth().currentUser;
 
-    Geocoder.from(form.dados_residenciais.endereco)
+    await Geocoder.from(form.dados_residenciais.endereco)
       .then(json => {
         var location = json.results[0].geometry.location;
         var location_temp = {
@@ -662,128 +665,133 @@ class CasoScreen extends Component {
             latitude: location.lat,
             longitude: location.lng
           }
-        }
-
+        } 
         form = Object.assign({}, form, location_temp, { user: user.uid });
-        var db = firebase.firestore();
+      }).catch(() => {Alert("Notificação", "Endereço não encontrado. Tente novamente."); return;});
+    var db = firebase.firestore();
 
-        const props = this.props;
-        var index = this.props.navigation.getParam('index', 'None');
+    const props = this.props;
+    var index = this.props.navigation.getParam('index', 'None');
 
-        if (index != 'None') {
-          var caso = this.props.casos.casos[index]
-          form = Object.assign({}, form, { id: caso.id });
+    if (index != 'None') {
+      var caso = this.props.casos.casos[index]
+      form = Object.assign({}, form, { id: caso.id });
 
-          db.collection("casos").doc(caso.id).update(form);
-          this.props.delCaso(index);
-          this.props.addCaso(form);
-          this.setState(form);
-          Alert.alert("Notificação", "Caso atualizado com sucesso!");
-        }
-        else {
-          const props = this.props;
-          db.collection("casos").add(form).then(function (docRef) {
-            form = Object.assign({}, form, { id: docRef.id });
-            props.addCaso(form);
-            props.navigation.goBack();
-            Alert.alert("Notificação", "Caso cadastrado com sucesso!");
-          })
-        }
-      })
+      this.setState({ loading: true })
+      await db.collection("casos").doc(caso.id).update(form)
+        .catch(function () {
+          this.setState({ loading: false });
+          Alert.alert("Notificação", "Ocorreu um erro ao realizar a atualização do caso. Tente novamente.");
+        })
+      this.props.delCaso(index);
+      this.props.addCaso(form);
+      this.setState(form);
+      this.setState({ loading: false })
+      Alert.alert("Notificação", "Caso atualizado com sucesso!");
+    }
+    else {
+      const props = this.props;
+      this.setState({ loading: true })
+      await db.collection("casos").add(form)
+        .then(function (docRef) {
+          form = Object.assign({}, form, { id: docRef.id });
+        })
+        .catch(function () {
+          Alert.alert("Notificação", "Ocorreu um erro ao realizar o cadastro do caso. Tente novamente.");
+        });
+      props.addCaso(form);
+      this.setState({ loading: false })
+      //props.navigation.goBack();
+      Alert.alert("Notificação", "Caso cadastrado com sucesso!");
+    }
   }
 
   render() {
+    const { loading } = this.state;
     return (
       <View style={estilo.container}>
+        <Loading loading={loading} />
         <KeyboardAwareScrollView>
           <ScrollView>
-            <View style={estilo.content}>
-              <View style={estilo.tituloSecaoContainer}>
-                <Text style={estilo.tituloSecao}>Dados Pessoais</Text>
-              </View>
-              <Form
-                ref={c => this._form_pessoais = c}
-                type={dados_pessoais}
-                options={options_dados_pessoais}
-                value={this.state.dados_pessoais}
-              />
+            <View style={estilo.content} isOpen={true}>
+              <FormComponent titulo="Dados Pessoais">
+                <Form
+                  ref={c => this._form_pessoais = c}
+                  type={dados_pessoais}
+                  options={options_dados_pessoais}
+                  value={this.state.dados_pessoais}
+                />
+              </FormComponent>
             </View>
             <View style={estilo.content}>
-              <View style={estilo.tituloSecaoContainer}>
-                <Text style={estilo.tituloSecao}>Dados Residenciais</Text>
-              </View>
-              <Form
-                ref={c => this._form_residenciais = c}
-                type={dados_residenciais}
-                options={options_dados_residenciais}
-                value={this.state.dados_residenciais}
-              />
+              <FormComponent titulo="Dados Residenciais" isOpen={false}>
+                <Form
+                  ref={c => this._form_residenciais = c}
+                  type={dados_residenciais}
+                  options={options_dados_residenciais}
+                  value={this.state.dados_residenciais}
+                />
+              </FormComponent>
             </View>
             <View style={estilo.content}>
-              <View style={estilo.tituloSecaoContainer}>
-                <Text style={estilo.tituloSecao}>Dados Gerais</Text>
-              </View>
-              <Form
-                ref={c => this._form_gerais = c}
-                type={dados_gerais}
-                options={options_dados_gerais}
-                value={this.state.dados_gerais}
-              />
+              <FormComponent titulo="Dados Gerais" isOpen={false}>
+                <Form
+                  ref={c => this._form_gerais = c}
+                  type={dados_gerais}
+                  options={options_dados_gerais}
+                  value={this.state.dados_gerais}
+                />
+              </FormComponent>
             </View>
             <View style={estilo.content}>
-              <View style={estilo.tituloSecaoContainer}>
-                <Text style={estilo.tituloSecao}>Antecedentes Epidemológicos</Text>
-              </View>
-              <Form
-                ref={c => this._form_antecedentes = c}
-                type={dados_antecedentes}
-                options={options_dados_antecedentes}
-                value={this.state.dados_antecedentes}
-              />
+              <FormComponent titulo="Antecedentes Epidemológicos" isOpen={false}>
+                <Form
+                  ref={c => this._form_antecedentes = c}
+                  type={dados_antecedentes}
+                  options={options_dados_antecedentes}
+                  value={this.state.dados_antecedentes}
+                />
+              </FormComponent>
             </View>
             <View style={estilo.content}>
-              <View style={estilo.tituloSecaoContainer}>
-                <Text style={estilo.tituloSecao}>Dados Clínicos</Text>
-              </View>
-              <Form
-                ref={c => this._form_clinicos = c}
-                type={dados_clinicos}
-                options={options_dados_clinicos}
-                value={this.state.dados_clinicos}
-              />
+              <FormComponent titulo="Dados Clínicos" isOpen={false}>
+                <Form
+                  ref={c => this._form_clinicos = c}
+                  type={dados_clinicos}
+                  options={options_dados_clinicos}
+                  value={this.state.dados_clinicos}
+                />
+              </FormComponent>
             </View>
             <View style={estilo.content}>
-              <View style={estilo.tituloSecaoContainer}>
-                <Text style={estilo.tituloSecao}>Dados Laboratoriais</Text>
-              </View>
-              <Form
-                ref={c => this._form_laboratoriais = c}
-                type={dados_laboratoriais}
-                options={options_dados_laboratoriais}
-                value={this.state.dados_laboratoriais}
-              />
+              <FormComponent titulo="Dados Laboratoriais" isOpen={false}>
+                <Form
+                  ref={c => this._form_laboratoriais = c}
+                  type={dados_laboratoriais}
+                  options={options_dados_laboratoriais}
+                  value={this.state.dados_laboratoriais}
+                />
+              </FormComponent>
             </View>
             <View style={estilo.content}>
-              <View style={estilo.tituloSecaoContainer}>
-                <Text style={estilo.tituloSecao}>Tratamento</Text>
-              </View>
-              <Form
-                ref={c => this._form_tratamento = c}
-                type={dados_tratamento}
-                options={options_dados_tratamento}
-                value={this.state.dados_tratamento}
-              />
+              <FormComponent titulo="Tratamento" isOpen={false}>
+                <Form
+                  ref={c => this._form_tratamento = c}
+                  type={dados_tratamento}
+                  options={options_dados_tratamento}
+                  value={this.state.dados_tratamento}
+                />
+              </FormComponent>
             </View>
             <View style={estilo.content}>
-              <View style={estilo.tituloSecaoContainer}>
-                <Text style={estilo.tituloSecao}>Conclusão</Text>
-              </View>
-              <Form
-                ref={c => this._form_conclusao = c}
-                type={dados_conclusao}
-                options={options_dados_conclusao}
-                value={this.state.dados_conclusao}
-              />
+              <FormComponent titulo="Conclusão" isOpen={false}>
+                <Form
+                  ref={c => this._form_conclusao = c}
+                  type={dados_conclusao}
+                  options={options_dados_conclusao}
+                  value={this.state.dados_conclusao}
+                />
+              </FormComponent>
             </View>
           </ScrollView>
         </KeyboardAwareScrollView>

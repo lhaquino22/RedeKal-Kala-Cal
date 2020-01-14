@@ -23,7 +23,7 @@ export default class HomeScreen extends Component {
                 <TouchableOpacity style={estilo.fill} onPress={() => navigate(item[0].screen)}>
                   <MenuCardItem image={item[0].image} />
                 </TouchableOpacity>
-                <TouchableOpacity style={estilo.fill}>
+                <TouchableOpacity style={estilo.fill} onPress={() => navigate(item[1].screen)}>
                   <MenuCardItem image={item[1].image} />
                 </TouchableOpacity>
               </View>

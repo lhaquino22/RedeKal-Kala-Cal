@@ -28,7 +28,7 @@ export default menu = [
       icone: 'hospital',
       titulo: 'Pontos de Cuidado no Piauí',
       cor: 'khaki',
-      screen: ''
+      screen: 'PontosCuidado'
     }
   ],
   [

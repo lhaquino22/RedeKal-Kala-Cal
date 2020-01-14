@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import estilo from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
-import Loading from '../../components/LoadingComponent';
 
 export default class NotificacoesScreen extends Component {
   static navigationOptions = {

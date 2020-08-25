@@ -55,7 +55,7 @@ export default class FormComponent extends Component {
           <View></View>
           <Text style={estilo.titulo}>{titulo}</Text>
           <TouchableOpacity onPress={this.onChange}>
-            <MaterialCommunityIcons name={isOpen ? 'arrow-up-drop-circle-outline' : 'arrow-down-drop-circle-outline'} size={20} color="black" />
+            <MaterialCommunityIcons name={isOpen ? 'arrow-up-drop-circle-outline' : 'arrow-down-drop-circle-outline'} size={20} color="darkslategray" />
           </TouchableOpacity>
         </View>
         <View style={estiloChildren} pointerEvents={!isOpen ? pointerEvents="none" : null}>

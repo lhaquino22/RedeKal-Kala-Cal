@@ -45,5 +45,33 @@ export default StyleSheet.create({
   textoCuiado: {
     fontWeight: 'bold',
     color: 'white'
+  },
+  flex: {
+    flex: 1
+  },
+  markerTitle: {
+    marginBottom: 5,
+    fontWeight: '500'
+  },
+  markerButtonContainer: {
+    backgroundColor: '#00A198',
+    borderRadius: 5,
+    padding: 5
+  },
+  markerButton: {
+    color: '#FFF',
+    fontWeight: '500',
+    textAlign: 'center'
+  },
+  menu: {
+    position: 'absolute',
+    bottom: 25,
+    right: 10
+  },
+  centerButton: {
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 5,
   }
 })

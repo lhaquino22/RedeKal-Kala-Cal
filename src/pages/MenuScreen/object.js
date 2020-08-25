@@ -5,7 +5,7 @@ export default menu = [
       icone: 'book-open-page-variant',
       titulo: 'Leishmaniose Visceral',
       cor: 'peru',
-      screen: ''
+      screen: 'Leishmaniose'
     },
     {
       image: require('../../../assets/images/linha_cuidado.png'),
@@ -37,7 +37,7 @@ export default menu = [
       icone: 'chart-donut',
       titulo: 'Plano de Enfrentamento e Controle de Doenças Negligenciadas',
       cor: 'lightsalmon',
-      screen: ''
+      screen: 'PlanoEnfrentamento'
     },
     {
       image: require('../../../assets/images/referencia.png'),

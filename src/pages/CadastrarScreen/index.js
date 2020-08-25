@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, KeyboardAvoidingView, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
+import {
+  View,
+  KeyboardAvoidingView,
+  Text,
+  TouchableOpacity,
+  AsyncStorage,
+  Image,
+} from 'react-native';
 import estilo from './styles';
 import 'firebase/firestore';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -21,36 +28,67 @@ var Escolaridade = t.enums({
   'Mestrado Incompleto': 'Mestrado Incompleto',
   'Mestrado Completo': 'Mestrado Completo',
   'Doutorado Incompleto': 'Doutorado Incompleto',
-  'Doutorado Completo': 'Doutorado Completo'
-})
+  'Doutorado Completo': 'Doutorado Completo',
+}, 'Escolaridade');
 
 var Profissional = t.enums({
   'Profissional de Saúde': 'Profissional de Saúde',
   'Gestor do Município': 'Gestor do Município',
-  'Coordenador da Atenção Básica': 'Coordenador da Atenção Básica'
-})
+  'Gestor Hospitalar': 'Gestor Hospitalar',
+});
 
-const Email = t.refinement(t.String, email => {
+var LocalTrabalho = t.enums({
+  'Unidade Básica de Saúde': 'Unidade Básica de Saúde',
+  Hospital: 'Hospital',
+  'Secretaria Municipal de Saúde - Coordenação':
+    'Secretaria Municipal de Saúde - Coordenação',
+  Outro: 'Outro',
+});
+
+const Email = t.refinement(t.String, (email) => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
   return reg.test(email);
 });
 
-const Senha = t.refinement(t.String, senha => {
+const Senha = t.refinement(t.String, (senha) => {
   return senha.length >= 6;
 });
 
-const User = t.struct({
+const ProfissionalSaude = t.struct({
+  categoria_profissional: Profissional,
   nome: t.String,
   cpf: t.Number,
-  cnes: t.Number,
-  cns: t.Number,
   cidade: t.String,
   estado: t.String,
+  escolaridade: Escolaridade,
+  local_trabalho: LocalTrabalho,
+  outro: t.String,
+  email: Email,
+  password: Senha,
+});
+
+const GestorMunicipio = t.struct({
   categoria_profissional: Profissional,
+  nome: t.String,
+  cpf: t.Number,
+  cidade: t.String,
+  estado: t.String,
   escolaridade: Escolaridade,
   email: Email,
-  password: Senha
-})
+  password: Senha,
+});
+
+const GestorHospitalar = t.struct({
+  categoria_profissional: Profissional,
+  nome: t.String,
+  cpf: t.Number,
+  cidade: t.String,
+  estado: t.String,
+  escolaridade: Escolaridade,
+  hospital: t.String,
+  email: Email,
+  password: Senha,
+});
 
 var _ = require('lodash');
 
@@ -82,34 +120,47 @@ const options = {
       label: 'Senha',
       error: 'A senha deve conter pelo menos 6 caracterers.',
       password: true,
-      secureTextEntry: true
+      secureTextEntry: true,
     },
     categoria_profissional: {
-      label: 'Categoria Profissional'
+      label: 'Categoria Profissional',
     },
     escolaridade: {
-      label: 'Nível de Escolaridade'
+      label: 'Nível de Escolaridade',
     },
     cns: {
-      label: 'CNS'
+      label: 'CNS',
     },
     cnes: {
-      label: 'CNES'
+      label: 'CNES',
     },
     cpf: {
-      label: 'CPF'
+      label: 'CPF',
     },
     email: {
-      error: 'Insira um email válido.'
-    }
+      error: 'Insira um email válido.',
+    },
+    local_trabalho: {
+      label: 'Local de trabalho',
+    },
+    hospital: {
+      label: 'Hospital',
+    },
+    outro: {
+      label: 'Outro',
+      editable: false
+    },
   },
-  stylesheet: stylesheet
-}
+  stylesheet: stylesheet,
+};
 
 export default class CadastrarScreen extends Component {
   state = {
-    loading: false
-  }
+    loading: false,
+    value: {},
+    type: this.getType({}),
+    options: options,
+  };
   static navigationOptions = {
     title: 'Cadastre-se',
     headerStyle: {
@@ -121,39 +172,84 @@ export default class CadastrarScreen extends Component {
     },
   };
 
+  getType(value) {
+    if (value.categoria_profissional === 'Gestor do Município') {
+      return GestorMunicipio;
+    } else if (value.categoria_profissional === 'Gestor Hospitalar') {
+      return GestorHospitalar;
+    } else {
+      return ProfissionalSaude;
+    }
+  }
+
+  onChange = (value) => {
+    // recalculate the type only if strictly necessary
+    const type =
+      value.categoria_profissional !== this.state.value.categoria_profissional
+        ? this.getType(value)
+        : this.state.type;
+
+    const options =
+      value.local_trabalho === 'Outro'
+        ? t.update(this.state.options, {
+            fields: {
+              outro: {
+                editable: { $set: true },
+              },
+            },
+          })
+        : t.update(this.state.options, {
+            fields: {
+              outro: {
+                editable: { $set: false },
+              },
+            },
+          });
+
+    this.setState({ options, value, type });
+  };
+
   handleSubmit = () => {
-    this.setState({loading: true})
+    this.setState({ loading: true });
     const dados = this._form.getValue();
     if (dados != null) {
       const values = Object.assign({}, dados);
-      SignUp(values).then(() => {
-        this.setState({loading: false});
-        this.props.navigation.navigate('Entrar');
-      })
-      .catch(() => {
-        this.setState({loading: false});
-      })
+      SignUp(values)
+        .then(() => {
+          this.setState({ loading: false });
+          this.props.navigation.navigate('Entrar');
+        })
+        .catch(() => {
+          this.setState({ loading: false });
+        });
+    } else {
+      this.setState({ loading: false });
     }
-    else{
-      this.setState({loading: false})
-    }
-  }
+  };
 
   render() {
     return (
       <View style={estilo.container}>
         <Loading loading={this.state.loading} />
-        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }} behavior="padding" enabled keyboardVerticalOffset={65}>
+        <KeyboardAvoidingView
+          style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+          behavior="padding"
+          enabled
+          keyboardVerticalOffset={65}
+        >
           <View style={estilo.content}>
             <ScrollView>
-              <Form ref={c => this._form = c} type={User} options={options} />
+              <Form
+                ref={(c) => (this._form = c)}
+                type={this.state.type}
+                value={this.state.value}
+                options={this.state.options}
+                onChange={this.onChange}
+              />
             </ScrollView>
           </View>
         </KeyboardAvoidingView>
-        <TouchableOpacity
-          style={estilo.button}
-          onPress={this.handleSubmit}
-        >
+        <TouchableOpacity style={estilo.button} onPress={this.handleSubmit}>
           <Text style={estilo.text}>Cadastrar</Text>
         </TouchableOpacity>
       </View>

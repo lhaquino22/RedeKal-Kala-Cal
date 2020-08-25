@@ -3,6 +3,9 @@ import MenuScreen from './MenuScreen';
 import CasoScreen from './CasoScreen';
 import GeorrefNavigator from './GeorrefNavigator';
 import PontosCuiadoScreen from './PontosCuiadoScreen';
+import LeishmanioseScreen from './LeishmanioseScreen';
+import PlanoEnfrentamentoScreen from './PlanoEnfrentamentoScreen';
+
 
 const Navigator = createStackNavigator(
   {
@@ -21,7 +24,9 @@ const Navigator = createStackNavigator(
       }
     },
     Caso: CasoScreen,
-    PontosCuidado: PontosCuiadoScreen
+    PontosCuidado: PontosCuiadoScreen,
+    Leishmaniose: LeishmanioseScreen,
+    PlanoEnfrentamento: PlanoEnfrentamentoScreen,
   }
 )
 

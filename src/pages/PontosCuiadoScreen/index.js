@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import style from './styles';
-import sedes from './object';
+import pontos from './object';
 import FormComponent from '../../components/FormComponent';
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import MapView, { Marker, Callout } from 'react-native-maps';
 
 export default class PontosCuidadoScreen extends Component {
@@ -19,36 +19,8 @@ export default class PontosCuidadoScreen extends Component {
   };
 
   state = {
-    pontos: [
-      {
-        title: 'Hospital Getúlio Vargas',
-        address:
-          'https://maps.apple.com/?address=Avenida%20Frei%20Serafim,%202352,%20Frei%20Serafim,%20Teresina%20-%20PI,%2064001-020,%20Brasil&auid=17141066225949766545&ll=-5.088160,-42.804236&lsp=9902&q=Hospital%20Get%C3%BAlio%20Vargas&_ext=ChgKBAgEEBkKBAgFEAMKBAgGEAoKBAgKEAASJimm6TZq214UwDH6ovKIhGdFwDm4PQiJqFUUwEGYD64CXWZFwFAE',
-        latitude: -5.0879589,
-        longitude: -42.8064774,
-      },
-      {
-        title: 'Hospital Universitário',
-        address:
-          'https://maps.apple.com/?address=Avenida%20Universit%C3%A1ria,%20s/n,%20Teresina%20-%20PI,%2064049-550,%20Brasil&auid=6923384544532513127&ll=-5.056678,-42.790722&lsp=9902&q=Hospital%20Universit%C3%A1rio%20da%20Ufpi&_ext=ChgKBAgEEBkKBAgFEAMKBAgGEBkKBAgKEAASJilBM0MYUD4UwDFev2jX02VFwDlThxQ3HTUUwEGEsN1UrGRFwFAE',
-        latitude: -5.0616178,
-        longitude: -42.7960489,
-      },
-      {
-        title: 'Hospital Lineu Araújo',
-        address:
-          'https://maps.apple.com/?address=Rua%20Magalh%C3%A3es%20Filho,%20152,%20Frei%20Serafim,%20Teresina%20-%20PI,%2064001-350,%20Brasil&auid=17737244257423423924&ll=-5.089811,-42.806640&lsp=9902&q=Hospital%20Lineu%20Ara%C3%BAjo&_ext=ChkKBAgEEBkKBAgFEAMKBQgGEN8BCgQIChAAEiQp4jzVmYdgFMAxwXFxvdFnRcA59JCmuFRXFMBBBbP7NqpmRcA%3D',
-        latitude: -5.0898259,
-        longitude: -42.8091008,
-      },
-      {
-        title: 'Hospital São Marcos',
-        address:
-          'https://maps.apple.com/?address=Rua%20Olavo%20Bilac,%202300,%20Frei%20Serafim,%20Teresina%20-%20PI,%2064015-017,%20Brasil&auid=6573506152195298546&ll=-5.090640,-42.802775&lsp=9902&q=Hospital%20S%C3%A3o%20Marcos&_ext=ChgKBAgEEBkKBAgFEAMKBAgGEAoKBAgKEAASJin4V8jUaWEUwDFXOA3wWGdFwDkKrJnzNlgUwEF7fX1pMWZFwFAE',
-        latitude: -5.090639,
-        longitude: -42.8050807,
-      },
-    ],
+    isMapReady: false,
+    pontos: pontos,
   };
 
   fitAllMarkers() {
@@ -61,9 +33,11 @@ export default class PontosCuidadoScreen extends Component {
     );
   }
 
-  componentDidMount() {
+  componentDidMount() {}
+  onMapLayout = () => {
     this.fitAllMarkers();
-  }
+    this.setState({ isMapReady: true });
+  };
 
   render() {
     return (
@@ -75,40 +49,55 @@ export default class PontosCuidadoScreen extends Component {
           style={{ flex: 1 }}
           showsUserLocation
           showsPointsOfInterest
+          onMapReady={this.onMapLayout}
           initialRegion={{
-            latitude: this.state.pontos[0].latitude,
-            longitude: this.state.pontos[0].longitude,
+            latitude: -5.0881867,
+            longitude: -42.8056137,
             latitudeDelta: 0.2,
             longitudeDelta: 0.2,
           }}
         >
-          {this.state.pontos.map((marker) => (
-            <Marker
-              coordinate={marker}
-              title={marker.title}
-              description="Clique para ir traçar uma rota."
-              pinColor="#fff"
-            >
-              <Callout
-                style={style.flex}
-                onPress={() => Linking.openURL(marker.address)}
+          {this.state.isMapReady &&
+            this.state.pontos.map((marker) => (
+              <Marker
+                key={marker.nome}
+                coordinate={marker}
+                title={marker.nome}
+                description="Clique para ir traçar uma rota."
+                pinColor="red"
               >
-                <View>
-                  <Text style={style.markerTitle}>{marker.title}</Text>
-                  <View style={style.markerButtonContainer}>
-                    <Text style={style.markerButton}>Traçar rota</Text>
+                <Callout
+                  style={style.flex}
+                  onPress={() => Linking.openURL(marker.address)}
+                >
+                  <View>
+                    <Text style={style.markerTitle}>
+                      {marker.nome}
+                    </Text>
+                    <Text>{marker.telefone}</Text>
+                    <View style={style.cuidados}>
+                      {marker.tipo.map((t) => {
+                        return (
+                          <View style={style.cuidado} key={marker.nome + t.cuidado}>
+                            <Text style={style.textoCuiado}>{t.cuidado}</Text>
+                          </View>
+                        )
+                      })}
+                    </View>
+                    <View style={style.markerButtonContainer}>
+                      <Text style={style.markerButton}>Traçar rota</Text>
+                    </View>
                   </View>
-                </View>
-              </Callout>
-            </Marker>
-          ))}
+                </Callout>
+              </Marker>
+            ))}
         </MapView>
         <View style={style.menu}>
           <TouchableOpacity
             onPress={() => this.fitAllMarkers()}
             style={style.centerButton}
           >
-            <Icon name="scan-circle" size={60} color="#FFF" />
+            <Icon name="image-filter-center-focus" size={30} color="#00A198" />
           </TouchableOpacity>
         </View>
       </View>

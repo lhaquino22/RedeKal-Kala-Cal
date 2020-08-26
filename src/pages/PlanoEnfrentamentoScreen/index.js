@@ -57,7 +57,7 @@ const estilo = StyleSheet.create({
     justifyContent:'space-between'
   },
   descricao: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#6C6C80',
     letterSpacing: 0.5,
   },

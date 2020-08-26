@@ -34,7 +34,8 @@ export default StyleSheet.create({
   },
   cuidados: {
     flexDirection: 'row',
-    marginTop: 5
+    marginTop: 5,
+    marginBottom: 5,
   },
   cuidado: {
     backgroundColor: 'mediumseagreen',
@@ -73,5 +74,9 @@ export default StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 4,
     elevation: 5,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   }
 })

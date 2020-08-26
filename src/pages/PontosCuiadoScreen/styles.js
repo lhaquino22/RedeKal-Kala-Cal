@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: "#ebebeb",
+    backgroundColor: '#ebebeb',
     padding: 10,
     paddingBottom: 0,
   },
@@ -13,11 +13,11 @@ export default StyleSheet.create({
     flex: 1,
     marginBottom: 10,
     padding: 10,
-    backgroundColor: "#fff",
-    borderRadius: 4
+    backgroundColor: '#fff',
+    borderRadius: 4,
   },
   info: {
-    flex: 1
+    flex: 1,
   },
   tituloHospital: {
     fontSize: 16,
@@ -27,10 +27,10 @@ export default StyleSheet.create({
     marginTop: 5,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   icone: {
-    marginRight: 10
+    marginRight: 10,
   },
   cuidados: {
     flexDirection: 'row',
@@ -41,33 +41,42 @@ export default StyleSheet.create({
     backgroundColor: 'mediumseagreen',
     padding: 5,
     borderRadius: 10,
-    marginRight: 5
+    marginRight: 5,
   },
   textoCuiado: {
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
   },
   flex: {
-    flex: 1
+    flex: 1,
   },
   markerTitle: {
     marginBottom: 5,
-    fontWeight: '500'
+    fontWeight: '500',
+    color: '#0F2027',
+    fontSize: 16,
+    letterSpacing: 0.5,
+  },
+  markerPhone: {
+    marginBottom: 5,
+    color: '#6C6C80',
+    fontSize: 14,
+    letterSpacing: 0.5,
   },
   markerButtonContainer: {
     backgroundColor: '#00A198',
     borderRadius: 5,
-    padding: 5
+    padding: 5,
   },
   markerButton: {
     color: '#FFF',
     fontWeight: '500',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   menu: {
     position: 'absolute',
     bottom: 25,
-    right: 10
+    right: 10,
   },
   centerButton: {
     shadowColor: '#000',
@@ -78,5 +87,5 @@ export default StyleSheet.create({
       width: 0,
       height: 2,
     },
-  }
-})
+  },
+});

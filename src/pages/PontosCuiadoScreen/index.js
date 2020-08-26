@@ -71,17 +71,18 @@ export default class PontosCuidadoScreen extends Component {
                   onPress={() => Linking.openURL(marker.address)}
                 >
                   <View>
-                    <Text style={style.markerTitle}>
-                      {marker.nome}
-                    </Text>
-                    <Text>{marker.telefone}</Text>
+                    <Text style={style.markerTitle}>{marker.nome}</Text>
+                    <Text style={style.markerPhone}>{marker.telefone}</Text>
                     <View style={style.cuidados}>
                       {marker.tipo.map((t) => {
                         return (
-                          <View style={style.cuidado} key={marker.nome + t.cuidado}>
+                          <View
+                            style={style.cuidado}
+                            key={marker.nome + t.cuidado}
+                          >
                             <Text style={style.textoCuiado}>{t.cuidado}</Text>
                           </View>
-                        )
+                        );
                       })}
                     </View>
                     <View style={style.markerButtonContainer}>

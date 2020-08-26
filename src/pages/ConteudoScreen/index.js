@@ -6,7 +6,7 @@ import style from './style';
 class ConteudoScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('title', 'A Nested Details Screen'),
+      title: navigation.getParam('title', 'Detalhes'),
       headerStyle: {
         backgroundColor: '#00A198',
       },

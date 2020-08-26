@@ -13,11 +13,13 @@ export default StyleSheet.create({
   info: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     flex: 1,
     flexWrap: 'wrap',
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    color: '#6C6C80',
+    letterSpacing: 0.5,
   },
-})
+});

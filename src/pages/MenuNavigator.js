@@ -6,6 +6,7 @@ import PontosCuiadoScreen from './PontosCuiadoScreen';
 import LeishmanioseScreen from './LeishmanioseScreen';
 import PlanoEnfrentamentoScreen from './PlanoEnfrentamentoScreen';
 import ConteudoScreen from './ConteudoScreen';
+import CadastrarReferenciaScreen from './CadastrarReferenciaScreen';
 
 const Navigator = createStackNavigator({
   Main: MenuScreen,
@@ -27,6 +28,7 @@ const Navigator = createStackNavigator({
   Leishmaniose: LeishmanioseScreen,
   PlanoEnfrentamento: PlanoEnfrentamentoScreen,
   Conteudo: ConteudoScreen,
+  CadastrarReferencia: CadastrarReferenciaScreen,
 });
 
 export default createAppContainer(Navigator);

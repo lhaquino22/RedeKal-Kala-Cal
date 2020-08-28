@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
 import Text from '../../components/Text';
 import defaultStyle from './style';
-import colors from '../../commons'; 
+import { colors } from '../../commons'; 
 
 
 function Item({

@@ -133,47 +133,53 @@ export default class ContaScreen extends Component {
   };
 
   getData = (refresh = false) => {
-    if (!refresh) {
-      this.setState({ loading: true });
-    }
-
-    var user = firebase.auth().currentUser;
-    var db = firebase.firestore();
-
-    if (user != null) {
-      name = user.displayName;
-      email = user.email;
-      emailVerified = user.emailVerified;
-      var docRef = db.collection("users").doc(user.uid);
-
-      docRef.get().then((doc) => {
-        if (doc.exists) {
-          var data = doc.data();
-          data = Object.assign(data, { 'email': email });
-          this.setState({ value: data });
-          this.setState({ loading: false });
-          if (refresh) {
-            this.setState({ refreshing: false });
+    try {
+      if (!refresh) {
+        this.setState({ loading: true });
+      }
+  
+      var user = firebase.auth().currentUser;
+      var db = firebase.firestore();
+  
+      if (user != null) {
+        name = user.displayName;
+        email = user.email;
+        emailVerified = user.emailVerified;
+        var docRef = db.collection("users").doc(user.uid);
+  
+        docRef.get().then((doc) => {
+          if (doc.exists) {
+            var data = doc.data();
+            data = Object.assign(data, { 'email': email });
+            this.setState({ value: data });
+            this.setState({ loading: false });
+            if (refresh) {
+              this.setState({ refreshing: false });
+            }
+          } else {
+            if (refresh) {
+              this.setState({ loading: false });
+            }
+            else {
+              this.setState({ refreshing: false });
+            }
+            Alert.alert("Notificação", "Ocorreu um erro. Tente novamente.");
           }
-        } else {
+        }).catch(function (error) {
           if (refresh) {
             this.setState({ loading: false });
           }
           else {
-            this.setState({ refreshing: false });
+            fthis.setState({ refreshing: alse });
           }
-          Alert.alert("Notificação", "Ocorreu um erro. Tente novamente.");
-        }
-      }).catch(function (error) {
-        if (refresh) {
-          this.setState({ loading: false });
-        }
-        else {
-          this.setState({ refreshing: false });
-        }
-        Alert.alert("Notificação", "Ocorreu um erro. Tente novamente.");;
-      });
+          Alert.alert("Notificação", "Ocorreu um erro. Tente novamente.");;
+        });
+      }
+    } catch (error) {
+      this.setState({ loading: false });
+      this.setState({ refreshing: false });
     }
+    
   }
 
   render() {

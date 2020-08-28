@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   AsyncStorage,
   Image,
+  Platform,
 } from 'react-native';
 import estilo from './styles';
 import 'firebase/firestore';
@@ -16,20 +17,23 @@ import Loading from '../../components/LoadingComponent';
 
 const Form = t.form.Form;
 
-var Escolaridade = t.enums({
-  'Ens. Fundamental Incompleto': 'Ens. Fundamental Incompleto',
-  'Ens. Fundamental Completo': 'Ens. Fundamental Completo',
-  'Ens. Médio Incompleto': 'Ens. Médio Incompleto',
-  'Ens. Médio Completo': 'Ens. Médio Completo',
-  'Ens. Superior Incompleto': 'Ens. Superior Incompleto',
-  'Ens. Superior Completo': 'Ens. Superior Completo',
-  'Especialização Incompleta': 'Especialização Incompleta',
-  'Especialização Completa': 'Especialização Completa',
-  'Mestrado Incompleto': 'Mestrado Incompleto',
-  'Mestrado Completo': 'Mestrado Completo',
-  'Doutorado Incompleto': 'Doutorado Incompleto',
-  'Doutorado Completo': 'Doutorado Completo',
-}, 'Escolaridade');
+var Escolaridade = t.enums(
+  {
+    'Ens. Fundamental Incompleto': 'Ens. Fundamental Incompleto',
+    'Ens. Fundamental Completo': 'Ens. Fundamental Completo',
+    'Ens. Médio Incompleto': 'Ens. Médio Incompleto',
+    'Ens. Médio Completo': 'Ens. Médio Completo',
+    'Ens. Superior Incompleto': 'Ens. Superior Incompleto',
+    'Ens. Superior Completo': 'Ens. Superior Completo',
+    'Especialização Incompleta': 'Especialização Incompleta',
+    'Especialização Completa': 'Especialização Completa',
+    'Mestrado Incompleto': 'Mestrado Incompleto',
+    'Mestrado Completo': 'Mestrado Completo',
+    'Doutorado Incompleto': 'Doutorado Incompleto',
+    'Doutorado Completo': 'Doutorado Completo',
+  },
+  'Escolaridade'
+);
 
 var Profissional = t.enums({
   'Profissional de Saúde': 'Profissional de Saúde',
@@ -62,7 +66,7 @@ const ProfissionalSaude = t.struct({
   estado: t.String,
   escolaridade: Escolaridade,
   local_trabalho: LocalTrabalho,
-  outro: t.String,
+  outro: t.maybe(t.String),
   email: Email,
   password: Senha,
 });
@@ -148,13 +152,13 @@ const options = {
     },
     outro: {
       label: 'Outro',
-      editable: false
+      editable: false,
     },
   },
   stylesheet: stylesheet,
 };
 
-export default class CadastrarScreen extends Component {
+export default class CadastrarReferenciaScreen extends Component {
   state = {
     loading: false,
     value: {},
@@ -233,7 +237,7 @@ export default class CadastrarScreen extends Component {
         <Loading loading={this.state.loading} />
         <KeyboardAvoidingView
           style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
-          behavior="padding"
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           enabled
           keyboardVerticalOffset={65}
         >

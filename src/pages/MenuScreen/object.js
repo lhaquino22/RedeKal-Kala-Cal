@@ -42,9 +42,9 @@ export default menu = [
     {
       image: require('../../../assets/images/referencia.png'),
       icone: 'information-outline',
-      titulo: 'Sobre',
+      titulo: 'Referência e contrareferência',
       cor: 'seagreen',
-      screen: ''
+      screen: 'CadastrarReferencia'
     }
   ]
 ]

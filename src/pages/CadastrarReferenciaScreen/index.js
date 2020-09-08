@@ -5,14 +5,14 @@ import {
   Text,
   TouchableOpacity,
   AsyncStorage,
-  Image,
+  Alert,
   Platform,
 } from 'react-native';
 import styles from './styles';
 import 'firebase/firestore';
 import { ScrollView } from 'react-native-gesture-handler';
 import t from 'tcomb-form-native';
-import { SignUp } from '../../config/firebase';
+import firebase from '../../services/firebase';
 import Loading from '../../components/LoadingComponent';
 import moment from 'moment';
 
@@ -41,14 +41,6 @@ stylesheet.textboxView.error.borderBottomWidth = 1;
 stylesheet.textboxView.normal.marginBottom = 5;
 stylesheet.textboxView.error.marginBottom = 5;
 
-const parentStyle = _.cloneDeep(stylesheet);
-const childStyle = _.cloneDeep(stylesheet);
-
-parentStyle.fieldset.flex = 1;
-parentStyle.fieldset.flexDirection = 'row';
-
-childStyle.formGroup.normal.flex = 1;
-
 var Sexo = t.enums({
   Feminino: 'Feminino',
   Masculino: 'Masculino',
@@ -59,10 +51,8 @@ const FixaReferencia = t.struct({
   unidadeDestino: t.String,
   municipioOrigem: t.String,
   NomeDoPaciente: t.String,
-  idadeSexo: t.struct({
-    idade: t.Number,
-    sexo: Sexo,
-  }),
+  idade: t.Number,
+  sexo: Sexo,
   historiaClinica: t.String,
   hipoteseDiagnostica: t.String,
   date: t.Date,
@@ -83,21 +73,13 @@ const options = {
       label: 'Nome do paciente',
       error: 'Por favor, preencha o campo nome do paciente.',
     },
-    idadeSexo: {
-      stylesheet: parentStyle,
-      label: ' ',
-      fields: {
-        sexo: {
-          stylesheet: childStyle,
-          label: 'Sexo',
-          error: 'Por favor, informe o sexo do paciente.',
-        },
-        idade: {
-          stylesheet: childStyle,
-          label: 'Idade',
-          error: 'Por favor, informe a idade do paciente.',
-        },
-      },
+    sexo: {
+      label: 'Sexo',
+      error: 'Por favor, informe o sexo do paciente.',
+    },
+    idade: {
+      label: 'Idade',
+      error: 'Por favor, informe a idade do paciente.',
     },
     medico: {
       label: 'Médico',
@@ -105,9 +87,69 @@ const options = {
     },
     historiaClinica: {
       label: 'História clínica',
+      multiline: true,
+      stylesheet: {
+        ...stylesheet,
+        textbox: {
+          ...stylesheet.textbox,
+          normal: {
+            ...stylesheet.textbox.normal,
+            borderWidth: 1,
+            borderColor: '#00A198',
+            height: 100,
+            textAlignVertical: 'top',
+          },
+          error: {
+            ...stylesheet.textbox.error,
+            borderWidth: 1,
+            borderColor: '#00A198',
+            height: 100,
+            textAlignVertical: 'top',
+          },
+        },
+        textboxView: {
+          ...stylesheet.textboxView,
+          normal: {
+            borderWidth: 0,
+          },
+          error: {
+            borderWidth: 0,
+          },
+        },
+      },
     },
     hipoteseDiagnostica: {
       label: 'Hipótese diagnóstica ',
+      multiline: true,
+      stylesheet: {
+        ...stylesheet,
+        textbox: {
+          ...stylesheet.textbox,
+          normal: {
+            ...stylesheet.textbox.normal,
+            borderWidth: 1,
+            borderColor: '#00A198',
+            height: 100,
+            textAlignVertical: 'top',
+          },
+          error: {
+            ...stylesheet.textbox.error,
+            borderWidth: 1,
+            borderColor: '#00A198',
+            height: 100,
+            textAlignVertical: 'top',
+          },
+        },
+        textboxView: {
+          ...stylesheet.textboxView,
+          normal: {
+            borderWidth: 0,
+          },
+          error: {
+            borderWidth: 0,
+          },
+        },
+      },
     },
     date: {
       mode: 'date',
@@ -126,7 +168,7 @@ const options = {
 export default class CadastrarScreen extends Component {
   state = {
     loading: false,
-    value: {},
+    value: this.getInitialState( this.props.navigation.getParam('data', null)),
     type: this.getType({}),
     options: options,
   };
@@ -141,42 +183,83 @@ export default class CadastrarScreen extends Component {
     },
   };
 
+  getInitialState( data ) {
+    if (data){
+      data.date = moment(data.date.seconds*1000).toDate()
+      return data;
+    }
+    const date = moment(moment.now()).toDate();
+    value = {
+      unidadeOrigem: 'ok',
+      unidadeDestino: 'ok',
+      municipioOrigem: 'ok',
+      NomeDoPaciente: 'ok',
+      sexo: 'Feminino',
+      idade: 18,
+      medico: 'ok',
+      historiaClinica: 'ok',
+      hipoteseDiagnostica: 'ok',
+      date: date,
+      id:'',
+    };
+    
+    return value;
+  }
+
   getType(value) {
     return FixaReferencia;
   }
 
-  onChange = (value) => {};
+  onChange = (value) => {
+    this.setState({ value });
+  };
 
   handleSubmit = () => {
-    this.setState({ loading: true });
+    //this.setState({ loading: true });
+    const user = firebase.auth().currentUser;
     const dados = this._form.getValue();
     if (dados != null) {
-      const values = Object.assign({}, dados);
-      // SignUp(values)
-      //   .then(() => {
-      //     this.setState({ loading: false });
-      //     this.props.navigation.navigate('Entrar');
-      //   })
-      //   .catch(() => {
-      //     this.setState({ loading: false });
-      //   });
-    } else {
-      this.setState({ loading: false });
+      const value = Object.assign(
+        {},
+        dados,
+        { user: user.uid },
+        { contra_ref: false }
+      );
+      console.log(value);
+      const db = firebase.firestore();
+      db.collection('ref_contra_ref')
+        .add(value)
+        .then(function (docRef) {
+          Alert.alert('Notificação', 'Caso cadastrado com sucesso!');
+          // criar algo pra mandar a notificação pro hospital
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
     }
+    this.setState({ loading: false });
   };
+
+  async componentDidMount() {
+    
+  }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Loading loading={this.state.loading} />
-        <KeyboardAvoidingView
-          style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          enabled
-          keyboardVerticalOffset={65}
-        >
-          <View style={styles.content}>
-            <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <Loading loading={this.state.loading} />
+          <KeyboardAvoidingView
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            enabled
+            keyboardVerticalOffset={65}
+          >
+            <View style={styles.content}>
               <Form
                 ref={(c) => (this._form = c)}
                 type={this.state.type}
@@ -184,13 +267,13 @@ export default class CadastrarScreen extends Component {
                 options={this.state.options}
                 onChange={this.onChange}
               />
-            </ScrollView>
-          </View>
-        </KeyboardAvoidingView>
-        <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
-          <Text style={styles.text}>Cadastrar</Text>
-        </TouchableOpacity>
-      </View>
+            </View>
+          </KeyboardAvoidingView>
+          <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
+            <Text style={styles.text}>Cadastrar</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     );
   }
 }

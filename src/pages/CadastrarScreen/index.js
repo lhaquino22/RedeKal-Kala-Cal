@@ -12,7 +12,7 @@ import estilo from './styles';
 import 'firebase/firestore';
 import { ScrollView } from 'react-native-gesture-handler';
 import t from 'tcomb-form-native';
-import { SignUp } from '../../config/firebase';
+import { SignUp } from '../../services/firebase';
 import Loading from '../../components/LoadingComponent';
 
 const Form = t.form.Form;
@@ -233,16 +233,20 @@ export default class CadastrarReferenciaScreen extends Component {
 
   render() {
     return (
-      <View style={estilo.container}>
-        <Loading loading={this.state.loading} />
-        <KeyboardAvoidingView
-          style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          enabled
-          keyboardVerticalOffset={65}
-        >
-          <View style={estilo.content}>
-            <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={estilo.container}>
+          <Loading loading={this.state.loading} />
+          <KeyboardAvoidingView
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            enabled
+            keyboardVerticalOffset={65}
+          >
+            <View style={estilo.content}>
               <Form
                 ref={(c) => (this._form = c)}
                 type={this.state.type}
@@ -250,13 +254,13 @@ export default class CadastrarReferenciaScreen extends Component {
                 options={this.state.options}
                 onChange={this.onChange}
               />
-            </ScrollView>
-          </View>
-        </KeyboardAvoidingView>
-        <TouchableOpacity style={estilo.button} onPress={this.handleSubmit}>
-          <Text style={estilo.text}>Cadastrar</Text>
-        </TouchableOpacity>
-      </View>
+            </View>
+          </KeyboardAvoidingView>
+          <TouchableOpacity style={estilo.button} onPress={this.handleSubmit}>
+            <Text style={estilo.text}>Cadastrar</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     );
   }
 }

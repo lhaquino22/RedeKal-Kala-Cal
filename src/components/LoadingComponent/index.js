@@ -9,7 +9,7 @@ import estilo from './styles';
 export default class Loading extends Component {
   render() {
     const { loading } = this.props;
-
+    return (<></>);
     return (
       <Modal
         transparent={true}

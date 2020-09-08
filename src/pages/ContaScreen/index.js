@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, AsyncStorage, RefreshControl } from 'react-native';
 import estilo from './styles';
-import firebase from '../../config/firebase'
+import firebase from '../../services/firebase'
 import { ScrollView } from 'react-native-gesture-handler';
 import t from 'tcomb-form-native';
 import Loading from '../../components/LoadingComponent';

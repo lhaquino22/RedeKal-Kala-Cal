@@ -44,7 +44,7 @@ export default menu = [
       icone: 'information-outline',
       titulo: 'Referência e contrareferência',
       cor: 'seagreen',
-      screen: 'CadastrarReferencia'
+      screen: 'ReferenciaContraReferencia'
     }
   ]
 ]

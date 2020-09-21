@@ -1,6 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { colors } from '../../commons';
 export default StyleSheet.create({
+  KeyboardAvoidingViewStyle: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

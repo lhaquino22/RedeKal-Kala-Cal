@@ -105,7 +105,7 @@ class RefCRefScreen extends Component {
 
   deletar = (index) => {
     var db = firebase.firestore();
-    var item = this.state.data[index]
+    var item = this.state.data[index];
     const id = item.id;
     db.collection('ref_contra_ref').doc(id).delete();
   };
@@ -134,7 +134,9 @@ class RefCRefScreen extends Component {
 
             <TouchableOpacity
               onPress={() =>
-                this.props.navigation.navigate('CadastrarReferencia')
+                this.props.navigation.navigate('CadastrarReferencia', {
+                  onGoBack: this.handleRefresh,
+                })
               }
             >
               <View style={estilo.addButton}>
@@ -190,9 +192,13 @@ class RefCRefScreen extends Component {
                   <View style={estilo.buttonsContainer}>
                     <TouchableOpacity
                       onPress={() =>
-                        this.props.navigation.navigate('ReferenciaInfomacoesScreen', {
-                          data: item,
-                        })
+                        this.props.navigation.navigate(
+                          'ReferenciaInfomacoesScreen',
+                          {
+                            data: item,
+                            onGoBack: this.handleRefresh,
+                          }
+                        )
                       }
                     >
                       <Icon

@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import moment from 'moment';
 
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
-import { colors } from '../../commons';
-import firebase from '../../services/firebase';
+import styles from './styles';
 
 class ReferenciaInfoScreen extends Component {
   static navigationOptions = {
@@ -25,43 +19,34 @@ class ReferenciaInfoScreen extends Component {
   };
 
   state = {
-    busca: false,
-    data: {},
-    search_data: [],
+    data: this.props.navigation.getParam('data', {}),
     refreshing: false,
     loading: false,
   };
 
-  _getData = async () => {
-    const db = firebase.firestore();
-    const user = await firebase.auth().currentUser;
-    let data = [];
-
-    await db
-      .collection('ref_contra_ref')
-      .where('user', '==', user.uid)
-      .get()
-      .then((snapshot) => {
-        snapshot.docs.map((doc) => {
-          data.push(Object.assign({}, doc.data(), { id: doc.id }));
-        });
-      });
-
+  _updateData = (data) => {
     this.setState({ data });
+    this.props.navigation.state.params.onGoBack();
   };
 
-  handleCriaContraRef = async () => {};
+  handleCriarContraRef = async () => {
+    this.props.navigation.navigate('CadastrarReferencia', {
+      data: this.state.data,
+      contraRef: true,
+      title: this.state.data.contra_ref
+        ? 'Editar Contra-referência'
+        : 'Criar Contra-referência',
+      onGoBack: this._updateData,
+    });
+  };
 
   handleEditar = async () => {
     this.props.navigation.navigate('CadastrarReferencia', {
       data: this.state.data,
-    })
+      title: 'Atualizar Referência',
+      onGoBack: this._updateData,
+    });
   };
-
-  async componentDidMount() {
-    const { navigation } = this.props;
-    await this.setState({ data: navigation.getParam('data', {}) });
-  }
 
   render() {
     const {
@@ -75,185 +60,141 @@ class ReferenciaInfoScreen extends Component {
       unidadeDestino,
       unidadeOrigem,
       contra_ref,
+      date,
+      diagnostico,
+      CondutaTerapeutica,
+      sugestoes,
+      dataRetorno,
+      medicoRetorno,
     } = this.state.data;
+
+    console.log(date);
+    const date_text = date.seconds
+      ? moment(moment(date.seconds * 1000).toDate()).format('DD/MM/YYYY')
+      : moment(date).format('DD/MM/YYYY');
+    console.log(date_text);
+    const dataRetorno_text = dataRetorno.seconds
+      ? moment(moment(dataRetorno.seconds * 1000).toDate()).format('DD/MM/YYYY')
+      : moment(dataRetorno).format('DD/MM/YYYY');
+
+    const d = [
+      {
+        title: NomeDoPaciente,
+        description: '',
+        size: 16,
+      },
+      {
+        title: 'Idade: ',
+        description: idade,
+        row: true,
+      },
+      {
+        title: 'Sexo: ',
+        description: sexo,
+        row: true,
+      },
+      {
+        title: 'Município de Origem:',
+        description: municipioOrigem,
+      },
+      {
+        title: 'Médico: ',
+        description: medico,
+      },
+      {
+        title: 'Hipótese Diagnóstica: ',
+        description: hipoteseDiagnostica,
+      },
+      {
+        title: 'História Clínica: ',
+        description: historiaClinica,
+      },
+      {
+        title: 'Unidade de Origem: ',
+        description: unidadeOrigem,
+      },
+      {
+        title: 'Unidade de Destino: ',
+        description: unidadeDestino,
+      },
+      {
+        title: 'Data: ',
+        description: date_text,
+      },
+    ];
+
+    const data = !contra_ref
+      ? d
+      : [
+          ...d,
+          {
+            title: 'Contra Referência',
+            description: '',
+            size: 16,
+          },
+          {
+            title: 'Diagnóstico: ',
+            description: diagnostico,
+          },
+          {
+            title: 'Condutal terapêutica: ',
+            description: CondutaTerapeutica,
+          },
+          {
+            title: 'Sugestões: ',
+            description: sugestoes,
+          },
+          {
+            title: 'Data de retorno: ',
+            description: dataRetorno_text,
+          },
+          {
+            title: 'Médico Responsável pelo retorno: ',
+            description: medicoRetorno,
+          },
+        ];
 
     return (
       <>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View style={style.container}>
-            <View style={style.content}>
-              <Text style={style.title}>{NomeDoPaciente}</Text>
-              <View style={style.infoContainer}>
-                <Text style={style.property}>Idade: </Text>
-                <Text style={style.description}>{idade}</Text>
-              </View>
-
-              <View style={style.infoContainer}>
-                <Text style={style.property}>Sexo: </Text>
-                <Text style={style.description}>{sexo}</Text>
-              </View>
-
-              <View style={style.infoContainer}>
-                <Text style={style.property}>Município de Origem: </Text>
-                <Text style={style.description}>{municipioOrigem}</Text>
-              </View>
-
-              <View style={style.infoContainer}>
-                <Text style={style.property}>Médico: </Text>
-                <Text style={style.description}>{medico}</Text>
-              </View>
-
-              <View style={style.infoContainer2}>
-                <Text style={style.property}>Hipótese Diagnóstica: </Text>
-                <Text style={style.description}>{hipoteseDiagnostica}</Text>
-              </View>
-
-              <View style={style.infoContainer2}>
-                <Text style={style.property}>História Clínica: </Text>
-                <Text style={style.description}>{historiaClinica}</Text>
-              </View>
-
-              <View style={style.infoContainer2}>
-                <Text style={style.property}>Unidade de Origem: </Text>
-                <Text style={style.description}>{unidadeOrigem}</Text>
-              </View>
-
-              <View style={style.infoContainer2}>
-                <Text style={style.property}>Unidade de Destino: </Text>
-                <Text style={style.description}>{unidadeDestino}</Text>
-              </View>
-
-              {contra_ref ? (
-                <View>
-                  <Text style={style.title}>Fixa de Contra-referência</Text>
-                  <View style={style.infoContainer}>
-                    <Text style={style.property}>Responsável: </Text>
-                    <Text style={style.description}>{unidadeDestino}</Text>
-                  </View>
-
-                  <View style={style.infoContainer}>
-                    <Text style={style.property}>Diagnóstico: </Text>
-                    <Text style={style.description}>{unidadeDestino}</Text>
-                  </View>
-
-                  <View style={style.infoContainer}>
-                    <Text style={style.property}>Conduta terapêutica: </Text>
-                    <Text style={style.description}>{unidadeDestino}</Text>
-                  </View>
-
-                  <View style={style.infoContainer}>
-                    <Text style={style.property}>Sugestões: </Text>
-                    <Text style={style.description}>{unidadeDestino}</Text>
-                  </View>
-
-                  <View style={style.infoContainer}>
-                    <Text style={style.property}>Retorno do paciente:: </Text>
-                    <Text style={style.description}>
-                      {unidadeDestino} dia; mês(es); ano(s) à clínica
-                      especializada
-                    </Text>
-                  </View>
-
-                  <View style={style.infoContainer}>
-                    <Text style={style.property}>Data: </Text>
-                    <Text style={style.description}>{unidadeDestino}</Text>
-                  </View>
-
-                  <View style={style.infoContainer}>
-                    <Text style={style.property}>Médico: </Text>
-                    <Text style={style.description}>{unidadeDestino}</Text>
-                  </View>
+          <View style={styles.container}>
+            <View style={styles.content}>
+              {data.map((item) => (
+                <View
+                  key={item.title}
+                  style={
+                    item.row ? styles.infoContainer : styles.infoContainer2
+                  }
+                >
+                  <Text style={item.size ? styles.title : styles.property}>
+                    {item.title}
+                  </Text>
+                  <Text style={styles.description}>{item.description}</Text>
                 </View>
-              ) : (
-                <></>
-              )}
+              ))}
             </View>
           </View>
         </ScrollView>
-        <View style={style.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={style.button}
-            onPress={this.handleCriaContraRef}
+            style={styles.button}
+            onPress={this.handleCriarContraRef}
           >
             <Icon
               name="file-document-box-plus-outline"
               color="white"
               size={24}
             />
-            <Text style={style.buttonText}>Criar Contra-referência</Text>
+            <Text style={styles.buttonText}>Contra-referência</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={style.button} onPress={this.handleEditar}>
+          <TouchableOpacity style={styles.button} onPress={this.handleEditar}>
             <Icon name="file-document-edit-outline" size={24} color="white" />
-            <Text style={style.buttonText}>Editar Informações</Text>
+            <Text style={styles.buttonText}>Editar Informações</Text>
           </TouchableOpacity>
         </View>
       </>
     );
   }
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ebebeb',
-    padding: 10,
-    paddingBottom: 0,
-  },
-  content: {
-    justifyContent: 'center',
-    flex: 1,
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 4,
-  },
-  infoContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    marginTop: 16,
-  },
-  infoContainer2: {
-    flex: 1,
-    marginTop: 16,
-  },
-  title: {
-    fontSize: 16,
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  property: {
-    fontSize: 14,
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  description: {
-    flex: 1,
-    flexWrap: 'wrap',
-    fontSize: 14,
-    color: '#6C6C80',
-    letterSpacing: 0.5,
-  },
-  buttonContainer: {
-    backgroundColor: '#ebebeb',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  button: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.mainColor,
-    padding: 10,
-    margin: 10,
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: 'bold',
-  },
-});
 
 export default ReferenciaInfoScreen;

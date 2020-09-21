@@ -7,7 +7,6 @@ import LeishmanioseScreen from './LeishmanioseScreen';
 import PlanoEnfrentamentoScreen from './PlanoEnfrentamentoScreen';
 import ConteudoScreen from './ConteudoScreen';
 import CadastrarReferenciaScreen from './CadastrarReferenciaScreen';
-import CadastrarContraReferenciaScreen from './CadastrarContraReferenciaScreen';
 import RefCRefScreen from './RefCRefScreen';
 import ReferenciaInfoScreen from './ReferenciaInfoScreen';
 
@@ -32,7 +31,6 @@ const Navigator = createStackNavigator({
   PlanoEnfrentamento: PlanoEnfrentamentoScreen,
   Conteudo: ConteudoScreen,
   CadastrarReferencia: CadastrarReferenciaScreen,
-  CadastrarContraReferencia: CadastrarContraReferenciaScreen,
   ReferenciaContraReferencia: RefCRefScreen,
   ReferenciaInfomacoesScreen: ReferenciaInfoScreen,
 });

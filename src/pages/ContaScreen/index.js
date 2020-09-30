@@ -5,7 +5,7 @@ import firebase from '../../services/firebase'
 import { ScrollView } from 'react-native-gesture-handler';
 import t from 'tcomb-form-native';
 import Loading from '../../components/LoadingComponent';
-
+import { colors } from '../../commons';
 const Form = t.form.Form;
 
 const User = t.struct({
@@ -87,12 +87,9 @@ export default class ContaScreen extends Component {
   static navigationOptions = {
     title: 'Meus Dados',
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
   };
 
   state = {
@@ -137,16 +134,16 @@ export default class ContaScreen extends Component {
       if (!refresh) {
         this.setState({ loading: true });
       }
-  
+
       var user = firebase.auth().currentUser;
       var db = firebase.firestore();
-  
+
       if (user != null) {
         name = user.displayName;
         email = user.email;
         emailVerified = user.emailVerified;
         var docRef = db.collection("users").doc(user.uid);
-  
+
         docRef.get().then((doc) => {
           if (doc.exists) {
             var data = doc.data();
@@ -179,33 +176,27 @@ export default class ContaScreen extends Component {
       this.setState({ loading: false });
       this.setState({ refreshing: false });
     }
-    
+
   }
 
   render() {
     return (
-      <View style={estilo.container}>
-        <Loading loading={this.state.loading} />
+      <ScrollView style={estilo.container}>
+        {/* <Loading loading={this.state.loading} /> */}
         <View style={estilo.content}>
-          <ScrollView refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.onRefresh}
-            />}>
-            <Form
-              ref={c => this._form = c}
-              type={User} value={this.state.value}
-              options={options} />
-          </ScrollView>
+          <Form
+            ref={c => this._form = c}
+            type={User} value={this.state.value}
+            options={options} />
+          <TouchableOpacity
+            style={estilo.button}
+            onPress={this._signOutFirebase}
+          >
+            <Text style={estilo.text}>Sair</Text>
+          </TouchableOpacity>
 
         </View>
-        <TouchableOpacity
-          style={estilo.button}
-          onPress={this._signOutFirebase}
-        >
-          <Text style={estilo.text}>Sair</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     );
   }
 }

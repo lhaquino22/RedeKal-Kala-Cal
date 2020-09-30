@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import TabIcone from '../components/TabIcone';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import MenuNavigator from './MenuNavigator';
 import NotificacoesNavigator from './NotificacoesNavigator';
 import ContaNavigator from './ContaNavigator';
@@ -10,12 +10,7 @@ import SobreNavigator from './SobreNavigator';
 
 const MainNavigator = createBottomTabNavigator(
   {
-    Menu: {
-      screen: MenuNavigator,
-      navigationOptions: () => ({
-        tabBarIcon: <HomeButton />
-      })
-    },
+    Menu: MenuNavigator,
     Notificacoes: NotificacoesNavigator,
     Conta: ContaNavigator,
     Sobre: SobreNavigator
@@ -24,29 +19,25 @@ const MainNavigator = createBottomTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let IconComponent = MaterialCommunityIcons;
+        let IconComponent = Ionicons;
         let iconName;
-        
-        if (routeName === 'Notificacoes') {
-          iconName = focused ? 'bell' : 'bell-outline';
-        } else if (routeName === "Conta") {
-          iconName = focused ? 'account' : 'account-outline';
-        }
-        else {
-          iconName = focused ? 'help-circle' : 'help-circle-outline';
-        }
 
-        return <IconComponent name={iconName} size={32} color={tintColor} />;
+        if (routeName === "Menu")
+          iconName = 'ios-home'
+        else if (routeName === 'Notificacoes')
+          iconName = 'ios-notifications';
+        else if (routeName === "Conta")
+          iconName = 'ios-person';
+        else
+          iconName = 'ios-information-circle';
+
+        return <IconComponent name={iconName} size={25} color={tintColor} />;
       },
     }),
     tabBarOptions: {
-      activeTintColor: '#00a196',
-      inactiveTintColor: 'gray',
+      activeTintColor: '#ff6633',
+      inactiveTintColor: 'lightgray',
       showLabel: false,
-      style: {
-        height: 70,
-        backgroundColor: 'ghostwhite'
-      }
     }
   }
 );

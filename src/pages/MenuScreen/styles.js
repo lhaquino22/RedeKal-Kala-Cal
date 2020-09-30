@@ -4,12 +4,27 @@ export default StyleSheet.create({
   fill: {
     flex: 1
   },
-  container: {  
+  container: {
     flex: 1,
     marginTop: 230
   },
   itemsRow: {
-    flex: 1, 
+    flex: 1,
     flexDirection: 'row'
+  },
+  pad: {
+    flex: 1,
+    margin: 20,
+    backgroundColor: '#FFF',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.10,
+    shadowRadius: 4,
+    elevation: 5,
+    marginTop: 250,
+    borderRadius: 10
   }
 });

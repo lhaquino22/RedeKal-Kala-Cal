@@ -2,34 +2,24 @@ export default itens = [
   {
     titulo: 'Descrição',
     descricao:
-      `
-      Leishmaniose Visceral (LV) ou Calazar é uma doença zoonótica que causa um conjunto de síndromes clínicas em humanos que podem comprometer pele, mucosa e vísceras (OPAS,2019).
-      `,
+      `\tCalazar ou a Leishmaniose Visceral (LV) é uma doença zoonótica que causa um conjunto de síndromes clínicas em humanos que podem comprometer pele, mucosa e vísceras (OPAS,2019).`,
   },
   {
     titulo: 'Agente Etiológico',
-    descricao: `
-    As leishmanioses são causadas por protozoários da ordem Kinetoplastida, família Trypanosomatidae, gênero Leishmania (L.). As espécies são classificadas de acordo com a distribuição geográfica das áreas endêmicas, sendo denominadas espécies do Velho Mundo (Ásia) e Novo Mundo (Américas). O complexo donovani compreende as espécies L. donovani e L. infantum no Velho Mundo e L. infantum e chagasi nas Américas. No Brasil, as espécies causadoras da leishmaniose visceral fazem parte do complexo L. donovani que são classificadas em três espécies: L. chagasi, L. infantum, L. donovani, diferenciando-se por seus vetores, hospedeiros reservatórios e patologia. A Leishmania (L.) infantum está, comumente responsável como a espécie no Brasil. (MAURÍCIO; STOHARD; MILES, 2000; LUKES et al., 2007; OLIVEIRA et al., 2009; RAYMOND et al., 2012).`
+    descricao: `\tAs leishmanioses são causadas por protozoários da ordem Kinetoplastida, família Trypanosomatidae, gênero Leishmania (L.).\n\n\tNo Brasil, as espécies causadoras da leishmaniose visceral fazem parte do complexo L. donovani que são classificadas em três espécies: L. chagasi, L. infantum, L. donovani, diferenciando-se por seus vetores, hospedeiros reservatórios e patologia. A Leishmania (L.) infantum está, comumente responsável como a espécie no Brasil.\n\n(MAURÍCIO; STOHARD; MILES, 2000; LUKES et al., 2007; OLIVEIRA et al., 2009; RAYMOND et al., 2012).`
   },
   {
     titulo: 'Vetor',
-    descricao: `
-    As leishmanias são transmitidas pela picada da fêmea de insetos de flebotomíneos da família Psychodidae e do gênero Lutzomya de grande importância na saúde pública por seu papel de vetores de parasitas. São insetos com metamorfose completa, ou seja, passam pelos estágios de: ovo, larva, pupa e adulto, cuja respectiva duração varia de acordo com a espécie. Os adultos têm menos de 5 mm de comprimento, têm pernas longas e corpo coberto por pêlos longos e finos. Seu vôo é curto, silencioso e em pequenos saltos. Têm principalmente atividade crepuscular e noturna, embora também possam estar ativos durante o dia. Além disso, são conhecidos na América do Sul, como mosquito palha, birigui etc. (OPAS,2019).`
+    descricao: `\tO principal vetor da América Central e do Sul da leishmaniose visceral (LV) causada por Leishmania infantum é a fêmea de insetos de flebotomíneos da espécie Lutzomyia longipalpis.\n\n\tEsses vetores tem metamorfose completa com estágios de: ovo, larva, pupa e adultos.\n\n As fêmeas adultas de L. longipalpis têm atividade crepuscular e noturna, embora também possam estar ativos durante o dia. E as estratégias de controle de vigilância do vetor são direcionadas aos estágios adultos. (OPAS,2019; SOUSA-PAULA et al.,2020).\n\n\tSaiba mais sobre vetor ( link para abrir: https://www.who.int/leishmaniasis/disease/vector/en/)
+    `
   },
   {
     titulo: 'Reservatório',
-    descricao: `
-    Reservatórios são aqueles hospedeiros vertebrados que mantêm o parasita na natureza e, portanto, certos vetores são infectados por eles e o ciclo de transmissão continua a existir. Os reservatórios são domésticos e selvagens. Entre os selvagens estão: marsupiais, urso-preguiça, tamanduá, menor, raposa e roedores. O doméstico mais importante para L. (L) infantum está o cão (OPAS,2019).
-    `
+    descricao: `São aqueles hospedeiros vertebrados que mantêm o parasita na natureza e, portanto, certos vetores são infectados por eles e o ciclo de transmissão continua a existir. Os reservatórios são domésticos e selvagens. Entre os selvagens estão: marsupiais, urso-preguiça, tamanduá, menor, raposa e roedores. O doméstico mais importante para L. (L) infantum está o cão (OPAS,2019).\n\n\tQuer conhecer mais sobre os tipos de reservatórios (link para abrir: https://iris.paho.org/bitstream/handle/10665.2/50524/9789275320631_spa.pdf?sequence=1&isAllowed=y)`
   },
   {
     titulo: 'Modo de infecção',
-    descricao: `
-    A infecção pela Leishmania ocorre quando formas promastigotas infectantes são inoculadas no tecido do hospedeiro durante o repasto sanguíneo do inseto vetor. Após escaparem da lise mediada pelo sistema complemento, as promastigotas de Leishmania invadem rapidamente a célula alvo para iniciar a fase intracelular da infecção, já que uma vez internalizadas aos fagócitos, esses parasitos modulam o microambiente estabelecendo a infecção (DESJEUX, 2004).
-    
-    No macrófago, os parasitos perdem o flagelo, tornando-se arredondados ou ovoides e são então denominadas amastigotas, formas que residem no interior dos fagolisossomos, onde sobrevivem e se multiplicam. Macrófagos infectados se rompem e liberam amastigotas com potencial infectante, contaminando macrófagos vizinhos. Em um novo repasto sanguíneo, o inseto vetor ingere macrófagos infectados. Essas amastigotas, ao chegarem ao intestino do inseto, transformam-se em promastigotas e rapidamente se multiplicam. O inseto, ao exercer um novo hematofagismo, inocula formas infectantes e o ciclo vertebrado se completa (SACKS; KAMHAWI, 2001; OLIVEIRA et al., 2009)
-    
-    `
+    descricao: `A infecção ocorre quando formas promastigotas infectantes são inoculadas no tecido do hospedeiro durante o repasto sanguíneo do inseto vetor. Após escaparem da lise mediada pelo sistema complemento, as promastigotas de Leishmania invadem rapidamente a célula alvo para iniciar a fase intracelular da infecção, já que uma vez internalizadas aos fagócitos, esses parasitos modulam o microambiente estabelecendo a infecção (DESJEUX, 2004).\n\n\tNo macrófago, os parasitos perdem o flagelo, tornando-se arredondados ou ovoides e são denominadas de amastigotas, formas que residem no interior dos fagolisossomos, onde sobrevivem e se multiplicam. Macrófagos infectados se rompem e liberam amastigotas com potencial infectante, contaminando macrófagos vizinhos. Em um novo repasto sanguíneo, o inseto vetor ingere amastigotas infectados. Essas amastigotas, ao chegarem ao intestino do inseto, transformam-se em promastigotas e rapidamente se multiplicam. O inseto, ao exercer um novo hematofagismo, inocula formas infectantes e o ciclo vertebrado se completa.\n\n(SACKS; KAMHAWI, 2001; OLIVEIRA et al., 2009)`
   },
   {
     titulo: 'Sintomatologia',

@@ -14,9 +14,15 @@ export default class HomeScreen extends Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={estilo.fill}>
+      // <View style={estilo.fill}>
+      //   <Header />
+      //   <View style={estilo.container}>
+
+      //   </View>
+      // </View>
+      <View style={{ backgroundColor: '#fafafa', flex: 1 }}>
         <Header />
-        <View style={estilo.container}>
+        <View style={estilo.pad}>
           {object.map((item, index) => {
             return (
               <View style={estilo.itemsRow} key={index}>

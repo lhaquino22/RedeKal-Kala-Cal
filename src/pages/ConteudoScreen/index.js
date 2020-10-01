@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, FlatList, ScrollView } from 'react-native';
 import Text from '../../components/Text';
+import { colors } from '../../commons';
 import style from './style';
 
 class ConteudoScreen extends Component {
@@ -8,12 +9,9 @@ class ConteudoScreen extends Component {
     return {
       title: navigation.getParam('title', 'Detalhes'),
       headerStyle: {
-        backgroundColor: '#00A198',
+        backgroundColor: colors.mainColor,
       },
       headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
     };
   };
 
@@ -21,38 +19,34 @@ class ConteudoScreen extends Component {
     const { navigation } = this.props;
     const dados = navigation.getParam('dados', '');
     const title = navigation.getParam('title', '');
+    
     return (
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={style.container}>
+      <ScrollView style={style.container}>
           <View style={style.content}>
             <Text style={style.text}>{dados}</Text>
             {title === 'Agente Etiológico' && (
               <View>
                 <View style={style.extraInfo}>
-                  <Text style={style.extraTitle}>Família</Text>
-                  <View style={style.extraDescription}>
-                    <Text style={style.extraDescriptionText}>
-                      trypanosomatidae
-                    </Text>
+                  <Text style={[style.extraTitle, {flex: 1}]}>Família</Text>
+                  <View style={[style.extraDescription, {marginLeft: 10}]}>
+                    <Text style={style.extraDescriptionText}>trypanosomatidae</Text>
                   </View>
                 </View>
                 <View style={style.extraInfo}>
-                  <Text style={style.extraTitle}>Gênero</Text>
-                  <View style={style.extraDescription}>
+                  <Text style={[style.extraTitle, {flex: 1}]}>Gênero</Text>
+                  <View style={[style.extraDescription, {marginLeft: 10}]}>
                     <Text style={style.extraDescriptionText}>Leishmania</Text>
                   </View>
                 </View>
                 <View style={style.extraInfo}>
-                  <Text
-                    style={style.extraTitle}
-                  >{`Complexo\nde espécies`}</Text>
-                  <View style={style.extraDescription}>
+                  <Text style={style.extraTitle}>Complexo de espécies</Text>
+                  <View style={[style.extraDescription, {marginLeft: 10}]}>
                     <Text style={style.extraDescriptionText}>L. donovani</Text>
                   </View>
                 </View>
                 <View style={style.extraInfo}>
                   <Text style={style.extraTitle}>Espécies</Text>
-                  <View style={style.extraDescription}>
+                  <View style={[style.extraDescription, {marginLeft: 10}]}>
                     <Text style={style.extraDescriptionText}>L. chagasi</Text>
                     <Text style={style.extraDescriptionText}>L. donovani</Text>
                     <Text style={style.extraDescriptionText}>L. infantum</Text>
@@ -61,7 +55,6 @@ class ConteudoScreen extends Component {
               </View>
             )}
           </View>
-        </View>
       </ScrollView>
     );
   }

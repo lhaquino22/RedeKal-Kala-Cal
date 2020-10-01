@@ -24,14 +24,11 @@ class RefCRefScreen extends Component {
   };
 
   static navigationOptions = {
-    title: `Referência e Contra-ref`,
+    title: `Referência e Contrarreferência`,
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
   };
 
   _getData = async () => {

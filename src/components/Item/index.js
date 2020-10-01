@@ -8,7 +8,7 @@ import { colors } from '../../commons';
 
 function Item({
   item,
-  icon = 'folder-open-outline',
+  icon = 'ios-bookmark',
   iconColor = colors.mainColor,
   onNavigate,
   showIcon = true,
@@ -34,7 +34,7 @@ function Item({
           {item.title}
         </Text>
       </View>
-      <Icon name="ios-arrow-round-forward" color="lightgray" size={25} />
+      <Icon name="ios-arrow-forward" color="lightgray" size={25} />
     </TouchableOpacity>
   );
 }

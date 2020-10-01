@@ -2,20 +2,16 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import style from './styles';
 import pontos from './object';
-import FormComponent from '../../components/FormComponent';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import MapView, { Marker, Callout } from 'react-native-maps';
-
+import {colors} from '../../commons';
 export default class PontosCuidadoScreen extends Component {
   static navigationOptions = {
-    title: 'Pontos de Cuidado',
+    title: 'Pontos de Cuidado no Piauí',
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
   };
 
   state = {

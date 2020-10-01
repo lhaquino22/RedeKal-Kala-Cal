@@ -1,19 +1,27 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../commons';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: "#ebebeb",
+    backgroundColor: colors.defaultBackgroundColor,
   },
   content: {
-    justifyContent: 'center',
     flex: 1,
-    margin: 10,
+    backgroundColor: '#FFF',
+    margin: 20,
     padding: 10,
-    marginBottom: 0,
-    backgroundColor: "#fff",
-    borderRadius: 4,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.10,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  destaque: {
+    color: colors.secondaryColor
   }
-
 })

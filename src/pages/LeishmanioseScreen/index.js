@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import itens from './object';
 import Item from '../../components/Item';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { colors } from '../../commons';
+
 class LeishmanioseScreen extends Component {
   static navigationOptions = {
-    title: 'Leishmaniose Visceral',
+    title: 'Calazar',
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
   };
 
   handleNavigation = ({ nextScreen, dados, title }) => {
@@ -21,16 +20,16 @@ class LeishmanioseScreen extends Component {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView style={estilo.container}>
         <View style={estilo.container}>
           <View style={estilo.content}>
             {itens.map((s) => {
               return (
                 <Item
                   key={s.titulo}
-                  showIcon={false}
-                  icon="arrow-right"
-                  iconColor="#00A189"
+                  showIcon={true}
+                  icon="ios-bookmark"
+                  iconColor={colors.secondaryColor}
                   onNavigate={this.handleNavigation}
                   style={{ margin: 0 }}
                   item={{ title: s.titulo, content: s.descricao }}
@@ -47,18 +46,23 @@ class LeishmanioseScreen extends Component {
 const estilo = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ebebeb',
-    padding: 10,
-    paddingBottom: 0,
+    backgroundColor: '#fafafa',
   },
   content: {
     justifyContent: 'center',
     flex: 1,
-    marginBottom: 10,
-    padding: 10,
+    margin: 20,
     backgroundColor: '#fff',
-    borderRadius: 4,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+
+    elevation: 5,
   },
   info: {
     flex: 1,

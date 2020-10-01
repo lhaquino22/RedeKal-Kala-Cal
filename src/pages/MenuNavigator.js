@@ -9,20 +9,18 @@ import ConteudoScreen from './ConteudoScreen';
 import CadastrarReferenciaScreen from './CadastrarReferenciaScreen';
 import RefCRefScreen from './RefCRefScreen';
 import ReferenciaInfoScreen from './ReferenciaInfoScreen';
+import {colors} from '../commons';
 
 const Navigator = createStackNavigator({
   Main: MenuScreen,
   Georreferenciamento: {
     screen: GeorrefNavigator,
     navigationOptions: {
-      title: 'Ocorrência dos Casos',
+      title: 'Mapeamento dos Casos',
       headerStyle: {
-        backgroundColor: '#00A198',
+        backgroundColor: colors.mainColor,
       },
       headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
     },
   },
   Caso: CasoScreen,

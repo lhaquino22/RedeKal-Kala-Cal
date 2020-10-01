@@ -5,10 +5,10 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.defaultBackgroundColor,
-    paddingHorizontal: 20,
   },
   content: {
     padding: 20,
+    margin: 20,
     backgroundColor: '#FFF',
     borderRadius: 10,
     shadowColor: '#000',
@@ -19,8 +19,6 @@ export default StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 5,
-    marginTop: 20,
-    marginBottom: 20,
   },
   secao: {
     marginTop: 20,
@@ -34,24 +32,25 @@ export default StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: '#6C6C80',
-    letterSpacing: 0.5,
+    color: colors.defaultTextColor,
+    textAlign: 'justify'
   },
   extraInfo: {
-    padding: 16,
+    flex: 1,
+    padding: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   extraTitle: {
-    color: '#6C6C80',
+    color: colors.defaultTextColor,
+    flex: 1
   },
   extraDescription: {
-    backgroundColor: '#00A198',
+    backgroundColor: colors.secondaryColor,
     borderRadius: 5,
     padding: 16,
     maxWidth: 140,
-    flex: 1,
+    flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -1,6 +1,6 @@
 export const colors = {
-  mainColor: '#00A198',
-  secondaryColor: '#0779e4',
+  mainColor: '#ff6633',
+  secondaryColor: '#ff9933',
   defaultTextColor: '#363636',
   defaultBackgroundColor: '#FAFAFA',
   // TabNavigator disabled tab color

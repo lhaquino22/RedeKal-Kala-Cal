@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
+import { colors } from '../../commons';
 
 class PlanoEnfrentamentoScreen extends Component {
   static navigationOptions = {
-    title: 'Plano de Enfrentamento',
+    title: 'Plano de Enfrentamento e Controle de Doenças Negligenciadas',
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
   };
 
   handleAbrirArquivo() {
@@ -19,21 +17,18 @@ class PlanoEnfrentamentoScreen extends Component {
   }
 
   render() {
-    const introducao = `
-    Este plano encontra-se inserido no Projeto Piauí Pilares de Crescimento e Inclusão Social do Governo do Estado do Piauí, efetivado por convênio com o Banco Mundial, em conjunto com as secretarias Estaduais de Planejamento, Educação, Desenvolvimento Rural, Meio Ambiente e Instituto de Terras do Piauí.
-
-   Com ele, esperamos melhorar a resposta às doenças negligenciadas no Piauí, enfrentando os fatores de risco de adoecimento da população, detectando oportunamente as doenças e apoiando intervenções adequadas de prevenção, diagnóstico, tratamento e controle da tuberculose, hanseníase, doença de chagas, leishmaniose e geohelmintíases.`;
+    const introducao = `\tEste plano encontra-se inserido no Projeto Piauí Pilares de Crescimento e Inclusão Social do Governo do Estado do Piauí, efetivado por convênio com o Banco Mundial, em conjunto com as secretarias Estaduais de Planejamento, Educação, Desenvolvimento Rural, Meio Ambiente e Instituto de Terras do Piauí.\n\n\tCom ele, esperamos melhorar a resposta às doenças negligenciadas no Piauí, enfrentando os fatores de risco de adoecimento da população, detectando oportunamente as doenças e apoiando intervenções adequadas de prevenção, diagnóstico, tratamento e controle da tuberculose, hanseníase, doença de chagas, leishmaniose e geohelmintíases.`;
 
     return (
       <View style={estilo.container}>
         <View style={estilo.content}>
           <ScrollView >
-            <View style={[estilo.content]}>
+            <View>
               <Text style={estilo.descricao}>{introducao}</Text>
+              <TouchableHighlight style={estilo.button} onPress={this.handleAbrirArquivo}>
+                <Text style={estilo.text}>Abrir Arquivo</Text>
+              </TouchableHighlight>
             </View>
-            <TouchableHighlight style={estilo.button} onPress={this.handleAbrirArquivo}>
-              <Text style={estilo.text}>Abrir Arquivo</Text>
-            </TouchableHighlight>
           </ScrollView>
         </View>
       </View>
@@ -44,33 +39,31 @@ class PlanoEnfrentamentoScreen extends Component {
 const estilo = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ebebeb',
+    backgroundColor: '#fafafa',
   },
   content: {
     justifyContent: 'center',
     flex: 1,
-    margin: 10,
+    margin: 20,
+    padding: 20,
     backgroundColor: '#fff',
-    borderRadius: 4,
-    padding: 10,
-    justifyContent:'space-between'
+    borderRadius: 10,
   },
   descricao: {
     fontSize: 16,
-    color: '#6C6C80',
-    letterSpacing: 0.5,
+    color: colors.defaultTextColor,
+    textAlign: 'justify'
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#00A198',
+    backgroundColor: colors.secondaryColor,
     padding: 10,
-    margin: 10,
+    marginTop: 20
   },
   text: {
     textAlign: 'center',
     color: '#fff',
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

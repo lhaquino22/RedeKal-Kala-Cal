@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import estilo from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
+import {colors} from '../../commons';
 
 export default class NotificacoesScreen extends Component {
   static navigationOptions = {
     title: 'Notificações',
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
   };
 
   render() {

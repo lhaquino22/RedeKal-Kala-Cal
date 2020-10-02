@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import style from './styles';
-import pontos from './object';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
-import MapView, { Marker, Callout } from 'react-native-maps';
-import {colors} from '../../commons';
+import MapView, { Marker, Callout, Polygon } from 'react-native-maps';
+import { colors } from '../../commons';
+
+import pontos from './object';
+import polygons from './poligonos';
+
 export default class PontosCuidadoScreen extends Component {
   static navigationOptions = {
     title: 'Pontos de Cuidado no Piauí',
@@ -17,6 +20,7 @@ export default class PontosCuidadoScreen extends Component {
   state = {
     isMapReady: false,
     pontos: pontos,
+    polygons: polygons,
   };
 
   fitAllMarkers() {
@@ -33,6 +37,22 @@ export default class PontosCuidadoScreen extends Component {
   onMapLayout = () => {
     this.fitAllMarkers();
     this.setState({ isMapReady: true });
+  };
+
+  toLatLng(coordinates) {
+    let latLng_coordinates = [];
+    coordinates[0].map((coordinate) => {
+      latLng_coordinates.push({
+        longitude: coordinate[0],
+        latitude: coordinate[1],
+      });
+    });
+    return latLng_coordinates;
+  }
+
+  hex2rgba(hex, alpha = 1) {
+    const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16));
+    return `rgba(${r},${g},${b},${alpha})`;
   };
 
   render() {
@@ -88,13 +108,22 @@ export default class PontosCuidadoScreen extends Component {
                 </Callout>
               </Marker>
             ))}
+          {this.state.polygons.features.map((polygon) => (
+            <Polygon
+              key={polygon.properties.name}
+              coordinates={this.toLatLng(polygon.geometry.coordinates)}
+              fillColor={this.hex2rgba(polygon.properties.fill, polygon.properties["fill-opacity"])}
+              strokeColor={this.hex2rgba(polygon.properties.stroke, polygon.properties["stroke-opacity"]*0)}
+              strokeWidth={polygon.properties["stroke-width"]}
+            />
+          ))}
         </MapView>
         <View style={style.menu}>
           <TouchableOpacity
             onPress={() => this.fitAllMarkers()}
             style={style.centerButton}
           >
-            <Icon name="image-filter-center-focus" size={30} color="#00A198" />
+            <Icon name="image-filter-center-focus" size={30} color={colors.mainColor} />
           </TouchableOpacity>
         </View>
       </View>

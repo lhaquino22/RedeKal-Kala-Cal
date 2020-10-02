@@ -1,22 +1,22 @@
 import { StyleSheet } from 'react-native';
-
+import { colors } from '../../commons';
 export default StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: "#ebebeb",
+    backgroundColor: '#ebebeb',
   },
   content: {
     justifyContent: 'center',
     flex: 1,
     margin: 10,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 4,
-    padding: 10
+    padding: 10,
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#00A198',
+    backgroundColor: colors.mainColor,
     padding: 10,
     margin: 10,
   },
@@ -24,6 +24,6 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
     fontSize: 13,
-    fontWeight: 'bold'
-  }
-})
+    fontWeight: 'bold',
+  },
+});

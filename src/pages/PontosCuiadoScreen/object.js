@@ -11,7 +11,7 @@ export default pontos = [
     cnes: '2364816',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -28,7 +28,7 @@ export default pontos = [
     cnes: '2777754',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -45,7 +45,7 @@ export default pontos = [
     cnes: '2365146',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -62,7 +62,7 @@ export default pontos = [
     cnes: '2777762',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -79,7 +79,7 @@ export default pontos = [
     cnes: '8015899',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -97,7 +97,7 @@ export default pontos = [
     cnes: '4009622',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -114,7 +114,7 @@ export default pontos = [
     cnes: '2777746',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -131,7 +131,7 @@ export default pontos = [
     cnes: '2777649',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -144,9 +144,51 @@ export default pontos = [
     address:
       'https://www.google.com/maps/place/Instituto+De+Doen%C3%A7as+Tropicais+Natan+Portela/@-5.0881867,-42.8056137,17z/data=!3m1!4b1!4m5!3m4!1s0x78e39df1aed0b19:0x30ddba12ce5af484!8m2!3d-5.088192!4d-42.803425',
     latitude: -5.0881867,
-    longitude: -42.1282108,
+    longitude: -42.8056137,
     telefone: '(86) 3221-2424',
     cnes: '2323338',
+    tipo: [
+      {
+        cuidado: 'C. Secundário',
+      },
+      {
+        cuidado: 'C. Terciário',
+      },
+    ],
+  },
+  {
+    sede: 'Teresina',
+
+    nome: 'Hospital Infantil Lucidio Portela',
+    endereco:
+      'Rua Governador Raimundo Artur de Vasconcelos, 220 - Centro (Sul), Teresina - PI, 64001-450',
+    address:
+      'https://www.google.com.br/maps/place/Hospital+Infantil+Lucidio+Portela+(Hilp)/@-5.0892584,-42.8056687,17z/data=!4m5!3m4!1s0x78e37bb8f29c903:0xe2650396089859!8m2!3d-5.0892637!4d-42.80348?hl=pt-BR&authuser=0',
+    latitude: -5.0892584,
+    longitude: -42.8056687,
+    telefone: '(86) 3226-1811',
+    cnes: '00',
+    tipo: [
+      {
+        cuidado: 'C. Secundário',
+      },
+      {
+        cuidado: 'C. Terciário',
+      },
+    ],
+  },
+  {
+    sede: 'Teresina',
+
+    nome: 'Maternidade Dona Evangelina Rosa',
+    endereco:
+      'Av. Higino Cunha, 1552 - Cristo Rei, Teresina - PI, 64014-535',
+    address:
+      'https://www.google.com.br/maps/place/Maternidade+Dona+Evangelina+Rosa/@-5.0959127,-42.7903784,17z/data=!3m1!4b1!4m5!3m4!1s0x78e30ac82d37ac7:0x1c81a265b24ae164!8m2!3d-5.095918!4d-42.7881897?hl=pt-BR&authuser=0',
+    latitude: -5.0959127,
+    longitude: -42.7903784,
+    telefone: '(86) 3228-1053',
+    cnes: '0',
     tipo: [
       {
         cuidado: 'C. Secundário',
@@ -169,7 +211,7 @@ export default pontos = [
     cnes: '2323680',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
@@ -186,8 +228,8 @@ export default pontos = [
     cnes: '2777789',
     tipo: [
       {
-        cuidado: 'C. Primário',
+        cuidado: 'C. Secundário',
       },
     ],
   },
-]
+];

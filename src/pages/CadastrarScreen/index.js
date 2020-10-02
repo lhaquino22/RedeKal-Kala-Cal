@@ -12,163 +12,38 @@ import estilo from './styles';
 import 'firebase/firestore';
 import { ScrollView } from 'react-native-gesture-handler';
 import t from 'tcomb-form-native';
+import axios from 'axios';
+
 import { SignUp } from '../../services/firebase';
 import Loading from '../../components/LoadingComponent';
+import Form, {
+  GestorHospitalar,
+  ProfissionalSaude,
+  GestorMunicipio,
+  Credenciais,
+  Default,
+  options,
+  stylesheet,
+} from './form';
+import { colors } from '../../commons';
 
-const Form = t.form.Form;
-
-var Escolaridade = t.enums(
-  {
-    'Ens. Fundamental Incompleto': 'Ens. Fundamental Incompleto',
-    'Ens. Fundamental Completo': 'Ens. Fundamental Completo',
-    'Ens. Médio Incompleto': 'Ens. Médio Incompleto',
-    'Ens. Médio Completo': 'Ens. Médio Completo',
-    'Ens. Superior Incompleto': 'Ens. Superior Incompleto',
-    'Ens. Superior Completo': 'Ens. Superior Completo',
-    'Especialização Incompleta': 'Especialização Incompleta',
-    'Especialização Completa': 'Especialização Completa',
-    'Mestrado Incompleto': 'Mestrado Incompleto',
-    'Mestrado Completo': 'Mestrado Completo',
-    'Doutorado Incompleto': 'Doutorado Incompleto',
-    'Doutorado Completo': 'Doutorado Completo',
-  },
-  'Escolaridade'
-);
-
-var Profissional = t.enums({
-  'Profissional de Saúde': 'Profissional de Saúde',
-  'Gestor do Município': 'Gestor do Município',
-  'Gestor Hospitalar': 'Gestor Hospitalar',
+const api = axios.create({
+  baseURL: 'https://servicodados.ibge.gov.br/api/v1/localidades',
 });
-
-var LocalTrabalho = t.enums({
-  'Unidade Básica de Saúde': 'Unidade Básica de Saúde',
-  Hospital: 'Hospital',
-  'Secretaria Municipal de Saúde - Coordenação':
-    'Secretaria Municipal de Saúde - Coordenação',
-  Outro: 'Outro',
-});
-
-const Email = t.refinement(t.String, (email) => {
-  const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-  return reg.test(email);
-});
-
-const Senha = t.refinement(t.String, (senha) => {
-  return senha.length >= 6;
-});
-
-const ProfissionalSaude = t.struct({
-  categoria_profissional: Profissional,
-  nome: t.String,
-  cpf: t.Number,
-  cidade: t.String,
-  estado: t.String,
-  escolaridade: Escolaridade,
-  local_trabalho: LocalTrabalho,
-  outro: t.maybe(t.String),
-  email: Email,
-  password: Senha,
-});
-
-const GestorMunicipio = t.struct({
-  categoria_profissional: Profissional,
-  nome: t.String,
-  cpf: t.Number,
-  cidade: t.String,
-  estado: t.String,
-  escolaridade: Escolaridade,
-  email: Email,
-  password: Senha,
-});
-
-const GestorHospitalar = t.struct({
-  categoria_profissional: Profissional,
-  nome: t.String,
-  cpf: t.Number,
-  cidade: t.String,
-  estado: t.String,
-  escolaridade: Escolaridade,
-  hospital: t.String,
-  email: Email,
-  password: Senha,
-});
-
-var _ = require('lodash');
-
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
-
-stylesheet.textbox.normal.borderWidth = 0;
-stylesheet.textbox.normal.fontSize = 16;
-stylesheet.textbox.error.borderWidth = 0;
-stylesheet.textbox.normal.marginBottom = 0;
-stylesheet.textbox.error.marginBottom = 0;
-
-stylesheet.controlLabel.normal.fontSize = 14;
-stylesheet.controlLabel.normal.color = 'gray';
-
-stylesheet.textboxView.normal.borderWidth = 0;
-stylesheet.textboxView.normal.fontSize = 4;
-stylesheet.textboxView.error.borderWidth = 0;
-stylesheet.textboxView.normal.borderRadius = 0;
-stylesheet.textboxView.error.borderRadius = 0;
-stylesheet.textboxView.normal.borderBottomWidth = 1;
-stylesheet.textboxView.normal.borderBottomColor = '#00A198';
-stylesheet.textboxView.error.borderBottomWidth = 1;
-stylesheet.textboxView.normal.marginBottom = 5;
-stylesheet.textboxView.error.marginBottom = 5;
-
-const options = {
-  fields: {
-    password: {
-      label: 'Senha',
-      error: 'A senha deve conter pelo menos 6 caracterers.',
-      password: true,
-      secureTextEntry: true,
-    },
-    categoria_profissional: {
-      label: 'Categoria Profissional',
-    },
-    escolaridade: {
-      label: 'Nível de Escolaridade',
-    },
-    cns: {
-      label: 'CNS',
-    },
-    cnes: {
-      label: 'CNES',
-    },
-    cpf: {
-      label: 'CPF',
-    },
-    email: {
-      error: 'Insira um email válido.',
-    },
-    local_trabalho: {
-      label: 'Local de trabalho',
-    },
-    hospital: {
-      label: 'Hospital',
-    },
-    outro: {
-      label: 'Outro',
-      editable: false,
-    },
-  },
-  stylesheet: stylesheet,
-};
 
 export default class CadastrarReferenciaScreen extends Component {
   state = {
     loading: false,
     value: {},
-    type: this.getType({}),
+    type: this.getType({}, Default),
     options: options,
+    formDefault: Default,
   };
+
   static navigationOptions = {
     title: 'Cadastre-se',
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
@@ -176,21 +51,76 @@ export default class CadastrarReferenciaScreen extends Component {
     },
   };
 
-  getType(value) {
-    if (value.categoria_profissional === 'Gestor do Município') {
-      return GestorMunicipio;
-    } else if (value.categoria_profissional === 'Gestor Hospitalar') {
-      return GestorHospitalar;
-    } else {
-      return ProfissionalSaude;
+  async getEstados() {
+    try {
+      const response = await api.get('/estados');
+      let estados = {};
+      response.data.map((estado) => {
+        estados[estado.sigla] = estado.nome;
+      });
+      return estados;
+    } catch (error) {
+      console.error(error);
+      return {};
     }
   }
 
-  onChange = (value) => {
+  async getCidades(UF) {
+    try {
+      const response = await api.get(`/estados/${UF}/municipios`);
+      let cidades = {};
+      response.data.map((cidade) => {
+        cidades[cidade.nome] = cidade.nome;
+      });
+      return cidades;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  changeEnum = (item, value) => {
+    let d = this.state.formDefault;
+    d[item] = t.enums(value);
+    this.setState({ type: this.getType(this.state.value, d), formDefault: d });
+  };
+
+  async componentDidMount() {
+    const estados = await this.getEstados();
+    this.changeEnum('estado', estados);
+  }
+
+  getType(value, formDefault) {
+    if (value.perfil_acesso === 'Gestor do Município') {
+      return t.struct({
+        ...formDefault,
+        ...GestorMunicipio,
+        ...Credenciais,
+      });
+    } else if (value.perfil_acesso === 'Gestor Hospitalar') {
+      return t.struct({
+        ...formDefault,
+        ...GestorHospitalar,
+        ...Credenciais,
+      });
+    } else {
+      return t.struct({
+        ...formDefault,
+        ...ProfissionalSaude,
+        ...Credenciais,
+      });
+    }
+  }
+
+  onChange = async (value) => {
     // recalculate the type only if strictly necessary
+    if (value.estado != this.state.value.estado){
+      const cidades = await this.getCidades(value.estado)
+      this.changeEnum('cidade', cidades)
+    }
+
     const type =
-      value.categoria_profissional !== this.state.value.categoria_profissional
-        ? this.getType(value)
+      value.perfil_acesso !== this.state.value.perfil_acesso
+        ? this.getType(value, this.state.formDefault)
         : this.state.type;
 
     const options =
@@ -209,11 +139,12 @@ export default class CadastrarReferenciaScreen extends Component {
               },
             },
           });
-
+    
     this.setState({ options, value, type });
   };
 
   handleSubmit = () => {
+    console.log(this.state.value)
     this.setState({ loading: true });
     const dados = this._form.getValue();
     if (dados != null) {

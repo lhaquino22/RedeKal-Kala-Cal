@@ -1,5 +1,6 @@
 import React from 'react';
-import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GeorrefScreen from './GeorrefScreen';
 import CasosScreen from './CasosScreen';

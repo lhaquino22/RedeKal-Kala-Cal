@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { colors} from '../../commons';
+
 
 export default StyleSheet.create({
   container: {
@@ -64,7 +66,7 @@ export default StyleSheet.create({
     letterSpacing: 0.5,
   },
   markerButtonContainer: {
-    backgroundColor: '#00A198',
+    backgroundColor: colors.secondaryColor,
     borderRadius: 5,
     padding: 5,
   },

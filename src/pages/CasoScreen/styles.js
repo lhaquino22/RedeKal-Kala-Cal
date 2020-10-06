@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-
+import { colors} from '../../commons';
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -17,7 +17,7 @@ export default StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#00A198',
+    backgroundColor: colors.secondaryColor,
     padding: 10,
     margin: 10,
   },

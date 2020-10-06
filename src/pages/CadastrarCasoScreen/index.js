@@ -8,6 +8,7 @@ import Geocoder from 'react-native-geocoding';
 import { bindActionCreators } from 'redux';
 import { addCaso } from '../../../CasoAction';
 import { connect } from 'react-redux';
+import { colors} from '../../commons';
 
 const Form = t.form.Form;
 Geocoder.init("AIzaSyBC47xhzukLmW2WTgnsIhtTyJYYzqDbQKs", { language: "pt-br" });
@@ -37,7 +38,7 @@ stylesheet.textboxView.error.borderWidth = 0;
 stylesheet.textboxView.normal.borderRadius = 0;
 stylesheet.textboxView.error.borderRadius = 0;
 stylesheet.textboxView.normal.borderBottomWidth = 1;
-stylesheet.textboxView.normal.borderBottomColor = '#00A198';
+stylesheet.textboxView.normal.borderBottomColor = colors.mainColor;
 stylesheet.textboxView.error.borderBottomWidth = 1;
 stylesheet.textboxView.normal.marginBottom = 5;
 stylesheet.textboxView.error.marginBottom = 5;

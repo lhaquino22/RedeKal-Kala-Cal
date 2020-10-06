@@ -5,12 +5,13 @@ import moment from 'moment';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
 import styles from './styles';
+import { colors} from '../../commons';
 
 class ReferenciaInfoScreen extends Component {
   static navigationOptions = {
     title: 'Informação do Referenciamento',
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {

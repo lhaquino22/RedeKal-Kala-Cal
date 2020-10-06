@@ -11,7 +11,7 @@ export default pontos = [
     cnes: '2364816',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -28,7 +28,7 @@ export default pontos = [
     cnes: '2777754',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -45,7 +45,7 @@ export default pontos = [
     cnes: '2365146',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -62,7 +62,7 @@ export default pontos = [
     cnes: '2777762',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -79,7 +79,7 @@ export default pontos = [
     cnes: '8015899',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -97,7 +97,7 @@ export default pontos = [
     cnes: '4009622',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -114,7 +114,7 @@ export default pontos = [
     cnes: '2777746',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -131,7 +131,7 @@ export default pontos = [
     cnes: '2777649',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -149,10 +149,10 @@ export default pontos = [
     cnes: '2323338',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
       {
-        cuidado: 'C. Terciário',
+        cuidado: 'Referência Terciária',
       },
     ],
   },
@@ -170,10 +170,10 @@ export default pontos = [
     cnes: '00',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
       {
-        cuidado: 'C. Terciário',
+        cuidado: 'Referência Terciária',
       },
     ],
   },
@@ -191,10 +191,10 @@ export default pontos = [
     cnes: '0',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
       {
-        cuidado: 'C. Terciário',
+        cuidado: 'Referência Terciária',
       },
     ],
   },
@@ -211,7 +211,7 @@ export default pontos = [
     cnes: '2323680',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },
@@ -228,7 +228,7 @@ export default pontos = [
     cnes: '2777789',
     tipo: [
       {
-        cuidado: 'C. Secundário',
+        cuidado: 'Referência Secundária',
       },
     ],
   },

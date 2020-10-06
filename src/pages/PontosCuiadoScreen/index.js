@@ -123,7 +123,7 @@ export default class PontosCuidadoScreen extends Component {
             onPress={() => this.fitAllMarkers()}
             style={style.centerButton}
           >
-            <Icon name="image-filter-center-focus" size={30} color={colors.mainColor} />
+            <Icon name="image-filter-center-focus" size={30} color={colors.secondaryColor} />
           </TouchableOpacity>
         </View>
       </View>

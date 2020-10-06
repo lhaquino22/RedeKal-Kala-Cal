@@ -16,6 +16,8 @@ import { getCasos } from '../../../CasoAction';
 import * as firebase from 'firebase';
 import Loading from '../../components/LoadingComponent';
 
+import { colors} from '../../commons';
+
 class GeorrefScreen extends Component {
   state = {
     chave: '',
@@ -126,7 +128,7 @@ class GeorrefScreen extends Component {
               <MaterialCommunityIcons
                 name="image-filter-center-focus"
                 size={30}
-                color="#00A198"
+                color={colors.secondaryColor}
               />
             </View>
           </TouchableOpacity>

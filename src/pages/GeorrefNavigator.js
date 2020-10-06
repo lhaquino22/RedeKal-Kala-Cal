@@ -1,11 +1,11 @@
 import React from 'react';
-import { createAppContainer } from 'react-navigation';
-import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
+import { createMaterialTopTabNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GeorrefScreen from './GeorrefScreen';
 import CasosScreen from './CasosScreen';
+import { colors} from '../commons';
 
-const GeorrefNavigator = createMaterialTopTabNavigator(
+const GeorrefNavigator = createBottomTabNavigator(
   {
     Lista: CasosScreen,
     Casos: GeorrefScreen
@@ -26,7 +26,7 @@ const GeorrefNavigator = createMaterialTopTabNavigator(
           iconName = focused ? 'account-search' : 'account-search-outline';
         }
 
-        return <IconComponent name={iconName} size={25} color="#00A198" />;
+        return <IconComponent name={iconName} size={25} color={colors.mainColor} />;
       },
     }),
     tabBarOptions: {
@@ -34,7 +34,7 @@ const GeorrefNavigator = createMaterialTopTabNavigator(
         backgroundColor: 'white'
       },
       indicatorStyle: {
-        backgroundColor: "#00A198"
+        backgroundColor: colors.mainColor
       },
       showIcon: true,
       showLabel: false,

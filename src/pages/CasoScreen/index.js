@@ -13,6 +13,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import FormComponent from '../../components/FormComponent';
 import Loading from '../../components/LoadingComponent';
 
+import { colors} from '../../commons';
+
 const ufs = {
   'AC': 'AC',
   'AL': 'AL',
@@ -247,7 +249,7 @@ stylesheet.textboxView.error.borderWidth = 0;
 stylesheet.textboxView.normal.borderRadius = 0;
 stylesheet.textboxView.error.borderRadius = 0;
 stylesheet.textboxView.normal.borderBottomWidth = 1;
-stylesheet.textboxView.normal.borderBottomColor = '#00A198';
+stylesheet.textboxView.normal.borderBottomColor = colors.mainColor;
 stylesheet.textboxView.error.borderBottomWidth = 1;
 stylesheet.textboxView.normal.marginBottom = 5;
 stylesheet.textboxView.error.marginBottom = 5;
@@ -608,7 +610,7 @@ class CasoScreen extends Component {
   static navigationOptions = {
     title: 'Caso de Ocorrência',
     headerStyle: {
-      backgroundColor: '#00A198',
+      backgroundColor: colors.mainColor,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {

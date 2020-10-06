@@ -16,6 +16,8 @@ import firebase from '../../services/firebase';
 import Loading from '../../components/LoadingComponent';
 import moment from 'moment';
 
+import { colors} from '../../commons';
+
 var _ = require('lodash');
 
 const Form = t.form.Form;
@@ -36,7 +38,7 @@ stylesheet.textboxView.error.borderWidth = 0;
 stylesheet.textboxView.normal.borderRadius = 0;
 stylesheet.textboxView.error.borderRadius = 0;
 stylesheet.textboxView.normal.borderBottomWidth = 1;
-stylesheet.textboxView.normal.borderBottomColor = '#00A198';
+stylesheet.textboxView.normal.borderBottomColor = colors.mainColor;
 stylesheet.textboxView.error.borderBottomWidth = 1;
 stylesheet.textboxView.normal.marginBottom = 5;
 stylesheet.textboxView.error.marginBottom = 5;
@@ -48,14 +50,14 @@ const textareaStyle = {
     normal: {
       ...stylesheet.textbox.normal,
       borderWidth: 1,
-      borderColor: '#00A198',
+      borderColor: colors.mainColor,
       height: 100,
       textAlignVertical: 'top',
     },
     error: {
       ...stylesheet.textbox.error,
       borderWidth: 1,
-      borderColor: '#00A198',
+      borderColor: colors.mainColor,
       height: 100,
       textAlignVertical: 'top',
     },
@@ -183,7 +185,7 @@ export default class CadastrarScreen extends Component {
     return {
       title: navigation.getParam('title', 'Criar Referência'),
       headerStyle: {
-        backgroundColor: '#00A198',
+        backgroundColor: colors.mainColor,
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
@@ -264,6 +266,7 @@ export default class CadastrarScreen extends Component {
   };
 
   handleNewSubmit = async (value) => {
+    const { navigation } = this.props;
     const db = firebase.firestore();
     db.collection('ref_contra_ref')
       .add(value)
@@ -280,10 +283,11 @@ export default class CadastrarScreen extends Component {
         );
         console.error(error);
       });
-    this.props.navigation.state.params.onGoBack();
+    navigation.state.params.onGoBack();
   };
 
   handleUpdateSubmit = async (value, doc) => {
+    const { navigation } = this.props;
     const db = firebase.firestore();
     db.collection('ref_contra_ref')
       .doc(doc)
@@ -301,7 +305,7 @@ export default class CadastrarScreen extends Component {
         );
         console.error(error);
       });
-    this.props.navigation.state.params.onGoBack(value);
+    navigation.state.params.onGoBack(value);
   };
 
   handleSubmit = async () => {

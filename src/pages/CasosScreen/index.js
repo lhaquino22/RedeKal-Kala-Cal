@@ -8,6 +8,7 @@ import { getCasos, delCaso } from '../../../CasoAction';
 import { connect } from 'react-redux';
 import * as firebase from "firebase";
 import Loading from '../../components/LoadingComponent';
+import { colors} from '../../commons';
 
 class CasosScreen extends Component {
   state = {
@@ -108,12 +109,12 @@ class CasosScreen extends Component {
             <TextInput placeholder="Procurar por nome" style={estilo.input} onChangeText={this.procurar} />
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('Caso')}>
-                <View style={{ backgroundColor: '#00A198', padding: 3, borderRadius: 5 }}>
+                <View style={{ backgroundColor: colors.secondaryColor, padding: 3, borderRadius: 5 }}>
                   <MaterialCommunityIcons name='account-plus' color='white' size={25} />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity>
-                <View style={{ marginLeft: 5, backgroundColor: '#00A198', padding: 3, borderRadius: 5 }}>
+                <View style={{ marginLeft: 5, backgroundColor: colors.secondaryColor, padding: 3, borderRadius: 5 }}>
                   <MaterialCommunityIcons name='dog-side' color='white' size={25} />
                 </View>
               </TouchableOpacity>

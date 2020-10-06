@@ -53,7 +53,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.mainColor,
+    backgroundColor: colors.secondaryColor,
     padding: 10,
     margin: 10,
   },
